@@ -2,7 +2,7 @@ import { define } from "@goodtechsoft/sequelize-postgres";
 import { fields } from "../middlewares/db_session";
 
 module.exports = (sequelize, DataTypes) => {
-  return define(sequelize).model("customers", {
+  return define(sequelize).model("customer", {
     is_aco_c_customercodetive: {
       type     : DataTypes.INTEGER,
       allowNull: false,

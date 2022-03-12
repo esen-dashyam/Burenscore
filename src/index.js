@@ -9,7 +9,30 @@ import { collection } from "@goodtechsoft/data-collection";
 
 const dbMigrate = async () => {
   try {
-    await db.value.sync({ force: true });
+    await db.c_business.sync({ force: true });
+    await db.c_capital.sync({ force: true });
+    await db.c_family.sync({ force: true });
+    await db.c_staff_bankrelation.sync({ force: true });
+    await db.customer.sync({ force: true });
+    await db.mrtno.sync({ force: true });
+    await db.noeinfo.sync({ force: true });
+    await db.o_bond.sync({ force: true });
+    await db.o_c_accredit.sync({ force: true });
+    await db.o_c_financial_information.sync({ force: true });
+    await db.o_c_loanline.sync({ force: true });
+    await db.o_c_mortgage.sync({ force: true });
+    await db.o_c_onus_information.sync({ force: true });
+    await db.o_c_receivable.sync({ force: true });
+    await db.o_c_relationcustomer.sync({ force: true });
+    await db.o_c_relationorg.sync({ force: true });
+    await db.o_c_sectorcode.sync({ force: true });
+    await db.o_m_report.sync({ force: true });
+    await db.o_report.sync({ force: true });
+    await db.o_shareholdercustomer.sync({ force: true });
+    await db.o_shareholderorg.sync({ force: true });
+    await db.o_t_report.sync({ force: true });
+    await db.relno.sync({ force: true });
+    await db.transaction.sync({ force: true });
   } catch (err){
     console.log(err);
   }

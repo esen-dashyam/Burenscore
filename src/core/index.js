@@ -1,5 +1,4 @@
 import { errorHandler, micro } from "@goodtechsoft/micro-service";
-import microLogging from "@goodtechsoft/micro-logging";
 import express from "express";
 import bodyParser from "body-parser";
 import morgan from "morgan";
@@ -15,7 +14,6 @@ import xmlparser from "express-xml-bodyparser";
 
 export default async () => {
   const app = express();
-  const logging = await microLogging(config.server.name, config.logging);
   // const client = await createRedisClient(config.redis.host, config.redis.port, "session");
   // const RedisStore = connect(session);
   // const store = new RedisStore({ client });
@@ -42,7 +40,6 @@ export default async () => {
   );
 
   app.use(micro.engine());
-  app.use(logging);
   app.use(routes());
   app.use(services());
   app.use(errorHandler());

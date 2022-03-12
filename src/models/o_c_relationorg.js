@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     o_c_relationorg_isforeign: {
-      type     : DataTypes.INTEGERS,
+      type     : DataTypes.INTEGER,
       allowNull: false,
     },
     o_c_relationorg_registerno: {
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_relationorg_sectorcodes: {
-      type     : DataTypes.INTEGERS,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     o_c_relationorg_sectorcode: {
@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     o_c_relationorg_isfinancialonus: {
-      type     : DataTypes.INTEGERS,
+      type     : DataTypes.INTEGER,
       allowNull: false,
     },
     o_c_relationorg_relno: {

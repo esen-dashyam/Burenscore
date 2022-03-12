@@ -14,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4
     },
     type: {
-      type     : DataTypes.STIRNG(55),
+      type     : DataTypes.STRING(55),
       allowNull: true,
     },
     relno: {
-      type     : DataTypes.STIRNG(55),
+      type     : DataTypes.STRING(55),
       allowNull: true,
     },
     ...fields(DataTypes)

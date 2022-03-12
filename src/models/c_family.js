@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     c_g_savinghistory: {
-      type     : DataTypes.STIRNG(500),
+      type     : DataTypes.STRING(500),
       allowNull: true,
     },
 
