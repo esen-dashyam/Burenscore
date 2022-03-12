@@ -1,0 +1,21 @@
+# Production
+/build
+routes.json
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+/node_modules
+
+# npm
+package-lock.json
+
+# yarn
+yarn.lock
+
+# misc
+.DS_Store
+.vscode
