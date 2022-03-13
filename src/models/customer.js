@@ -3,7 +3,7 @@ import { fields } from "../middlewares/db_session";
 
 module.exports = (sequelize, DataTypes) => {
   return define(sequelize).model("customer", {
-    is_aco_c_customercodetive: {
+    o_c_customercode: {
       type     : DataTypes.INTEGER,
       allowNull: false,
     },
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_isforeign: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.BOOLEAN,
       allowNull: false,
     },
     o_c_birthdate: {
@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     o_c_registerno: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.STRING(255),
       allowNull: false,
     },
     o_c_stateregister_passportorno: {
