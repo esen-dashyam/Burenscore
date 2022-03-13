@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     registertocourtdate: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DATE,
       allowNull: true,
     },
     timesincourt: {

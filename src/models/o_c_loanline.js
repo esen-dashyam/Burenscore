@@ -41,11 +41,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     o_c_loanline_timestoloan: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DATE,
       allowNull: false,
     },
     o_c_loanline_extdate: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DATE,
       allowNull: false,
     },
     o_c_loanline_interestinperc: {
