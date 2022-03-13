@@ -18,9 +18,14 @@ export default method.post("/auth/login", schema, async (req, res, session) => {
     secretKey
   } = req.body;
 
+  console.log(id);
+  console.log(secretKey);
+
   let user = await db.find(db.User, {
     where: { id },
   }, session);
+
+  console.log(user);
 
   if (!user) throw new UnauthorizedError(ERRORS.AUTHENTICATION_FAILED);
 
