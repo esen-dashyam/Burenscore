@@ -6,7 +6,8 @@ import { db_session, sign } from "../middlewares";
 export default () => {
   const router = new Router();
 
-  router.use("/api", [sign, db_session, routes(__dirname, ["/auth/login"])]);
+  router.use("/api", [sign, db_session, routes(__dirname, ["/api/auth/login"])]);
 
   return router;
 };
+
