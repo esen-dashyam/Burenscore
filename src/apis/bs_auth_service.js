@@ -9,7 +9,6 @@ const api = micro.api(
 );
 
 export const user = {
-  check   : (data, session) => api.fetch("/user/check", data)(session),
-  create  : (data, session) => api.fetch("/user/create", data)(session),
-  password: (data, session) => api.fetch("/user/password", data)(session),
+  check : (data, session) => api.fetch("/user/check", data)(session),
+  create: (data, session) => api.fetch("/user/refresh", data)(session),
 };
