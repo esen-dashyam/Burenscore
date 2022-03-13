@@ -23,7 +23,7 @@ export default async () => {
   app.use(cookieParser(config.server.name + ".ckp"));
   app.use(morgan("dev"));
   app.use(bodyParser.json({ limit: "50mb" }));
-  app.use(xmlparser({ trim: false, explicitArray: false }));
+  // app.use(xmlparser({ trim: false, explicitArray: false }));
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(express.static("uploads"));
   app.use(

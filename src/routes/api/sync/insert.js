@@ -6,7 +6,7 @@ const schema = Joi.object({
   customers: Joi.array().max(1000).required(),
 });
 
-export default method.post("/insert", schema, async (req, res, session) => {
+export default method.post("/zms", schema, async (req, res, session) => {
   const { data
   } = req.body;
   console.log(data);

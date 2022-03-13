@@ -27,11 +27,10 @@ export default async (req, res, next) => {
 
     try {
       decoded = jwt.verify(`${token}.${tokens[0]}`, config.jwt_api_secret);
+      console.log(decoded);
     } catch (err) {
       throw new UnauthorizedError(ERRORS.NO_CREDENTIALS);
     }
-
-    req.user = config.staff;
 
     next();
   } catch (err) {
