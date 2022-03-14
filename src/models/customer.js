@@ -7,11 +7,15 @@ module.exports = (sequelize, DataTypes) => {
       type     : DataTypes.INTEGER,
       allowNull: false,
     },
+    customer_id: {
+      type     : DataTypes.INTEGER,
+      allowNull: false,
+    },
     o_c_loandescription: {
       type     : DataTypes.STRING(255),
       allowNull: true,
     },
-    o_c_bankCode: {
+    o_c_bank_code: {
       type     : DataTypes.STRING(255),
       allowNull: false,
     },
@@ -19,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       type     : DataTypes.INTEGER,
       allowNull: false,
     },
-    is_aco_c_isorganizationtive: {
+    isorganization: {
       type     : DataTypes.INTEGER,
       allowNull: false,
     },

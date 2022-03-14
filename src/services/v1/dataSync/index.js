@@ -1,5 +1,5 @@
-import syncCustomer from "./syncCustomer";
+import main from "./main";
 
 export default {
-  syncCustomer,
+  main,
 };

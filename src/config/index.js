@@ -15,8 +15,8 @@ export default configure(({ PORT, DBHOST, DBPORT, DBNAME, DBUSER, DBPASS }) => (
     port    : DBPORT,
     dialect : "postgres"
   },
-  jwt_service_secret: "bs-datasource.service",
-  jwt_api_secret    : "bs-datasource.api",
+  jwt_service_secret: "bs-zms.service",
+  jwt_api_secret    : "bs-zms.api",
 }), {
   development: {
     PORT  : process.env.PORT,

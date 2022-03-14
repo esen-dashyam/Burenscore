@@ -10,7 +10,8 @@ import headers from "./headers";
 import config from "../config";
 import services from "../services";
 import routes from "../routes";
-import xmlparser from "express-xml-bodyparser";
+// import xmlparser from "express-xml-bodyparser";
+require("body-parser-xml")(bodyParser);
 
 export default async () => {
   const app = express();
@@ -23,8 +24,7 @@ export default async () => {
   app.use(cookieParser(config.server.name + ".ckp"));
   app.use(morgan("dev"));
   app.use(bodyParser.json({ limit: "50mb" }));
-  // app.use(xmlparser({ trim: false, explicitArray: false }));
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.xml({ xmlParseOptions: { trim: false, explicitArray: false }, limit: "50mb" }));
   app.use(express.static("uploads"));
   app.use(
     session({
