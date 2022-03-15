@@ -19,12 +19,19 @@ export default configure(({ PORT, DBHOST, DBPORT, DBNAME, DBUSER, DBPASS }) => (
   jwt_api_secret    : "bs-zms.api",
 }), {
   development: {
-    PORT  : process.env.PORT,
-    DBNAME: "bs_zms",
-    DBHOST: "192.168.200.37",
-    DBUSER: "postgres",
-    DBPASS: "Ec8W5zrLA",
-    DBPORT: 5432,
+    PORT   : process.env.PORT,
+    DBNAME : "bs_zms",
+    DBHOST : "192.168.200.37",
+    DBUSER : "postgres",
+    DBPASS : "Ec8W5zrLA",
+    DBPORT : 5432,
+    LOGGING: {
+      username: "admin",
+      password: "monGoDBey100devG00d",
+      host    : "192.168.200.36",
+      port    : 27017,
+      database: "micro_bs"
+    }
   },
   dev: {
     PORT  : process.env.PORT,
@@ -38,9 +45,11 @@ export default configure(({ PORT, DBHOST, DBPORT, DBNAME, DBUSER, DBPASS }) => (
       port: 6379
     },
     LOGGING: {
-      host    : "172.16.100.25",
+      username: "admin",
+      password: "monGoDBey100devG00d",
+      host    : "192.168.200.36",
       port    : 27017,
-      database: "micro"
+      database: "micro_bs"
     }
   },
 
