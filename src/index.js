@@ -8,30 +8,31 @@ import { db, setup } from "@goodtechsoft/sequelize-postgres";
 
 const dbMigrate = async () => {
   try {
-    await db.CBusiness.sync({ force: true });
-    await db.CCapital.sync({ force: true });
-    await db.CFamily.sync({ force: true });
-    await db.CStaffBankrelation.sync({ force: true });
-    await db.Customer.sync({ force: true });
-    await db.Mrtno.sync({ force: true });
-    await db.Noeinfo.sync({ force: true });
-    await db.OBond.sync({ force: true });
-    await db.OCAccredit.sync({ force: true });
-    await db.OCFinancialInformation.sync({ force: true });
-    await db.OCLoanline.sync({ force: true });
-    await db.OCMortgage.sync({ force: true });
-    await db.OCOnusInformation.sync({ force: true });
-    await db.OCReceivable.sync({ force: true });
-    await db.OCRelationcustomer.sync({ force: true });
-    await db.OCRelationorg.sync({ force: true });
-    await db.OCSectorcode.sync({ force: true });
-    await db.OMReport.sync({ force: true });
-    await db.OReport.sync({ force: true });
-    await db.OShareholdercustomer.sync({ force: true });
-    await db.OShareholderorg.sync({ force: true });
-    await db.OTReport.sync({ force: true });
-    await db.Relno.sync({ force: true });
-    await db.Transaction.sync({ force: true });
+    // await db.CBusiness.sync({ force: true });
+    // await db.CCapital.sync({ force: true });
+    // await db.CFamily.sync({ force: true });
+    // await db.CStaffBankrelation.sync({ force: true });
+    // await db.Customer.sync({ force: true });
+    // await db.Mrtno.sync({ force: true });
+    // await db.Noeinfo.sync({ force: true });
+    // await db.OBond.sync({ force: true });
+    // await db.OCAccredit.sync({ force: true });
+    // await db.OCFinancialInformation.sync({ force: true });
+    // await db.OCLoanline.sync({ force: true });
+    // await db.OCMortgage.sync({ force: true });
+    // await db.OCOnusInformation.sync({ force: true });
+    // await db.OCReceivable.sync({ force: true });
+    // await db.OCRelationcustomer.sync({ force: true });
+    // await db.OCRelationorg.sync({ force: true });
+    // await db.OCSectorcode.sync({ force: true });
+    // await db.OMReport.sync({ force: true });
+    // await db.OReport.sync({ force: true });
+    // await db.OShareholdercustomer.sync({ force: true });
+    // await db.OShareholderorg.sync({ force: true });
+    // await db.OTReport.sync({ force: true });
+    // await db.Relno.sync({ force: true });
+    // await db.Transaction.sync({ force: true });
+    await db.Client.sync({ force: true });
   } catch (err){
     console.log(err);
   }
