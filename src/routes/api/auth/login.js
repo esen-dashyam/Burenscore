@@ -22,7 +22,7 @@ export default method.post("/auth/login", schema, async (req, res, session) => {
   console.log(id);
   console.log(secretKey);
 
-  let client = await clientService.get({ id: id }, session);
+  let client = await db.find(db.Client, { client_id: id }, session);
 
   console.log(client);
 
@@ -41,10 +41,10 @@ export default method.post("/auth/login", schema, async (req, res, session) => {
     service_type: config.server.name,
   };
 
-  await clientService.update({
+  await db.update(client, {
     id        : client.id,
     session_id: auth.session_id,
-  });
+  }, session);
 
   let result = await sign({
     ...auth,

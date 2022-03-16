@@ -7,7 +7,7 @@ export default () => {
   const router = new Router();
 
   router.use("/api", [sign, db_session, routes(__dirname, ["/api/auth/login"])]);
-  router.use("/api", [ db_session, routes(__dirname, "/api")]);
+  router.use("/api", [auth, db_session, routes(__dirname, "/api")]);
 
   return router;
 };
