@@ -2,29 +2,26 @@ import { method } from "@goodtechsoft/micro-service";
 import { db } from "@goodtechsoft/sequelize-postgres";
 import { UnauthorizedError } from "@goodtechsoft/micro-service/lib/errors";
 import { user as userService } from "../../../apis/bs_auth_service";
-import { client as clientService } from "../../../apis/bs_datasource_service";
 import { ERRORS } from "../../../constants";
 import config from "../../../config";
 import sign from "./logics/sign";
 import Joi from "joi";
 
 const schema = Joi.object({
-  id       : Joi.string().max(45).required(),
+  client_id: Joi.string().max(45).required(),
   secretKey: Joi.string().max(255).required(),
 });
 
 export default method.post("/auth/login", schema, async (req, res, session) => {
   const {
-    id,
+    client_id,
     secretKey
   } = req.body;
 
-  console.log(id);
-  console.log(secretKey);
-
-  let client = await db.find(db.Client, { client_id: id }, session);
-
-  console.log(client);
+  let client = await db.find(db.Client, {
+    client_id,
+    is_active: true
+  }, session);
 
   if (!client) throw new UnauthorizedError(ERRORS.AUTHENTICATION_FAILED);
 
@@ -35,12 +32,6 @@ export default method.post("/auth/login", schema, async (req, res, session) => {
 
   if (!auth) throw new UnauthorizedError(ERRORS.AUTHENTICATION_FAILED);
 
-  session[4] = {
-    id          : client.id,
-    fullname    : `${client?.staff?.last_name} ${client?.staff?.first_name}`,
-    service_type: config.server.name,
-  };
-
   await db.update(client, {
     id        : client.id,
     session_id: auth.session_id,
@@ -48,10 +39,8 @@ export default method.post("/auth/login", schema, async (req, res, session) => {
 
   let result = await sign({
     ...auth,
-    ...client.dataValues
+    ...client?.dataValues
   });
-
-  console.log("RESULT=====>", result);
 
   res.signIn(result);
 });
