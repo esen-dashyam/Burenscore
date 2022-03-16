@@ -24,9 +24,9 @@ export default logic(schema, async (data, session) => {
 
 
   client = await db.create(db.Client, {
-    partner_id        : g_customer_id,
+    partner_id        : client_id,
     is_active,
-    client_id         : g_customer_id,
+    client_id         : client_id,
     client_secret     : secretKey,
     expiry_hours      : 72,
     session_id        : "session_id",
