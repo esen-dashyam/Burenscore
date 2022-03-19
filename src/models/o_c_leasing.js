@@ -4,9 +4,21 @@ import { fields } from "../middlewares/db_session";
 module.exports = (sequelize, DataTypes) => {
   return define(sequelize).model("o_c_leasing", {
     customer_id: {
-      type        : DataTypes.UUID,
+      type        : DataTypes.STRING(55),
       allowNull   : false,
       defaultValue: DataTypes.UUIDV4
+    },
+    o_c_customercode: {
+      type     : DataTypes.INTEGER,
+      allowNull: true,
+    },
+    o_c_bank_code: {
+      type     : DataTypes.STRING(255),
+      allowNull: true,
+    },
+    o_c_registerno: {
+      type     : DataTypes.STRING(255),
+      allowNull: true,
     },
     o_c_leasing_advamount: {
       type     : DataTypes.DECIMAL(20, 2),

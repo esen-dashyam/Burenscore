@@ -4,7 +4,7 @@ import { fields } from "../middlewares/db_session";
 module.exports = (sequelize, DataTypes) => {
   return define(sequelize).model("user", {
     id: {
-      type        : DataTypes.UUID,
+      type        : DataTypes.STRING(55),
       allowNull   : false,
       primaryKey  : true,
       defaultValue: DataTypes.UUIDV4

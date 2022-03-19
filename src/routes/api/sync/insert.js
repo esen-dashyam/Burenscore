@@ -19,10 +19,10 @@ export default method.post("/sync/insert", null, async (req, res, session) => {
   // console.log("=========================================================================");
   const array = chunkArray(customer, 100);
   // console.log(array);
-  await asyncPooled(1, array, async (customers) => {
+  await asyncPooled(1, array, async (data) => {
     let relationIds = [];
     let customerArray = [];
-    let falls = customers.map(item =>{
+    let falls = data.map(item =>{
       // console.log(customer);
       return async () => {
         let insertData = await dataSync.main(item);

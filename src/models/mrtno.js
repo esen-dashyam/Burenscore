@@ -4,22 +4,21 @@ import { fields } from "../middlewares/db_session";
 module.exports = (sequelize, DataTypes) => {
   return define(sequelize).model("mrtno", {
     customer_id: {
-      type        : DataTypes.UUID,
+      type        : DataTypes.STRING(55),
       allowNull   : false,
       defaultValue: DataTypes.UUIDV4
     },
     relation_id: {
-      type        : DataTypes.UUID,
+      type        : DataTypes.STRING(55),
       allowNull   : false,
       defaultValue: DataTypes.UUIDV4
     },
-
     type: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.STRING(55),
       allowNull: true,
     },
     mrtno: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.STRING(55),
       allowNull: true,
     },
     ...fields(DataTypes)

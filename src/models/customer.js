@@ -7,10 +7,6 @@ module.exports = (sequelize, DataTypes) => {
       type     : DataTypes.INTEGER,
       allowNull: false,
     },
-    customer_id: {
-      type     : DataTypes.INTEGER,
-      allowNull: false,
-    },
     o_c_loandescription: {
       type     : DataTypes.STRING(255),
       allowNull: true,
