@@ -4,24 +4,23 @@ import { fields } from "../middlewares/db_session";
 module.exports = (sequelize, DataTypes) => {
   return define(sequelize).model("neoinfo", {
     customer_id: {
-      type     : DataTypes.STRING(55),
+      type     : DataTypes.UUID,
       allowNull: true,
     },
     o_c_customercode: {
       type     : DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
     },
     o_c_bank_code: {
       type     : DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false,
     },
     o_c_registerno: {
       type     : DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false,
     },
-
     relation_id: {
-      type     : DataTypes.STRING(55),
+      type     : DataTypes.UUID,
       allowNull: true,
     },
     relation_type: {
