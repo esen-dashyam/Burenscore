@@ -51,5 +51,9 @@ export default configure(({ HOST, PORT, S3HOST, S3PORT }) => ({
     S3PORT: 30211,
     PORT  : 80
   },
-  production: {}
+  production: {
+    HOST  : "http://127.0.0.1",
+    S3HOST: "https://s3.burenscore.mn",
+    S3PORT: 443
+  }
 });
