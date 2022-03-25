@@ -3,48 +3,40 @@ import { fields } from "../middlewares/db_session";
 
 module.exports = (sequelize, DataTypes) => {
   return define(sequelize).model("o_shareholderorg", {
-    customer_id: {
-      type        : DataTypes.STRING(55),
+    id: {
+      type        : DataTypes.STRING(45),
       allowNull   : false,
+      primaryKey  : true,
       defaultValue: DataTypes.UUIDV4
     },
     o_c_customercode: {
-      type     : DataTypes.INTEGER,
-      allowNull: true,
+      type     : DataTypes.STRING(55),
+      allowNull: false,
     },
     o_c_bank_code: {
       type     : DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false,
     },
     o_c_registerno: {
       type     : DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false,
     },
     o_shareholder_orgname: {
       type     : DataTypes.STRING(255),
       allowNull: true,
     },
     o_shareholderorg_isforeign: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.BOOLEAN,
       allowNull: true,
     },
     o_shareholderorg_registerno: {
       type     : DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     o_shareholder_stateregisterno: {
       type     : DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
-    is_o_shareholder_sectorcodeactive: {
-      type     : DataTypes.STRING(255),
-      allowNull: false,
-    },
-    o_shareholder_sectorcodes: {
-      type     : DataTypes.INTEGER,
-      allowNull: false,
-    },
-
     ...fields(DataTypes)
   });
 };

@@ -3,105 +3,106 @@ import { fields } from "../middlewares/db_session";
 
 module.exports = (sequelize, DataTypes) => {
   return define(sequelize).model("o_c_mortgage", {
-    customer_id: {
-      type        : DataTypes.STRING(55),
+    id: {
+      type        : DataTypes.STRING(45),
       allowNull   : false,
+      primaryKey  : true,
       defaultValue: DataTypes.UUIDV4
     },
     o_c_customercode: {
-      type     : DataTypes.INTEGER,
-      allowNull: true,
+      type     : DataTypes.STRING(55),
+      allowNull: false,
     },
     o_c_bank_code: {
       type     : DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false,
     },
     o_c_registerno: {
       type     : DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false,
     },
     o_c_mrtno: {
       type     : DataTypes.STRING(3),
-      allowNull: false,
+      allowNull: true,
     },
     o_c_mrtno_internal: {
-      type     : DataTypes.INTEGER,
-      allowNull: false,
+      type     : DataTypes.DECIMAL(24, 2),
+      allowNull: true,
     },
     o_c_mrtcode: {
-      type     : DataTypes.INTEGER,
-      allowNull: false,
+      type     : DataTypes.DECIMAL(24, 2),
+      allowNull: true,
     },
     o_c_mrtdescription: {
       type     : DataTypes.STRING(150),
-      allowNull: false,
+      allowNull: true,
     },
     o_c_is_real_estate: {
-      type     : DataTypes.INTEGER,
-      allowNull: false,
+      type     : DataTypes.DECIMAL(24, 2),
+      allowNull: true,
     },
     o_c_dateofvaluation: {
       type     : DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
     o_c_mrtvalue: {
       type     : DataTypes.DECIMAL(20, 2),
-      allowNull: false,
+      allowNull: true,
     },
     o_c_mrtmaxlimit: {
       type     : DataTypes.DECIMAL(20, 2),
-      allowNull: false,
+      allowNull: true,
     },
     o_c_customer_firstname: {
       type     : DataTypes.STRING(50),
-      allowNull: false,
+      allowNull: true,
     },
     o_c_customer_lastname: {
       type     : DataTypes.STRING(50),
-      allowNull: false,
+      allowNull: true,
     },
     o_c_customer_isforeign: {
-      type     : DataTypes.INTEGER,
-      allowNull: false,
+      type     : DataTypes.DECIMAL(24, 2),
+      allowNull: true,
     },
     o_c_customer_registerno: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     o_c_organization_orgname: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     o_c_organization_localregistered: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     o_c_organization_orgregisterno: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     o_c_organization_stateregisterno: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
-    is_ao_c_mrtregistereddatective: {
+    o_c_mrtregistereddate: {
       type     : DataTypes.DATE,
       allowNull: true,
     },
     o_c_mrtstateregisterno: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     o_c_mrtcertificateno: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     o_c_mrtconfirmeddate: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     o_c_mrtorgname: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     o_c_mrtregistereddatefim: {
@@ -109,12 +110,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_mrtregisterno: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     o_c_mrtcertificatenofim: {
-      type     : DataTypes.INTEGER,
-      allowNull: false,
+      type     : DataTypes.DECIMAL(24, 2),
+      allowNull: true,
     },
     ...fields(DataTypes)
   });

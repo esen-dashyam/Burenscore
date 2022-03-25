@@ -2,13 +2,15 @@ import { define } from "@goodtechsoft/sequelize-postgres";
 import { fields } from "../middlewares/db_session";
 
 module.exports = (sequelize, DataTypes) => {
-  return define(sequelize).model("neoinfo", {
-    customer_id: {
-      type     : DataTypes.UUID,
-      allowNull: true,
+  return define(sequelize).model("neo_info", {
+    id: {
+      type        : DataTypes.STRING(45),
+      allowNull   : false,
+      primaryKey  : true,
+      defaultValue: DataTypes.UUIDV4
     },
     o_c_customercode: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.STRING(55),
       allowNull: false,
     },
     o_c_bank_code: {
@@ -20,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     relation_id: {
-      type     : DataTypes.UUID,
+      type     : DataTypes.STRING(55),
       allowNull: true,
     },
     relation_type: {
@@ -40,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     causetostartcase: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     datetstartcase: {
@@ -56,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     timesinpolice: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     registertoprocuror: {
@@ -68,11 +70,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     timesinprocuror: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     registertocourt: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     registertocourtdate: {
@@ -80,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     timesincourt: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     shiftocourt2: {
@@ -92,7 +94,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     timesincourt2: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     shiftocourtdecision: {

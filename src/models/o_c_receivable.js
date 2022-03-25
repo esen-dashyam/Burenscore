@@ -3,22 +3,23 @@ import { fields } from "../middlewares/db_session";
 
 module.exports = (sequelize, DataTypes) => {
   return define(sequelize).model("o_c_receivable", {
-    customer_id: {
-      type        : DataTypes.STRING(55),
+    id: {
+      type        : DataTypes.STRING(45),
       allowNull   : false,
+      primaryKey  : true,
       defaultValue: DataTypes.UUIDV4
     },
     o_c_customercode: {
-      type     : DataTypes.INTEGER,
-      allowNull: true,
+      type     : DataTypes.STRING(55),
+      allowNull: false,
     },
     o_c_bank_code: {
       type     : DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false,
     },
     o_c_registerno: {
       type     : DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false,
     },
     o_c_receivable_balance: {
       type     : DataTypes.DECIMAL(20, 2),
@@ -41,11 +42,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_receivable_type: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     o_c_receivable_loanclasscode: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     o_c_receivable_isapproved: {
@@ -53,10 +54,17 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_receivable_extdate: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
-
+    o_c_receivable_loancharttype: {
+      type     : DataTypes.STRING(255),
+      allowNull: true,
+    },
+    o_c_receivable_interestcharttype: {
+      type     : DataTypes.STRING(255),
+      allowNull: true,
+    },
     ...fields(DataTypes)
   });
 };

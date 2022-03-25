@@ -3,22 +3,23 @@ import { fields } from "../middlewares/db_session";
 
 module.exports = (sequelize, DataTypes) => {
   return define(sequelize).model("o_bond", {
-    customer_id: {
-      type        : DataTypes.STRING(55),
+    id: {
+      type        : DataTypes.STRING(45),
       allowNull   : false,
+      primaryKey  : true,
       defaultValue: DataTypes.UUIDV4
     },
     o_c_customercode: {
-      type     : DataTypes.INTEGER,
-      allowNull: true,
+      type     : DataTypes.STRING(55),
+      allowNull: false,
     },
     o_c_bank_code: {
       type     : DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false,
     },
     o_c_registerno: {
       type     : DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false,
     },
     o_bond_advamount: {
       type     : DataTypes.DECIMAL(20, 2),
@@ -27,25 +28,32 @@ module.exports = (sequelize, DataTypes) => {
     o_bond_starteddate: {
       type     : DataTypes.DATE,
       allowNull: false,
-    }, o_bond_expdate: {
+    },
+    o_bond_expdate: {
       type     : DataTypes.INTEGER,
       allowNull: false,
-    }, o_bond_currencycode: {
+    },
+    o_bond_currencycode: {
       type     : DataTypes.INTEGER,
       allowNull: false,
-    }, o_bond_type: {
+    },
+    o_bond_type: {
       type     : DataTypes.INTEGER,
       allowNull: false,
-    }, o_bond_bondmarket: {
+    },
+    o_bond_bondmarket: {
       type     : DataTypes.STRING(255),
       allowNull: false,
-    }, o_bond_numberofbonds: {
+    },
+    o_bond_numberofbonds: {
       type     : DataTypes.INTEGER,
       allowNull: false,
-    }, o_bond_bondunitprice: {
+    },
+    o_bond_bondunitprice: {
       type     : DataTypes.DECIMAL(20, 2),
       allowNull: false,
-    }, o_bond_interestinperc: {
+    },
+    o_bond_interestinperc: {
       type     : DataTypes.DECIMAL(6, 2),
       allowNull: false,
     },
@@ -54,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     o_bond_isapproved: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     ...fields(DataTypes)
