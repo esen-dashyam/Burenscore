@@ -11,7 +11,7 @@ export default async ({ data, where }) => {
 	  o_c_receivable_type             : data?.o_c_receivable_type,
 	  o_c_receivable_loanclasscode    : data?.o_c_receivable_loanclasscode,
 	  o_c_receivable_isapproved       : data?.o_c_receivable_isapproved,
-	  o_c_receivable_extdate          : data?.o_c_receivable_extdates,
+	  o_c_receivable_extdate          : data?.o_c_receivable_extdate,
     o_c_receivable_interestcharttype: data?.o_c_receivabletransactions?.o_c_receivable_loancharttype,
     o_c_receivable_loancharttype    : data?.o_c_receivabletransactions?.o_c_receivable_interestcharttype,
     ...where,
@@ -24,7 +24,7 @@ export default async ({ data, where }) => {
       type         : "DETAIL",
       relation_type: "RECEIVABLE",
       datetopay    : item?.o_c_receivabledetail_datetopay,
-      amounttopay   : item?.o_c_receivabledetail_amounttopay,
+      amounttopay  : item?.o_c_receivabledetail_amounttopay,
       relation_id  : receivableInfo?.id,
     });
   });
@@ -34,7 +34,7 @@ export default async ({ data, where }) => {
       type         : "PERFORMANCE",
       relation_type: "RECEIVABLE",
       datetopay    : item?.o_c_receivableperformance_datetopay,
-      amounttopay   : item?.o_c_receivableperformance_amounttopay,
+      amounttopay  : item?.o_c_receivableperformance_amounttopay,
       relation_id  : receivableInfo?.id,
     });
   });
@@ -44,7 +44,7 @@ export default async ({ data, where }) => {
       type         : "INTEREST_DETAIL",
       relation_type: "RECEIVABLE",
       datetopay    : item?.o_c_receivableinterestdetail_datetopay,
-      amounttopay   : item?.o_c_receivableinterestdetail_amounttopay,
+      amounttopay  : item?.o_c_receivableinterestdetail_amounttopay,
       relation_id  : receivableInfo?.id,
     });
   });
@@ -54,7 +54,7 @@ export default async ({ data, where }) => {
       type         : "INTEREST_PERFORMANCE",
       relation_type: "RECEIVABLE",
       datetopay    : item?.o_c_receivableinterestperformance_datetopay,
-      amounttopay   : item?.o_c_receivableinterestperformance_amounttopay,
+      amounttopay  : item?.o_c_receivableinterestperformance_amounttopay,
       relation_id  : receivableInfo?.id,
     });
   });
@@ -83,6 +83,7 @@ export default async ({ data, where }) => {
     ignoredcrime            : data?.receivable_neoinfo?.o_c_receivable_ignoredcrime,
     ignoreddate             : data?.receivable_neoinfo?.o_c_receivable_ignoreddate,
     courtorderno            : data?.receivable_neoinfo?.o_c_receivable_courtorderno,
+    ...where
   };
 
   receivableInfo.transactions = TRANSACTIONS;

@@ -18,7 +18,7 @@ export default async ({ data, where }) => {
         ...where,
         relation_id: id,
         type       : "LEASING",
-        mrtno      : item
+        relno      : item
       };
     }),
     o_c_leasing_balance          : data?.o_c_leasing_balance,
@@ -103,6 +103,7 @@ export default async ({ data, where }) => {
     ignoredcrime            : data?.leasing_neoinfo?.o_c_leasing_ignoredcrime,
     ignoreddate             : data?.leasing_neoinfo?.o_c_leasing_ignoreddate,
     courtorderno            : data?.leasing_neoinfo?.o_c_leasing_courtorderno,
+    ...where
   };
 
   leasingInfo.transactions = TRANSACTIONS;

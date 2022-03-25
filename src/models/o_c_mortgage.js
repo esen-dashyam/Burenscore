@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_is_real_estate: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.BOOLEAN,
       allowNull: true,
     },
     o_c_dateofvaluation: {
@@ -62,27 +62,27 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_customer_isforeign: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.BOOLEAN,
       allowNull: true,
     },
     o_c_customer_registerno: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(16),
       allowNull: true,
     },
     o_c_organization_orgname: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(255),
       allowNull: true,
     },
     o_c_organization_localregistered: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.BOOLEAN,
       allowNull: true,
     },
     o_c_organization_orgregisterno: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(16),
       allowNull: true,
     },
     o_c_organization_stateregisterno: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(16),
       allowNull: true,
     },
     o_c_mrtregistereddate: {
@@ -90,19 +90,19 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_mrtstateregisterno: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(16),
       allowNull: true,
     },
     o_c_mrtcertificateno: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(16),
       allowNull: true,
     },
     o_c_mrtconfirmeddate: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.DATE,
       allowNull: true,
     },
     o_c_mrtorgname: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(16),
       allowNull: true,
     },
     o_c_mrtregistereddatefim: {
@@ -114,7 +114,19 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_mrtcertificatenofim: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(20),
+      allowNull: true,
+    },
+    o_c_causetoshiftto: {
+      type     : DataTypes.STRING(20),
+      allowNull: true,
+    },
+    o_c_courtorderdate: {
+      type     : DataTypes.DATE,
+      allowNull: true,
+    },
+    o_c_courtorderno: {
+      type     : DataTypes.STRING(50),
       allowNull: true,
     },
     ...fields(DataTypes)

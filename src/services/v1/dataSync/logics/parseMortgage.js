@@ -28,6 +28,9 @@ export default async ({ data, where }) => {
         o_c_mrtregistereddatefim        : item?.o_c_authorityofimmovable?.o_c_mrtregistereddatefim,
         o_c_mrtregisterno               : item?.o_c_authorityofimmovable?.o_c_mrtregisterno,
         o_c_mrtcertificatenofim         : item?.o_c_authorityofimmovable?.o_c_mrtcertificatenofim,
+        o_c_causetoshiftto              : item?.o_c_causetoshifttos?.o_c_causetoshiftto,
+        o_c_courtorderdate              : item?.o_c_causetoshifttos?.o_c_courtorderdate,
+        o_c_courtorderno                : item?.o_c_causetoshifttos?.o_c_courtorderno,
         ...where,
       });
     });

@@ -30,23 +30,23 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     o_bond_expdate: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DATE,
       allowNull: false,
     },
     o_bond_currencycode: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.STRING(55),
       allowNull: false,
     },
     o_bond_type: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.STRING(55),
       allowNull: false,
     },
     o_bond_bondmarket: {
-      type     : DataTypes.STRING(255),
+      type     : DataTypes.STRING(100),
       allowNull: false,
     },
     o_bond_numberofbonds: {
-      type     : DataTypes.INTEGER,
+      type     : DataTypes.DECIMAL(20, 2),
       allowNull: false,
     },
     o_bond_bondunitprice: {
@@ -54,11 +54,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     o_bond_interestinperc: {
-      type     : DataTypes.DECIMAL(6, 2),
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: false,
     },
     o_bond_balance: {
-      type     : DataTypes.DECIMAL(6, 2),
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: false,
     },
     o_bond_isapproved: {

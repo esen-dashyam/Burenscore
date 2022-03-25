@@ -1,8 +1,26 @@
+import { v4 as uuidv4 } from "uuid";
+
 export default async ({ data, where }) => {
+  let id = uuidv4();
   let bond = {
-    o_bond_advamount     : data?.o_bond_advamount,
-	  o_c_bondmrtnos       : data?.o_c_bondmrtnos?.o_c_bondmrtno,
-	  o_c_bondrelnos       : data?.o_c_bondrelnos?.o_c_bondrelno,
+    id              : id,
+    o_bond_advamount: data?.o_bond_advamount,
+	  o_c_bondmrtnos  : data?.o_c_bondmrtnos?.o_c_bondmrtno.map(item => {
+      return {
+        ...where,
+        relation_id: id,
+        type       : "BOND",
+        mrtno      : item
+      };
+    }),
+	  o_c_bondrelnos: data?.o_c_bondrelnos?.o_c_bondrelno.map(item => {
+      return {
+        ...where,
+        relation_id: id,
+        type       : "BOND",
+        relno      : item
+      };
+    }),
 	  o_bond_starteddate   : data?.o_bond_starteddate,
 	  o_bond_expdate       : data?.o_bond_expdate,
 	  o_bond_currencycode  : data?.o_bond_currencycode,

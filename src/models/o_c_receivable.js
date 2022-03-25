@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_receivable_extdate: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.DATE,
       allowNull: true,
     },
     o_c_receivable_loancharttype: {

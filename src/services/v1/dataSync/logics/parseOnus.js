@@ -1,14 +1,29 @@
 import { v4 as uuidv4 } from "uuid";
 
 export default async ({ data, where }) => {
+  let id = uuidv4();
   let onusInfo = {
-    id                        : uuidv4(),
-    o_c_onus_advamount        : data?.o_c_onus_advamount,
-    o_c_onus_balance          : data?.o_c_onus_balance,
-    o_c_onus_rightopeneddate  : data?.o_c_onus_rightopeneddate,
-    o_c_onus_starteddate      : data?.o_c_onus_starteddate,
-    o_c_onusmrtnos            : data?.o_c_onusmrtnos.o_c_onusmrtno,
-    o_c_onusrelnos            : data?.o_c_onusrelnos.o_c_onusrelno,
+    id                      : id,
+    o_c_onus_advamount      : data?.o_c_onus_advamount,
+    o_c_onus_balance        : data?.o_c_onus_balance,
+    o_c_onus_rightopeneddate: data?.o_c_onus_rightopeneddate,
+    o_c_onus_starteddate    : data?.o_c_onus_starteddate,
+    o_c_onusmrtnos          : data?.o_c_onusmrtnos.o_c_onusmrtno.map(item => {
+      return {
+        ...where,
+        relation_id: id,
+        type       : "ONUS",
+        mrtno      : item
+      };
+    }),
+    o_c_onusrelnos: data?.o_c_onusrelnos.o_c_onusrelno.map(item => {
+      return {
+        ...where,
+        relation_id: id,
+        type       : "ONUS",
+        relno      : item
+      };
+    }),
     o_c_onus_paymentfinaldate : data?.o_c_onus_paymentfinaldate,
     o_c_onus_expdate          : data?.o_c_onus_expdate,
     o_c_onus_currencycode     : data?.o_c_onus_currencycode,
@@ -29,7 +44,7 @@ export default async ({ data, where }) => {
       type         : "DETAIL",
       relation_type: "ONUS",
       datetopay    : item?.o_c_onusdetail_datetopay,
-      amounttopay   : item?.o_c_onusdetail_amounttopay,
+      amounttopay  : item?.o_c_onusdetail_amounttopay,
       relation_id  : onusInfo?.id,
     });
   });
@@ -39,7 +54,7 @@ export default async ({ data, where }) => {
       type         : "PERFORMANCE",
       relation_type: "ONUS",
       datetopay    : item?.o_c_onusperformance_datetopay,
-      amounttopay   : item?.o_c_onusperformance_amounttopay,
+      amounttopay  : item?.o_c_onusperformance_amounttopay,
       relation_id  : onusInfo?.id,
     });
   });
@@ -49,7 +64,7 @@ export default async ({ data, where }) => {
       type         : "INTEREST_DETAIL",
       relation_type: "ONUS",
       datetopay    : item?.o_c_onusinterestdetail_datetopay,
-      amounttopay   : item?.o_c_onusinterestdetail_amounttopay,
+      amounttopay  : item?.o_c_onusinterestdetail_amounttopay,
       relation_id  : onusInfo?.id,
     });
   });
@@ -59,35 +74,19 @@ export default async ({ data, where }) => {
       type         : "INTEREST_PERFORMANCE",
       relation_type: "ONUS",
       datetopay    : item?.o_c_onusinterestperformance_datetopay,
-      amounttopay   : item?.o_c_onusinterestperformance_amounttopay,
+      amounttopay  : item?.o_c_onusinterestperformance_amounttopay,
       relation_id  : onusInfo?.id,
     });
   });
   let neoInfo = {
-    relation_id             : onusInfo.id,
-    relation_type           : "ONUS",
-    orgmeasure              : data?.onus_neoinfo?.c_onus_orgmeasure,
-    measuredate             : data?.onus_neoinfo?.c_onus_measuredate,
-    measuredescription      : data?.onus_neoinfo?.c_onus_measuredescription,
-    causetostartcase        : data?.onus_neoinfo?.c_onus_causetostartcase,
-    datetstartcase          : data?.onus_neoinfo?.c_onus_datetstartcase,
-    registertopolice        : data?.onus_neoinfo?.o_c_onus_registertopolice,
-    registertopolicedate    : data?.onus_neoinfo?.o_c_onus_registertopolicedate,
-    timesinpolice           : data?.onus_neoinfo?.o_c_onus_timesinpolice,
-    registertoprocuror      : data?.onus_neoinfo?.o_c_onus_registertoprocuror,
-    registertoprocurordate  : data?.onus_neoinfo?.o_c_onus_registertoprocurordate,
-    timesinprocuror         : data?.onus_neoinfo?.o_c_onus_timesinprocuror,
-    registertocourt         : data?.onus_neoinfo?.o_c_onus_registertocourt,
-    registertocourtdate     : data?.onus_neoinfo?.o_c_onus_registertocourtdate,
-    timesincourt            : data?.onus_neoinfo?.o_c_onus_timesincourt,
-    shiftocourt2            : data?.onus_neoinfo?.o_c_onus_shiftocourt2,
-    shifttocourt2date       : data?.onus_neoinfo?.o_c_onus_shifttocourt2date,
-    timesincourt2           : data?.onus_neoinfo?.o_c_onus_timesincourt2,
-    shiftocourtdecision     : data?.onus_neoinfo?.o_c_onus_shiftocourtdecision,
-    shifttocourtdecisiondate: data?.onus_neoinfo?.o_c_onus_shifttocourtdecisiondate,
-    ignoredcrime            : data?.onus_neoinfo?.o_c_onus_ignoredcrime,
-    ignoreddate             : data?.onus_neoinfo?.o_c_onus_ignoreddate,
-    courtorderno            : data?.onus_neoinfo?.o_c_onus_courtorderno,
+    relation_id       : onusInfo.id,
+    relation_type     : "ONUS",
+    orgmeasure        : data?.onus_neoinfo?.c_onus_orgmeasure,
+    measuredate       : data?.onus_neoinfo?.c_onus_measuredate,
+    measuredescription: data?.onus_neoinfo?.c_onus_measuredescription,
+    causetostartcase  : data?.onus_neoinfo?.c_onus_causetostartcase,
+    datetstartcase    : data?.onus_neoinfo?.c_onus_datetstartcase,
+    ...where
   };
 
   onusInfo.transactions = TRANSACTIONS;
