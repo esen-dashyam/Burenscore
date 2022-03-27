@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_receivable_loanclasscode: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(45),
       allowNull: true,
     },
     o_c_receivable_isapproved: {

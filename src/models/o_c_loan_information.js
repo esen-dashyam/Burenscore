@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_loan_currencycode: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(45),
       allowNull: true,
     },
     o_c_loan_sectorcode: {
@@ -70,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_loan_loanclasscode: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(45),
       allowNull: true,
     },
     o_c_loan_isapproved: {
