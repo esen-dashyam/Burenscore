@@ -10,7 +10,16 @@ export default method.post("/sync/insert", null, async (req, res, session) => {
       customer
     },
   } = req.body;
-  const array = chunkArray(customer, 100);
+  console.log(req.body);
+  let customers = [];
+  if (Array.isArray(customer)){
+    customers = customer;
+  }
+  else {
+    customers.push(customer);
+  }
+
+  const array = chunkArray(customers, 100);
   let datas = [];
   await asyncPooled(1, array, async (data) => {
     let falls = data.map(item =>{

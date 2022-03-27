@@ -1,3 +1,4 @@
+import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 
 export default async ({ data, where }) => {
@@ -5,7 +6,7 @@ export default async ({ data, where }) => {
     id                              : uuidv4(),
 	  o_c_receivable_balance          : data?.o_c_receivable_balance,
 	  o_c_receivable_advamount        : data?.o_c_receivable_advamount,
-	  o_c_receivable_starteddate      : data?.o_c_receivable_starteddate,
+	  o_c_receivable_starteddate      : moment(data?.o_c_receivable_starteddate),
 	  o_c_receivable_expdate          : data?.o_c_receivable_expdate,
 	  o_c_receivable_currencycode     : data?.o_c_receivable_currencycode,
 	  o_c_receivable_type             : data?.o_c_receivable_type,
@@ -23,7 +24,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "DETAIL",
       relation_type: "RECEIVABLE",
-      datetopay    : item?.o_c_receivabledetail_datetopay,
+      datetopay    : moment(item?.o_c_receivabledetail_datetopay),
       amounttopay  : item?.o_c_receivabledetail_amounttopay,
       relation_id  : receivableInfo?.id,
     });
@@ -33,7 +34,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "PERFORMANCE",
       relation_type: "RECEIVABLE",
-      datetopay    : item?.o_c_receivableperformance_datetopay,
+      datetopay    : moment(item?.o_c_receivableperformance_datetopay),
       amounttopay  : item?.o_c_receivableperformance_amounttopay,
       relation_id  : receivableInfo?.id,
     });
@@ -43,7 +44,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "INTEREST_DETAIL",
       relation_type: "RECEIVABLE",
-      datetopay    : item?.o_c_receivableinterestdetail_datetopay,
+      datetopay    : moment(item?.o_c_receivableinterestdetail_datetopay),
       amounttopay  : item?.o_c_receivableinterestdetail_amounttopay,
       relation_id  : receivableInfo?.id,
     });
@@ -53,7 +54,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "INTEREST_PERFORMANCE",
       relation_type: "RECEIVABLE",
-      datetopay    : item?.o_c_receivableinterestperformance_datetopay,
+      datetopay    : moment(item?.o_c_receivableinterestperformance_datetopay),
       amounttopay  : item?.o_c_receivableinterestperformance_amounttopay,
       relation_id  : receivableInfo?.id,
     });
@@ -67,7 +68,7 @@ export default async ({ data, where }) => {
     causetostartcase        : data?.receivable_neoinfo?.c_receivable_causetostartcase,
     datetstartcase          : data?.receivable_neoinfo?.c_receivable_datetstartcase,
     registertopolice        : data?.receivable_neoinfo?.o_c_receivable_registertopolice,
-    registertopolicedate    : data?.receivable_neoinfo?.o_c_receivable_registertopolicedate,
+    registertopolicedate    : moment(data?.receivable_neoinfo?.o_c_receivable_registertopolicedate),
     timesinpolice           : data?.receivable_neoinfo?.o_c_receivable_timesinpolice,
     registertoprocuror      : data?.receivable_neoinfo?.o_c_receivable_registertoprocuror,
     registertoprocurordate  : data?.receivable_neoinfo?.o_c_receivable_registertoprocurordate,

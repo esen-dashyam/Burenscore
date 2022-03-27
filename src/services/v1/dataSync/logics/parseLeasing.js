@@ -1,28 +1,53 @@
+import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 
 export default async ({ data, where }) => {
   let id = uuidv4();
-  let leasingInfo = {
-    id                   : id,
-    o_c_leasing_advamount: data?.o_c_leasing_advamount,
-    o_c_leasingmrtnos    : data?.o_c_leasingmrtnos?.o_c_leasingmrtno.map(item => {
-      return {
+  let mrtnos = [];
+  let relnos = [];
+  if (Array.isArray(data.o_c_leasingmrtnos.o_c_leasingmrtno)){
+    data.o_c_leasingmrtnos.o_c_leasingmrtno.forEach(item => {
+      mrtnos.push({
         ...where,
         relation_id: id,
         type       : "LEASING",
         mrtno      : item
-      };
-    }),
-    o_c_leasingrelnos: data?.o_c_leasingrelnos?.o_c_leasingrelno.map(item => {
-      return {
+      });
+    });
+  } else {
+    mrtnos.push({
+      ...where,
+      relation_id: id,
+      type       : "LEASING",
+      mrtno      : data.o_c_leasingmrtno.o_c_leasingmrtno
+    });
+  }
+  console.log("==========>", mrtnos);
+  if (Array.isArray(data.o_c_leasingrelnos.o_c_leasingrelno)){
+    data.o_c_leasingrelnos.o_c_leasingrelno.forEach(item => {
+      relnos.push({
         ...where,
         relation_id: id,
         type       : "LEASING",
         relno      : item
-      };
-    }),
+      });
+    });
+  } else {
+    relnos.push({
+      ...where,
+      relation_id: id,
+      type       : "LEASING",
+      relno      : data.o_c_leasingrelnos.o_c_leasingrelno
+    });
+  }
+  console.log("==========>", relnos);
+  let leasingInfo = {
+    id                           : id,
+    o_c_leasing_advamount        : data?.o_c_leasing_advamount,
+    o_c_leasingmrtnos            : mrtnos,
+    o_c_leasingrelnos            : relnos,
     o_c_leasing_balance          : data?.o_c_leasing_balance,
-    o_c_leasing_starteddate      : data?.o_c_leasing_starteddate,
+    o_c_leasing_starteddate      : moment(data?.o_c_leasing_starteddate),
     o_c_leasing_expdate          : data?.o_c_leasing_expdate,
     o_c_leasing_currencycode     : data?.o_c_leasing_currencycode,
     o_c_leasing_sectorcode       : data?.o_c_leasing_sectorcode,
@@ -43,7 +68,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "DETAIL",
       relation_type: "LEASING",
-      datetopay    : item?.o_c_leasingdetail_datetopay,
+      datetopay    : moment(item?.o_c_leasingdetail_datetopay),
       amounttopay  : item?.o_c_leasingdetail_amounttopay,
       relation_id  : leasingInfo?.id,
     });
@@ -53,7 +78,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "PERFORMANCE",
       relation_type: "LEASING",
-      datetopay    : item?.o_c_leasingperformance_datetopay,
+      datetopay    : moment(item?.o_c_leasingperformance_datetopay),
       amounttopay  : item?.o_c_leasingperformance_amounttopay,
       relation_id  : leasingInfo?.id,
     });
@@ -63,7 +88,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "INTEREST_DETAIL",
       relation_type: "LEASING",
-      datetopay    : item?.o_c_leasinginterestdetail_datetopay,
+      datetopay    : moment(item?.o_c_leasinginterestdetail_datetopay),
       amounttopay  : item?.o_c_leasinginterestdetail_amounttopay,
       relation_id  : leasingInfo?.id,
     });
@@ -73,7 +98,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "INTEREST_PERFORMANCE",
       relation_type: "LEASING",
-      datetopay    : item?.o_c_leasinginterestperformance_datetopay,
+      datetopay    : moment(item?.o_c_leasinginterestperformance_datetopay),
       amounttopay  : item?.o_c_leasinginterestperformance_amounttopay,
       relation_id  : leasingInfo?.id,
     });
@@ -87,7 +112,7 @@ export default async ({ data, where }) => {
     causetostartcase        : data?.leasing_neoinfo?.c_leasing_causetostartcase,
     datetstartcase          : data?.leasing_neoinfo?.c_leasing_datetstartcase,
     registertopolice        : data?.leasing_neoinfo?.o_c_leasing_registertopolice,
-    registertopolicedate    : data?.leasing_neoinfo?.o_c_leasing_registertopolicedate,
+    registertopolicedate    : moment(data?.leasing_neoinfo?.o_c_leasing_registertopolicedate),
     timesinpolice           : data?.leasing_neoinfo?.o_c_leasing_timesinpolice,
     registertoprocuror      : data?.leasing_neoinfo?.o_c_leasing_registertoprocuror,
     registertoprocurordate  : data?.leasing_neoinfo?.o_c_leasing_registertoprocurordate,

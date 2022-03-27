@@ -2,9 +2,6 @@ import { v4 as uuidv4 } from "uuid";
 
 export default async ({ data, where }) => {
   let financialInfo = {
-    id      : uuidv4(),
-    o_c_date: data?.o_c_date,
-    ...where,
     business: {
       ...data?.c_business,
       ...where

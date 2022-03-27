@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export default async ({ data, where }) => {
   console.log(data);
   let mortgages = [];
@@ -23,9 +25,9 @@ export default async ({ data, where }) => {
         o_c_registeredtoauthority       : item?.o_c_registeredtoauthority?.o_c_registeredtoauthority,
         o_c_mrtstateregisterno          : item?.o_c_registeredtoauthority?.o_c_mrtstateregisterno,
         o_c_mrtcertificateno            : item?.o_c_registeredtoauthority?.o_c_mrtcertificateno,
-        o_c_mrtconfirmeddate            : item?.o_c_registeredtoauthority?.o_c_mrtconfirmeddate,
+        o_c_mrtconfirmeddate            : moment(item?.o_c_registeredtoauthority?.o_c_mrtconfirmeddate),
         o_c_mrtorgname                  : item?.o_c_authorityofimmovable?.o_c_mrtorgname,
-        o_c_mrtregistereddatefim        : item?.o_c_authorityofimmovable?.o_c_mrtregistereddatefim,
+        o_c_mrtregistereddatefim        : moment(item?.o_c_authorityofimmovable?.o_c_mrtregistereddatefim),
         o_c_mrtregisterno               : item?.o_c_authorityofimmovable?.o_c_mrtregisterno,
         o_c_mrtcertificatenofim         : item?.o_c_authorityofimmovable?.o_c_mrtcertificatenofim,
         o_c_causetoshiftto              : item?.o_c_causetoshifttos?.o_c_causetoshiftto,
@@ -55,9 +57,9 @@ export default async ({ data, where }) => {
       o_c_registeredtoauthority       : data?.o_c_registeredtoauthority?.o_c_registeredtoauthority,
       o_c_mrtstateregisterno          : data?.o_c_registeredtoauthority?.o_c_mrtstateregisterno,
       o_c_mrtcertificateno            : data?.o_c_registeredtoauthority?.o_c_mrtcertificateno,
-      o_c_mrtconfirmeddate            : data?.o_c_registeredtoauthority?.o_c_mrtconfirmeddate,
+      o_c_mrtconfirmeddate            : moment(data?.o_c_registeredtoauthority?.o_c_mrtconfirmeddate),
       o_c_mrtorgname                  : data?.o_c_authorityofimmovable?.o_c_mrtorgname,
-      o_c_mrtregistereddatefim        : data?.o_c_authorityofimmovable?.o_c_mrtregistereddatefim,
+      o_c_mrtregistereddatefim        : moment(data?.o_c_authorityofimmovable?.o_c_mrtregistereddatefim),
       o_c_mrtregisterno               : data?.o_c_authorityofimmovable?.o_c_mrtregisterno,
       o_c_mrtcertificatenofim         : data?.o_c_authorityofimmovable?.o_c_mrtcertificatenofim,
       ...where,

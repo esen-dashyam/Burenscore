@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       type     : DataTypes.BOOLEAN,
       allowNull: true,
     },
-    is_aco_c_relationcustomer_registernotive: {
+    o_c_relationcustomer_registerno: {
       type     : DataTypes.STRING(16),
       allowNull: true,
     },

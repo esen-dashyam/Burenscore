@@ -16,7 +16,6 @@ const dbMigrate = async () => {
     await db.NeoInfo.sync({ force: true });
     await db.OBond.sync({ force: true });
     await db.OCAccredit.sync({ force: true });
-    await db.OCFinancialInformation.sync({ force: true });
     await db.OCLoanline.sync({ force: true });
     await db.OCGuarantee.sync({ force: true });
     await db.OCLeasing.sync({ force: true });

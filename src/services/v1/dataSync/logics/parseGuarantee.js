@@ -1,7 +1,9 @@
+import moment from "moment";
+
 export default async ({ data, where }) => {
   let guarentee = {
     o_c_guarantee_advamount     : data?.o_c_guarantee_advamount,
-    o_c_guarantee_starteddate   : data?.o_c_guarantee_starteddate,
+    o_c_guarantee_starteddate   : moment(data?.o_c_guarantee_starteddate),
     o_c_guarantee_expdate       : data?.o_c_guarantee_expdate,
     o_c_guarantee_currencycode  : data?.o_c_guarantee_currencycode,
     o_c_guarantee_type          : data?.o_c_guarantee_currencycode,
