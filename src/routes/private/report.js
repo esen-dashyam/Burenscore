@@ -61,6 +61,8 @@ export default method.post("/report", schema, async (req, res, session) => {
   let receivables = await db.findAll(db.OCReceivable, { where: where }, session);
   let loanLines = await db.findAll(db.OCLoanline, { where: where }, session);
   let guarantee = await db.findAll(db.OCGuarantee, { where: where }, session);
+  let bonds = await db.findAll(db.OBond, { where: where, }, session);
+  let accredits = await db.findAll(db.OCAccredit, { where: where }, session);
   loans.forEach(item => {
     console.log("o_c_loan_loanclasscode:", item.o_c_loan_loanclasscode);
     switch (item.o_c_loan_loanclasscode) {
@@ -283,6 +285,8 @@ export default method.post("/report", schema, async (req, res, session) => {
     receivables,
     loanLines,
     guarantee,
+    bonds,
+    accredits,
     TOTAL_COUNT,
     TOTAL_VALUE,
     NORMAL,
