@@ -1,6 +1,6 @@
 import dataSync from "./dataSync";
-import request from "./request";
+import check from "./check";
 export {
   dataSync,
-  request
+  check
 };

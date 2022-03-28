@@ -1,7 +1,5 @@
-import create from "./create";
-import list from "./list";
+import customer from "./customer";
 
 export default {
-  create,
-  list
+  customer
 };
