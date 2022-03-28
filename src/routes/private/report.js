@@ -278,6 +278,11 @@ export default method.post("/report", schema, async (req, res, session) => {
   res.json({
     customer,
     loans,
+    leasings,
+    onus,
+    receivables,
+    loanLines,
+    guarantee,
     TOTAL_COUNT,
     TOTAL_VALUE,
     NORMAL,
