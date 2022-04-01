@@ -34,11 +34,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_accredit_currencycode: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(45),
       allowNull: true,
     },
     o_c_accredit_type: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(45),
       allowNull: true,
     },
     o_c_accredit_interestinperc: {
@@ -66,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_accredit_isapproved: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.BOOLEAN,
       allowNull: true,
     },
     ...fields(DataTypes)

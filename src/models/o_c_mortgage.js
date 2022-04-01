@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     o_c_mrtno: {
-      type     : DataTypes.STRING(3),
+      type     : DataTypes.STRING(55),
       allowNull: true,
     },
     o_c_mrtno_internal: {

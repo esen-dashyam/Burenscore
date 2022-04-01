@@ -33,6 +33,7 @@ const dbMigrate = async () => {
     await db.OTReport.sync({ force: true });
     await db.Relno.sync({ force: true });
     await db.Transaction.sync({ force: true });
+    await db.Currency.sync({ force: true });
     // await db.Client.sync({ force: true });OCLoanInformation
   } catch (err){
     console.log(err);

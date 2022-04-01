@@ -1,5 +1,8 @@
-import { define } from "@goodtechsoft/sequelize-postgres";
+import { define, Sequelize, db, } from "@goodtechsoft/sequelize-postgres";
 import { fields } from "../middlewares/db_session";
+
+const { Op } = Sequelize;
+
 
 module.exports = (sequelize, DataTypes) => {
   return define(sequelize).model("o_c_receivable", {
@@ -65,6 +68,27 @@ module.exports = (sequelize, DataTypes) => {
       type     : DataTypes.STRING(255),
       allowNull: true,
     },
+    payment_status: {
+      type        : DataTypes.STRING(45),
+      allowNull   : true,
+      defaultValue: "UNPAID"
+    },
     ...fields(DataTypes)
+  }, {
+    hooks: {
+      afterSave: async (value, { session }) => {
+        const { id, o_c_receivable_balance } = value.dataValues;
+        console.log("=============>HOOK", id, o_c_receivable_balance);
+        if (o_c_receivable_balance <= 0){
+          await db.updateBy(db.OCOnusInformation, {
+            payment_status: "PAID",
+          }, {
+            id: {
+              [Op.eq]: id
+            }
+          }, session);
+        }
+      }
+    }
   });
 };

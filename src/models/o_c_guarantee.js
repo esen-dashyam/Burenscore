@@ -42,11 +42,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_guarantee_sectorcode: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(45),
       allowNull: true,
     },
     o_c_guarantee_interestinperc: {
-      type     : DataTypes.DECIMAL(6, 2),
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     o_c_guarantee_commissionperc: {
@@ -74,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_guarantee_isapproved: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.BOOLEAN,
       allowNull: true,
     },
     ...fields(DataTypes)
