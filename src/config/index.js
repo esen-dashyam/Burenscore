@@ -36,18 +36,18 @@ export default configure(({ PORT, DBHOST, DBPORT, DBNAME, DBUSER, DBPASS }) => (
   dev: {
     PORT  : process.env.PORT,
     DBNAME: "bs_datasource",
-    DBHOST: "192.168.200.37",
+    DBHOST: "postgredb.postgres",
     DBUSER: "postgres",
-    DBPASS: "Ec8W5zrLA",
+    DBPASS: "Ec8postgresGD01[UWin5zrLA",
     DBPORT: 5432,
     REDIS : {
-      host: "192.168.200.35",
+      host: "redis.redis",
       port: 6379
     },
     LOGGING: {
-      username: "admin",
-      password: "monGoDBey100devG00d",
-      host    : "192.168.200.36",
+      //username: "admin",
+      //password: "monGoDBey100devG00d",
+      host    : "mongodb.mongo",
       port    : 27017,
       database: "micro_bs"
     }

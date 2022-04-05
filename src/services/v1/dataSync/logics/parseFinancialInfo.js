@@ -1,4 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
+import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
+import { ERRORS } from "../../../../constants";
+import Joi from "joi";
+
+const schema = Joi.object({
+
+});
 
 export default async ({ data, where }) => {
   let financialInfo = {

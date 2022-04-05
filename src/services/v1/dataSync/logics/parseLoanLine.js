@@ -1,4 +1,25 @@
 import moment from "moment";
+import { v4 as uuidv4 } from "uuid";
+import Joi from "joi";
+const schema = Joi.object({
+  o_c_loanline_type          : Joi.string().required(),
+  o_c_loanline_cardno        : Joi.number().allow([null, ""]),
+  o_c_loanline_advamount     : Joi.number().required(),
+  o_c_loanline_starteddate   : Joi.date().required(),
+  o_c_loanline_expdate       : Joi.date().required(),
+  o_c_loanline_currencycode  : Joi.string().required(),
+  o_c_loanline_sectorcode    : Joi.string().required(),
+  o_c_loanline_loaninterest  : Joi.number().required(),
+  o_c_loanline_timestoloan   : Joi.number().required(),
+  o_c_loanline_extdate       : Joi.date().required(),
+  o_c_loanline_interestinperc: Joi.number().required(),
+  o_c_loanline_commissionperc: Joi.number().required(),
+  o_c_loanline_fee           : Joi.number().required(),
+  o_c_loanline_loanclasscode : Joi.string().allow([null, ""]),
+  o_c_loanline_balance       : Joi.number().required(),
+  o_c_loanline_isapproved    : Joi.number().allow([null, ""])
+});
+
 
 export default async ({ data, where }) => {
   let loanLine = {

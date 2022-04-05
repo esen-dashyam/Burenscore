@@ -1,7 +1,42 @@
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
+import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
+import { ERRORS } from "../../../../constants";
+import Joi from "joi";
+
+const schema = Joi.object({
+  o_c_accredit_advamount     : Joi.number().required(),
+  o_c_accredit_starteddate   : Joi.date().required(),
+  o_c_accredit_expdate       : Joi.date().required(),
+  o_c_accredit_currencycode  : Joi.string().required(),
+  o_c_accredit_type          : Joi.string().required(),
+  o_c_accredit_interestinperc: Joi.number().required(),
+  o_c_accredit_commissionperc: Joi.number().required(),
+  o_c_accredit_fee           : Joi.number().required(),
+  o_c_accredit_updatedexpdate: Joi.number().allow([null, ""]),
+  o_c_accredit_extcount      : Joi.number().required(),
+  o_c_accredit_balance       : Joi.number().required(),
+  o_c_accredit_isapproved    : Joi.number().required(),
+  o_c_accreditmrtnos         : Joi.object({
+    o_c_accreditmrtno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
+  }).optional().allow([null, ""]),
+  o_c_accreditrelnos: Joi.object({
+    o_c_accreditrelno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
+  }).optional().allow([null, ""]),
+
+});
+
 
 export default async ({ data, where }) => {
+  console.log("===========>ACCREDIT", data);
+  try {
+    await schema.validate(data);
+  } catch (err){
+    console.log(err);
+    throw new ValidationError(ERRORS.ACCREDIT_PARSE_ERROR);
+  }
+
+
   let id = uuidv4();
   let mrtnos = [];
   let relnos = [];

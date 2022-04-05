@@ -1,6 +1,44 @@
 import { v4 as uuidv4 } from "uuid";
+import Joi from "joi";
+import { ValidationError } from "@goodtechsoft/micro-service";
+import { ERRORS } from "../../../../constants";
+
+const schema = Joi.object({
+  o_c_customercode               : Joi.string().required(),
+  o_c_loandescription            : Joi.string().allow([null, ""]),
+  o_c_bank_code                  : Joi.string().required(),
+  o_c_branchcode                 : Joi.string().required(),
+  isorganization                 : Joi.boolean().required(),
+  o_c_customername               : Joi.string().max(100).required(),
+  c_lastname                     : Joi.string().allow([null, ""]),
+  o_c_isforeign                  : Joi.number().required(),
+  o_c_birthdate                  : Joi.date().required(),
+  o_c_zipcode                    : Joi.string().allow([null, ""]),
+  o_c_address                    : Joi.string().required(),
+  o_c_registerno                 : Joi.string().required(),
+  o_c_stateregister_passportorno : Joi.string().allow([null, ""]),
+  o_c_numofemployee              : Joi.number().allow([null, ""]),
+  c_familynumofmembers           : Joi.number().allow([null, ""]),
+  c_occupation                   : Joi.string().allow([null, ""]),
+  o_fitchrating                  : Joi.string().allow([null, ""]),
+  o_sandp_rating                 : Joi.string().allow([null, ""]),
+  o_moodysrating                 : Joi.string().allow([null, ""]),
+  o_companytypecode              : Joi.string().required(),
+  o_c_president_family_firstname : Joi.string().required(),
+  o_c_president_family_lastname  : Joi.string().required(),
+  o_c_president_family_isforeign : Joi.number().required(),
+  o_c_president_family_registerno: Joi.string().required(),
+  o_noofshareholders             : Joi.number().allow([null, ""]),
+});
 
 export default async (customerInfo) => {
+  console.log("===========>CUSTOMER_INFO");
+  try {
+    await schema.validate(customerInfo);
+  } catch (err){
+    console.log(err);
+    throw new ValidationError(ERRORS.CUSTOMER_PARSE_ERROR);
+  }
   let customer = {
     id                             : uuidv4(),
     o_c_customercode               : customerInfo?.o_c_customercode,
@@ -30,5 +68,6 @@ export default async (customerInfo) => {
     o_c_president_family_registerno: customerInfo?.o_c_president_family_registerno,
     o_noofshareholders             : customerInfo?.o_noofshareholders,
   };
+
   return customer;
 };
