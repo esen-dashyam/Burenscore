@@ -46,6 +46,7 @@ setup(__dirname)(config.database, async () => {
 
   http.listen(config.server.port, async () => {
     console.log(`Server: ${config.server.port} is listening ...`);
+    console.log('Config ...', config);
   });
 
   const req = {
