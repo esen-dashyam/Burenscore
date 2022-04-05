@@ -1,6 +1,22 @@
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
+import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
+import { ERRORS } from "../../../../constants";
+import Joi from "joi";
 
+// const schema = Joi.object({
+//   o_c_receivable_balance          :Joi.number().required(),
+//   o_c_receivable_advamount        :
+//   o_c_receivable_starteddate      :
+//   o_c_receivable_expdate          :
+//   o_c_receivable_currencycode     :
+//   o_c_receivable_type             :
+//   o_c_receivable_loanclasscode    :
+//   o_c_receivable_isapproved       :
+//   o_c_receivable_extdate          :
+//   o_c_receivable_interestcharttype:
+//   o_c_receivable_loancharttype    :
+// });
 export default async ({ data, where }) => {
   let receivableInfo = {
     id                              : uuidv4(),

@@ -1,7 +1,75 @@
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
+import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
+import { ERRORS } from "../../../../constants";
+import Joi from "joi";
 
+const schema = Joi.object({
+  o_c_provideloansize: Joi.number().required(),
+  o_c_loanmrtnos     : Joi.object({
+    o_c_loanmrtno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
+  }).optional().allow([null, ""]),
+  o_c_loanrelnos: Joi.object({
+    o_c_loanrelno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
+  }).optional().allow([null, ""]),
+  o_c_loan_loanprovenance: Joi.string().required(),
+  o_c_loan_balance       : Joi.number().required(),
+  o_c_loan_starteddate   : Joi.date().required(),
+  o_c_loan_expdate       : Joi.date().required(),
+  o_c_loan_currencycode  : Joi.string().required(),
+  o_c_loan_sectorcode    : Joi.string().required(),
+  o_c_loan_interestinperc: Joi.number().required(),
+  o_c_loan_commissionperc: Joi.number().required(),
+  o_c_loan_fee           : Joi.number().required(),
+  o_c_loan_extdate       : Joi.date().allow([null, ""]),
+  o_c_updatedexpdate     : Joi.date().allow([null, ""]),
+  o_c_loan_loanclasscode : Joi.string().required(),
+  o_c_loan_isapproved    : Joi.number().allow([null, ""]),
+  o_c_loan_loanintype    : Joi.string().required(),
+  o_c_loan_loancharttype : Joi.object({
+    o_c_loantransactions  : Joi.string().required(),
+    o_c_loan_loancharttype: Joi.string().required(),
+  }),
+  o_c_loan_interestcharttype: Joi.object({
+    o_c_loantransactions      : Joi.string().required(),
+    o_c_loan_interestcharttype: Joi.string().required(),
+  }),
+  orgmeasure              : Joi.string().allow([null, ""]),
+  measuredate             : Joi.date().allow([null, ""]),
+  measuredescription      : Joi.string().allow([null, ""]),
+  causetostartcase        : Joi.string().allow([null, ""]),
+  datetstartcase          : Joi.string().allow([null, ""]),
+  registertopolice        : Joi.number().allow([null, ""]),
+  registertopolicedate    : Joi.date().allow([null, ""]),
+  timesinpolice           : Joi.number().allow([null, ""]),
+  registertoprocuror      : Joi.number().allow([null, ""]),
+  registertoprocurordate  : Joi.date().allow([null, ""]),
+  timesinprocuror         : Joi.number().allow([null, ""]),
+  registertocourt         : Joi.number().allow([null, ""]),
+  registertocourtdate     : Joi.date().allow([null, ""]),
+  timesincourt            : Joi.number().allow([null, ""]),
+  shiftocourt2            : Joi.date().allow([null, ""]),
+  shifttocourt2date       : Joi.date().allow([null, ""]),
+  timesincourt2           : Joi.number().allow([null, ""]),
+  shiftocourtdecision     : Joi.number().allow([null, ""]),
+  shifttocourtdecisiondate: Joi.date().allow([null, ""]),
+  ignoredcrime            : Joi.number().allow([null, ""]),
+  ignoreddate             : Joi.date().allow([null, ""]),
+  courtorderno            : Joi.string().allow([null, ""]),
+
+
+
+
+});
 export default async ({ data, where }) => {
+  console.log("===========>LEAONINFO", data);
+  try {
+    await schema.validate(data);
+  }
+  catch (err) {
+    console.log(err);
+    throw new ValidationError(ERRORS.LEONINFO_PARSE_ERROR);
+  }
   let id = uuidv4();
   let mrtnos = [];
   let relnos = [];

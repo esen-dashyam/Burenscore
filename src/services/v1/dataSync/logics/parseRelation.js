@@ -1,4 +1,26 @@
+import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
+import { ERRORS } from "../../../../constants";
+import Joi from "joi";
+
+const schema = Joi.object({
+
+  o_c_relationcustomer_firstName: Joi.when("type", {
+    is  : "CUSTOMER",
+    then: Joi.string().required()
+  }).optional().allow([null, ""]),
+
+
+
+});
 export default async ({ data, where, type }) => {
+  console.log("===========>relationCustomer", data);
+  try {
+    await schema.validate(data);
+  }
+  catch (err) {
+    console.log(err);
+    throw new ValidationError(ERRORS.relationCustomer_PARSE_ERROR);
+  }
   let shareholder = [];
   console.log(data);
   if (type === "CUSTOMER"){
