@@ -17,15 +17,8 @@ const schema = Joi.object({
   o_c_guarantee_extcount      : Joi.number().required(),
   o_c_guarantee_balance       : Joi.number().required(),
   o_c_guarantee_loanclasscode : Joi.string().required(),
-  o_c_guarantee_isapproved    : Joi.number().allow([null, ""]),
-  o_c_guaranteemrtnos         : Joi.object({
-    o_c_guaranteemrtno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
-  }).optional().allow([null, ""]),
-  o_c_guaranteerelnos: Joi.object({
-    o_c_guaranteerelno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
-  }).optional().allow([null, ""]),
+}).options({ allowUnknown: true });
 
-});
 export default async ({ data, where }) => { console.log("===========>Gurantee", data);
   try {
     await schema.validate(data);

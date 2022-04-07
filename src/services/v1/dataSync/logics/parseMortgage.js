@@ -40,7 +40,7 @@ const schema = Joi.alternatives().try(Joi.array().items(Joi.object({
   o_c_dateofvaluation             : Joi.string().allow([null, ""]),
   o_c_mrtvalue                    : Joi.string().required(),
   o_c_mrtmaxlimit                 : Joi.string().required(),
-  o_c_customer_firstname          : Joi.string(),
+  o_c_customer_firstname          : Joi.string().required(),
   o_c_customer_lastname           : Joi.string().required(),
   o_c_customer_isforeign          : Joi.number().required(),
   o_c_customer_registerno         : Joi.string().required(),
@@ -70,8 +70,6 @@ export default async ({ data, where }) => {
     console.log(err);
     throw new ValidationError(ERRORS.MRTINFO_PARSE_ERROR);
   }
-
-
   // console.log(data);
   let mortgages = [];
   if (Array.isArray(data)){

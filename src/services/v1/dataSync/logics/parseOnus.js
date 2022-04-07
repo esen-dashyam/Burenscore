@@ -5,53 +5,44 @@ import { ERRORS } from "../../../../constants";
 import Joi from "joi";
 
 const schema = Joi.object({
-  o_c_onus_advamount      : Joi.number().required(),
-  o_c_onus_balance        : Joi.number().required(),
-  o_c_onus_rightopeneddate: Joi.date().required(),
-  o_c_onus_starteddate    : Joi.date().required(),
-  o_c_onusmrtnos          : Joi.object({
-    o_c_onusmrtno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
-  }).optional().allow([null, ""]),
-  o_c_onusrelnos: Joi.object({
-    o_c_onusrelno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
-  }).optional().allow([null, ""]),
+  o_c_onus_advamount       : Joi.number().required(),
+  o_c_onus_balance         : Joi.number().required(),
+  o_c_onus_rightopeneddate : Joi.date().required(),
+  o_c_onus_starteddate     : Joi.date().required(),
   o_c_onus_paymentfinaldate: Joi.date().required(),
   o_c_onus_expdate         : Joi.date().required(),
-  o_c_onus_currencycode    : Joi.string().allow([null, ""]),
-  o_c_onus_interestinperc  : Joi.number().required(),
+  o_c_onus_interestinperc3 : Joi.number().required(),
   o_c_onus_commissionperc  : Joi.number().required(),
   o_c_onus_fee             : Joi.number().required(),
   o_c_onus_loanclasscode   : Joi.string().required(),
-  o_c_onus_isapproved      : Joi.number().required(),
-  o_c_onus_loancharttype   : Joi.string().required(),
-  c_onus_loancharttype     : Joi.object({
-    o_c_onustransactions: Joi.string().required(),
-  }),
-
-  // ///////////<<<--------->>>
-  orgmeasure              : Joi.string().allow([null, ""]),
-  measuredate             : Joi.date().allow([null, ""]),
-  measuredescription      : Joi.string().allow([null, ""]),
-  causetostartcase        : Joi.string().allow([null, ""]),
-  datetstartcase          : Joi.date().allow([null, ""]),
-  registertopolice        : Joi.number().allow([null, ""]),
-  registertopolicedate    : Joi.date().allow([null, ""]),
-  timesinpolice           : Joi.number().allow([null, ""]),
-  registertoprocuror      : Joi.number().allow([null, ""]),
-  registertoprocurordate  : Joi.number().allow([null, ""]),
-  timesinprocuror         : Joi.number().allow([null, ""]),
-  registertocourt         : Joi.number().allow([null, ""]),
-  registertocourtdate     : Joi.date().allow([null, ""]),
-  timesincourt            : Joi.number().allow([null, ""]),
-  shiftocourt2            : Joi.number().allow([null, ""]),
-  shifttocourt2date       : Joi.date().allow([null, ""]),
-  timesincourt2           : Joi.number().allow([null, ""]),
-  shiftocourtdecision     : Joi.string().allow([null, ""]),
-  shifttocourtdecisiondate: Joi.date().allow([null, ""]),
-  ignoredcrime            : Joi.number().allow([null, ""]),
-  ignoreddate             : Joi.date().allow([null, ""]),
-  courtorderno            : Joi.string().allow([null, ""]),
-});
+  o_c_onustransactions     : Joi.object({
+    o_c_onus_loancharttype: Joi.string().required(),
+    o_c_onusdetails       : Joi.object({
+      o_c_onusdetail: Joi.array().items(Joi.object({
+        o_c_onusdetail_datetopay  : Joi.date().required(),
+        o_c_onusdetail_amounttopay: Joi.number().required(),
+      })),
+      o_c_onusperformances: Joi.object({
+        o_c_onusperformance: Joi.array().items(Joi.object({
+          o_c_onusperformance_datetopay  : Joi.date().required(),
+          o_c_onusperformance_amounttopay: Joi.number().required(),
+        })),
+        o_c_onusinterestdetails: Joi.object({
+          o_c_onusinterestdetail: Joi.array().items(Joi.object({
+            o_c_onusinterestdetail_datetopay  : Joi.date().required(),
+            o_c_onusinterestdetail_amounttopay: Joi.number().required(),
+          })),
+          o_c_onusinterestperformances: Joi.object({
+            o_c_onusinterestperformance: Joi.array().items(Joi.object({
+              o_c_onusinterestperformance_datetopay  : Joi.date().required(),
+              o_c_onusinterestperformance_amounttopay: Joi.number().required(),
+            }))
+          })
+        })
+      })
+    })
+  })
+}).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {
   console.log("===========>ONUS", data);
@@ -113,7 +104,7 @@ export default async ({ data, where }) => {
     o_c_onus_paymentfinaldate : data?.o_c_onus_paymentfinaldate,
     o_c_onus_expdate          : data?.o_c_onus_expdate,
     o_c_onus_currencycode     : data?.o_c_onus_currencycode,
-    o_c_onus_interestinperc   : data?.o_c_onus_interestinperc,
+    o_c_onus_interestinperc3  : data?.o_c_onus_interestinperc,
     o_c_onus_commissionperc   : data?.o_c_onus_commissionperc,
     o_c_onus_fee              : data?.o_c_onus_fee,
     o_c_onus_loanclasscode    : data?.o_c_onus_loanclasscode,

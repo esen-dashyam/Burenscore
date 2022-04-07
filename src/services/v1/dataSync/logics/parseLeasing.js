@@ -6,58 +6,35 @@ import Joi from "joi";
 
 
 const schema = Joi.object({
-  o_c_leasing_advamount: Joi.number().required(),
-  o_c_leasingmrtnos    : Joi.object({
-    o_c_leasingmrtno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
-  }).optional().allow([null, ""]),
-  o_c_leasingrelnos: Joi.object({
-    o_c_leasingrelno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
-  }).optional().allow([null, ""]),
+  o_c_leasing_advamount     : Joi.number().required(),
   o_c_leasing_balance       : Joi.number().required(),
   o_c_leasing_starteddate   : Joi.date().required(),
+  o_c_leasing_expdate       : Joi.date().required(),
   o_c_leasing_currencycode  : Joi.string().required(),
-  o_c_leasing_sectorcode    : Joi.string().required(),
+  o_c_leasing_sectorcode    : Joi.number().required(),
   o_c_leasing_interestinperc: Joi.number().required(),
   o_c_leasing_commissionperc: Joi.number().required(),
   o_c_leasing_fee           : Joi.number().required(),
   o_c_leasing_updatedexpdate: Joi.date().required(),
   o_c_leasing_loanclasscode : Joi.string().required(),
-  o_c_leasing_isapproved    : Joi.number().required(),
   o_c_leasingtransactions   : Joi.object({
     o_c_leasing_loancharttype    : Joi.string().required(),
     o_c_leasing_interestcharttype: Joi.string().required(),
     o_c_leasingdetails           : Joi.object({
-      o_c_leasingdetail: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
-    }).optional().allow([null, ""]),
+      o_c_leasingdetail: Joi.array().items(Joi.object({
+        o_c_leasingdetail_datetopay  : Joi.date().required(),
+        o_c_leasingdetail_amounttopay: Joi.number().required(),
+      }))
+    }),
+    o_c_leasingperformances: Joi.object({
+      o_c_leasingperformance: Joi.array().items(Joi.object({
+        o_c_leasingperformance_datetopay  : Joi.date().required(),
+        o_c_leasingperformance_amounttopay: Joi.number().required(),
+      }))
+    })
+
   }),
-
-
-
-
-  // orgmeasure              : Joi.string().allow([null, ""]),
-  // measuredate             : Joi.date().allow([null, ""]),
-  // measuredescription      : Joi.string().allow([null, ""]),
-  // causetostartcase        : Joi.string().allow([null, ""]),
-  // datetstartcase          : Joi.date().allow([null, ""]),
-  // registertopolice        : Joi.number().allow([null, ""]),
-  // registertopolicedate    : Joi.date().allow([null, ""]),
-  // timesinpolice           : Joi.number().allow([null, ""]),
-  // registertoprocuror      : Joi.number().allow([null, ""]),
-  // registertoprocurordate  : Joi.date().allow([null, ""]),
-  // timesinprocuror         : Joi.number().allow([null, ""]),
-  // registertocourt         : Joi.number().allow([null, ""]),
-  // registertocourtdate     : Joi.date().allow([null, ""]),
-  // timesincourt            : Joi.number().allow([null, ""]),
-  // shiftocourt2            : Joi.number().allow([null, ""]),
-  // shifttocourt2date       : Joi.date().allow([null, ""]),
-  // timesincourt2           : Joi.number().allow([null, ""]),
-  // shiftocourtdecision     : Joi.number().allow([null, ""]),
-  // shifttocourtdecisiondate: Joi.date().allow([null, ""]),
-  // ignoredcrime            : Joi.number().allow([null, ""]),
-  // ignoreddate             : Joi.date().allow([null, ""]),
-  // courtorderno            : Joi.string().allow([null, ""]),
-
-});
+}).options({ allowUnknown: true });
 
 
 export default async ({ data, where }) => {
