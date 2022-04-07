@@ -93,9 +93,3 @@ export default async ({ data, where }) => { console.log("===========>Gurantee", 
   };
   return guarentee;
 };
-// o_c_guaranteemrtnos        : Joi.object({
-//   o_c_leasingmrtno: Joi.alternatives().try(Joi.string(), Joi.array())
-// }).optional().allow([null, ""]),
-// o_c_guaranteerelnos: Joi.object({
-//   o_c_leasingrelno: Joi.alternatives().try(Joi.string(), Joi.array())
-// }).optional().allow([null, ""]),

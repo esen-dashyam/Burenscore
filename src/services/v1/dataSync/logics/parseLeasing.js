@@ -24,7 +24,11 @@ const schema = Joi.object({
   o_c_leasing_loanclasscode : Joi.string().required(),
   o_c_leasing_isapproved    : Joi.number().required(),
   o_c_leasingtransactions   : Joi.object({
-    o_c_leasing_loancharttype: Joi.string().required(),
+    o_c_leasing_loancharttype    : Joi.string().required(),
+    o_c_leasing_interestcharttype: Joi.string().required(),
+    o_c_leasingdetails           : Joi.object({
+      o_c_leasingdetail: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
+    }).optional().allow([null, ""]),
   }),
 
 

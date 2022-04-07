@@ -6,10 +6,10 @@ import { ERRORS } from "../../../../constants";
 const schema = Joi.object({
   o_c_customercode               : Joi.string().required(),
   o_c_loandescription            : Joi.string().allow([null, ""]),
-  o_c_bank_code                  : Joi.string().required(),
+  o_c_bankCode                   : Joi.string().required(),
   o_c_branchcode                 : Joi.string().required(),
-  isorganization                 : Joi.boolean().required(),
-  o_c_customername               : Joi.string().max(100).required(),
+  o_c_isorganization             : Joi.number().required(),
+  o_c_customername               : Joi.string().required(),
   c_lastname                     : Joi.string().allow([null, ""]),
   o_c_isforeign                  : Joi.number().required(),
   o_c_birthdate                  : Joi.date().required(),
@@ -29,10 +29,12 @@ const schema = Joi.object({
   o_c_president_family_isforeign : Joi.number().required(),
   o_c_president_family_registerno: Joi.string().required(),
   o_noofshareholders             : Joi.number().allow([null, ""]),
-});
+  c_familynumofunemployed        : Joi.number().allow([null, ""]),
+  c_job                          : Joi.string().allow([null, ""]),
+}).options({ allowUnknown: true });
 
 export default async (customerInfo) => {
-  console.log("===========>CUSTOMER_INFO");
+  console.log("===========>CUSTOMER_INFO", customerInfo);
   try {
     await schema.validate(customerInfo);
   } catch (err){
@@ -67,6 +69,7 @@ export default async (customerInfo) => {
     o_c_president_family_isforeign : customerInfo?.o_c_president_family_isforeign,
     o_c_president_family_registerno: customerInfo?.o_c_president_family_registerno,
     o_noofshareholders             : customerInfo?.o_noofshareholders,
+    c_job                          : customerInfo?.c_job,
   };
 
   return customer;

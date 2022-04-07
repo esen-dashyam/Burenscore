@@ -1,6 +1,62 @@
+import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
+import { ERRORS } from "../../../../constants";
+import Joi from "joi";
+
+const schema = Joi.object({
+  type: Joi.string().required(),
+  data: Joi.alternatives().try(Joi.array().items(Joi.object({
+    type                   : Joi.string().required(),
+    o_shareholder_firstname: Joi.when("type", {
+      is  : "CUSTOMER",
+      then: Joi.string().required()
+    }).optional().allow([null, ""]),
+    o_shareholder_lastname: Joi.when("type", {
+      is  : "CUSTOMER",
+      then: Joi.string(),
+    }).optional().allow([null, ""]),
+    o_shareholdercus_isforeign: Joi.when("type", {
+      is  : "CUSTOMER",
+      then: Joi.number().required(),
+    }).optional().allow([null, ""]),
+    o_shareholdercus_registerno: Joi.when("type", {
+      is  : "CUSTOMER",
+      then: Joi.string().required(),
+    }).optional().allow([null, ""]),
+  })), Joi.object({
+    type                   : Joi.string().required(),
+    o_shareholder_firstname: Joi.when("type", {
+      is  : "CUSTOMER",
+      then: Joi.string().required()
+    }).optional().allow([null, ""]),
+    o_shareholder_lastname: Joi.when("type", {
+      is  : "CUSTOMER",
+      then: Joi.string(),
+    }).optional().allow([null, ""]),
+    o_shareholdercus_isforeign: Joi.when("type", {
+      is  : "CUSTOMER",
+      then: Joi.number().required(),
+    }).optional().allow([null, ""]),
+    o_shareholdercus_registerno: Joi.when("type", {
+      is  : "CUSTOMER",
+      then: Joi.string().required(),
+    }).optional().allow([null, ""]),
+  }))
+}).length(3);
+
 export default async ({ data, where, type }) => {
+  // console.log("===========>SHAREHOLDER", data);
+  try {
+    await schema.validate({
+      data,
+      type
+    });
+  }
+  catch (err) {
+    console.log(err);
+    throw new ValidationError(ERRORS.SHAREHOLDERCUSTOMER_PARSE_ERROR);
+  }
   let shareholder = [];
-  console.log(data);
+  // console.log(data);
   if (type === "CUSTOMER"){
     if (Array.isArray(data)){
       data.forEach(item => {

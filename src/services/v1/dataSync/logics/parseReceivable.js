@@ -4,20 +4,35 @@ import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERRORS } from "../../../../constants";
 import Joi from "joi";
 
-// const schema = Joi.object({
-//   o_c_receivable_balance          :Joi.number().required(),
-//   o_c_receivable_advamount        :
-//   o_c_receivable_starteddate      :
-//   o_c_receivable_expdate          :
-//   o_c_receivable_currencycode     :
-//   o_c_receivable_type             :
-//   o_c_receivable_loanclasscode    :
-//   o_c_receivable_isapproved       :
-//   o_c_receivable_extdate          :
-//   o_c_receivable_interestcharttype:
-//   o_c_receivable_loancharttype    :
-// });
+const schema =Joi.object({
+  o_c_receivable_balance      : Joi.number().required(),
+  o_c_receivable_advamount    : Joi.number().required(),
+  o_c_receivable_starteddate  : Joi.date().required(),
+  o_c_receivable_expdate      : Joi.date().required(),
+  o_c_receivable_currencycode : Joi.string().required(),
+  o_c_receivable_type         : Joi.string().required(),
+  o_c_receivable_loanclasscode: Joi.string().required(),
+  o_c_receivable_isapproved   : Joi.number().allow([null, ""]),
+  o_c_receivable_extdate      : Joi.date().required(),
+  o_c_receivabletransactions  : Joi.object({
+    o_c_receivable_loancharttype    : Joi.string().required(),
+    o_c_receivable_interestcharttype: Joi.string().required(),
+  })
+
+}).options({ allowUnknown: true });
+
+
+
+
 export default async ({ data, where }) => {
+  console.log("===========>RECEIVEDABLE", data);
+  try {
+    await schema.validate(data);
+  }
+  catch (err) {
+    console.log(err);
+    throw new ValidationError(ERRORS.RECEIVEDABLE_PARSE_ERROR);
+  }
   let receivableInfo = {
     id                              : uuidv4(),
 	  o_c_receivable_balance          : data?.o_c_receivable_balance,
