@@ -1,4 +1,5 @@
 export default async ({ data, where }) => {
+  if (!data) return null;
   let financialInfo = {
     business: {
       ...data?.c_business,

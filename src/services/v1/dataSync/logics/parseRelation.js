@@ -2,82 +2,82 @@ import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERRORS } from "../../../../constants";
 import Joi from "joi";
 
-const schema = Joi.object({
-  type                          : Joi.string().required(),
-  o_c_relationcustomer_firstName: Joi.when("type", {
-    is  : "CUSTOMER",
-    then: Joi.string().required()
-  }).optional().allow([null, ""]),
-  o_c_relationcustomer_lastName: Joi.when("type", {
-    is  : "CUSTOMER",
-    then: Joi.string().required()
-  }).optional().allow([null, ""]),
-  o_c_relationcustomer_isforeign: Joi.when("type", {
-    is  : "CUSTOMER",
-    then: Joi.number().required()
-  }).optional().allow([null, ""]),
-  o_c_relationcustomer_registerno: Joi.when("type", {
-    is  : "CUSTOMER",
-    then: Joi.string().required()
-  }).optional().allow([null, ""]),
-  o_c_relationcustomer_citizenrelation: Joi.when("type", {
-    is  : "CUSTOMER",
-    then: Joi.string().required()
-  }).optional().allow([null, ""]),
-  o_c_relationcustomer_isfinancialonus: Joi.when("type", {
-    is  : "CUSTOMER",
-    then: Joi.number().required()
-  }).optional().allow([null, ""]),
-  o_c_relationcustomer_relno: Joi.when("type", {
-    is  : "CUSTOMER",
-    then: Joi.string().required()
-  }).optional().allow([null, ""]),
+// const schema = Joi.object({
+//   type                          : Joi.string().required(),
+//   o_c_relationcustomer_firstName: Joi.when("type", {
+//     is  : "CUSTOMER",
+//     then: Joi.string().required()
+//   }).optional().allow([null, ""]),
+//   o_c_relationcustomer_lastName: Joi.when("type", {
+//     is  : "CUSTOMER",
+//     then: Joi.string().required()
+//   }).optional().allow([null, ""]),
+//   o_c_relationcustomer_isforeign: Joi.when("type", {
+//     is  : "CUSTOMER",
+//     then: Joi.number().required()
+//   }).optional().allow([null, ""]),
+//   o_c_relationcustomer_registerno: Joi.when("type", {
+//     is  : "CUSTOMER",
+//     then: Joi.string().required()
+//   }).optional().allow([null, ""]),
+//   o_c_relationcustomer_citizenrelation: Joi.when("type", {
+//     is  : "CUSTOMER",
+//     then: Joi.string().required()
+//   }).optional().allow([null, ""]),
+//   o_c_relationcustomer_isfinancialonus: Joi.when("type", {
+//     is  : "CUSTOMER",
+//     then: Joi.number().required()
+//   }).optional().allow([null, ""]),
+//   o_c_relationcustomer_relno: Joi.when("type", {
+//     is  : "CUSTOMER",
+//     then: Joi.string().required()
+//   }).optional().allow([null, ""]),
 
-  // ------->ORG
+//   // ------->ORG
 
-  o_c_relationorg_orgname: Joi.when("type", {
-    is  : "ORG",
-    then: Joi.string().required()
-  }).optional().allow([null, ""]),
-  o_c_relationorg_isforeign: Joi.when("type", {
-    is  : "ORG",
-    then: Joi.string().required()
-  }).optional().allow([null, ""]),
-  o_c_relationorg_stateregisterno: Joi.when("type", {
-    is  : "ORG",
-    then: Joi.string().required()
-  }).optional().allow([null, ""]),
-  o_c_relationorg_registerno: Joi.when("type", {
-    is  : "ORG",
-    then: Joi.string().required()
-  }).optional().allow([null, ""]),
-  o_c_relationorg_orgrelation: Joi.when("type", {
-    is  : "ORG",
-    then: Joi.string().required()
-  }).optional().allow([null, ""]),
-  o_c_relationorg_isfinancialonus: Joi.when("type", {
-    is  : "ORG",
-    then: Joi.number().required()
-  }).optional().allow([null, ""]),
-  o_c_relationorg_relno: Joi.when("type", {
-    is  : "ORG",
-    then: Joi.string().required()
-  }).optional().allow([null, ""]),
-});
+//   o_c_relationorg_orgname: Joi.when("type", {
+//     is  : "ORG",
+//     then: Joi.string().required()
+//   }).optional().allow([null, ""]),
+//   o_c_relationorg_isforeign: Joi.when("type", {
+//     is  : "ORG",
+//     then: Joi.string().required()
+//   }).optional().allow([null, ""]),
+//   o_c_relationorg_stateregisterno: Joi.when("type", {
+//     is  : "ORG",
+//     then: Joi.string().required()
+//   }).optional().allow([null, ""]),
+//   o_c_relationorg_registerno: Joi.when("type", {
+//     is  : "ORG",
+//     then: Joi.string().required()
+//   }).optional().allow([null, ""]),
+//   o_c_relationorg_orgrelation: Joi.when("type", {
+//     is  : "ORG",
+//     then: Joi.string().required()
+//   }).optional().allow([null, ""]),
+//   o_c_relationorg_isfinancialonus: Joi.when("type", {
+//     is  : "ORG",
+//     then: Joi.number().required()
+//   }).optional().allow([null, ""]),
+//   o_c_relationorg_relno: Joi.when("type", {
+//     is  : "ORG",
+//     then: Joi.string().required()
+//   }).optional().allow([null, ""]),
+// });
 
 
 export default async ({ data, where, type }) => {
-  console.log("===========>relationCustomer", data);
-  try {
-    await schema.validate({
-      ...data,
-      type
-    });
-  }
-  catch (err) {
-    console.log(err);
-    throw new ValidationError(ERRORS.RELATIONCUSTOMER_PARSE_ERROR);
-  }
+  if (!data) return null;
+  // try {
+  //   await schema.validate({
+  //     ...data,
+  //     type
+  //   });
+  // }
+  // catch (err) {
+  //   console.log(err);
+  //   throw new ValidationError(ERRORS.RELATIONCUSTOMER_PARSE_ERROR);
+  // }
   let shareholder = [];
   console.log(data);
   if (type === "CUSTOMER"){

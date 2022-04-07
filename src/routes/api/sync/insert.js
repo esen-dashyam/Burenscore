@@ -5,7 +5,13 @@ import { request_log as auditService } from "../../../apis/bs_audit_service";
 import Joi from "joi";
 import { db } from "@goodtechsoft/sequelize-postgres";
 
-export default method.post("/sync/insert", null, async (req, res, session) => {
+const schema = Joi.object({
+  customers: Joi.object({
+    customer: Joi.alternatives().try(Joi.array().min(1).required(), Joi.object().required()).required()
+  })
+});
+
+export default method.post("/sync/insert", schema, async (req, res, session) => {
   const {
     customers : {
       customer

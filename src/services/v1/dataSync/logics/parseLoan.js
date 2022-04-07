@@ -43,10 +43,12 @@ const schema = Joi.object({
         })
       })
     })
-  })
+  }).required()
 }).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {
+  if (!data) return null;
+
   console.log("===========>LEAONINFO", data);
   try {
     await schema.validate(data);
@@ -58,7 +60,7 @@ export default async ({ data, where }) => {
   let id = uuidv4();
   let mrtnos = [];
   let relnos = [];
-  if (Array.isArray(data.o_c_loanmrtnos.o_c_loanmrtno)){
+  if (Array.isArray(data?.o_c_loanmrtnos?.o_c_loanmrtno)){
     data.o_c_loanmrtnos.o_c_loanmrtno.forEach(item => {
       mrtnos.push({
         ...where,
@@ -76,7 +78,7 @@ export default async ({ data, where }) => {
     });
   }
   console.log("==========>", mrtnos);
-  if (Array.isArray(data.o_c_loanrelnos.o_c_loanrelno)){
+  if (Array.isArray(data?.o_c_loanrelnos?.o_c_loanrelno)){
     data.o_c_loanmrtnos.o_c_loanmrtno.forEach(item => {
       relnos.push({
         ...where,
@@ -90,7 +92,7 @@ export default async ({ data, where }) => {
       ...where,
       relation_id: id,
       type       : "LOAN",
-      relno      : data.o_c_loanrelnos.o_c_loanrelno
+      relno      : data?.o_c_loanrelnos?.o_c_loanrelno
     });
   }
   console.log("==========>", relnos);

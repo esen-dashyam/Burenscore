@@ -19,7 +19,8 @@ const schema = Joi.object({
   o_c_guarantee_loanclasscode : Joi.string().required(),
 }).options({ allowUnknown: true });
 
-export default async ({ data, where }) => { console.log("===========>Gurantee", data);
+export default async ({ data, where }) => {
+  if (!data) return null;
   try {
     await schema.validate(data);
   }

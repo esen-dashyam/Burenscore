@@ -19,6 +19,7 @@ const schema = Joi.object({
 }).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {
+  if (!data) return null;
   console.log("===========>loanLine", data);
   try {
     await schema.validate(data);

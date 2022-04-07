@@ -24,6 +24,8 @@ const schema = Joi.object({
 });
 
 export default async ({ data, where }) => {
+  console.log("FUCINGGGDATAA_------================+>", data);
+  if (!data) return null;
   try {
     await schema.validate(data);
   }

@@ -3,73 +3,73 @@ import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERRORS } from "../../../../constants";
 import Joi from "joi";
 
-const schema = Joi.alternatives().try(Joi.array().items(Joi.object({
-  o_c_mrtno                       : Joi.string().required(),
-  o_c_mrtno_internal              : Joi.number().required(),
-  o_c_mrtcode                     : Joi.string().required(),
-  o_c_mrtdescription              : Joi.string().required(),
-  o_c_is_real_estate              : Joi.number().required(),
-  o_c_dateofvaluation             : Joi.string().allow([null, ""]),
-  o_c_mrtvalue                    : Joi.string().required(),
-  o_c_mrtmaxlimit                 : Joi.string().required(),
-  o_c_customer_firstname          : Joi.string().required(),
-  o_c_customer_lastname           : Joi.string().required(),
-  o_c_customer_isforeign          : Joi.number().required(),
-  o_c_customer_registerno         : Joi.string().required(),
-  o_c_organization_orgname        : Joi.string().required(),
-  o_c_organization_localregistered: Joi.number().required(),
-  o_c_organization_orgregisterno  : Joi.string().required(),
-  o_c_organization_stateregisterno: Joi.string().allow([null, ""]),
-  o_c_registeredtoauthority       : Joi.string().allow([null, ""]),
-  o_c_mrtstateregisterno          : Joi.string().required(),
-  o_c_mrtcertificateno            : Joi.string().required(),
-  o_c_mrtconfirmeddate            : Joi.date().required(),
-  o_c_mrtorgname                  : Joi.string().required(),
-  o_c_mrtregistereddatefim        : Joi.date().required(),
-  o_c_mrtregisterno               : Joi.string().required(),
-  o_c_mrtcertificatenofim         : Joi.string().required(),
-  o_c_causetoshiftto              : Joi.string().allow([null, ""]),
-  o_c_courtorderdate              : Joi.date().allow([null, ""]),
-  o_c_courtorderno                : Joi.string().allow([null, ""]),
-})), Joi.object({
-  o_c_mrtno                       : Joi.string().required(),
-  o_c_mrtno_internal              : Joi.number().required(),
-  o_c_mrtcode                     : Joi.string().required(),
-  o_c_mrtdescription              : Joi.string().required(),
-  o_c_is_real_estate              : Joi.number().required(),
-  o_c_dateofvaluation             : Joi.string().allow([null, ""]),
-  o_c_mrtvalue                    : Joi.string().required(),
-  o_c_mrtmaxlimit                 : Joi.string().required(),
-  o_c_customer_firstname          : Joi.string().required(),
-  o_c_customer_lastname           : Joi.string().required(),
-  o_c_customer_isforeign          : Joi.number().required(),
-  o_c_customer_registerno         : Joi.string().required(),
-  o_c_organization_orgname        : Joi.string().required(),
-  o_c_organization_localregistered: Joi.number().required(),
-  o_c_organization_orgregisterno  : Joi.string().required(),
-  o_c_organization_stateregisterno: Joi.string().allow([null, ""]),
-  o_c_registeredtoauthority       : Joi.string().allow([null, ""]),
-  o_c_mrtstateregisterno          : Joi.string().required(),
-  o_c_mrtcertificateno            : Joi.string().required(),
-  o_c_mrtconfirmeddate            : Joi.date().required(),
-  o_c_mrtorgname                  : Joi.string().required(),
-  o_c_mrtregistereddatefim        : Joi.date().required(),
-  o_c_mrtregisterno               : Joi.string().required(),
-  o_c_mrtcertificatenofim         : Joi.string().required(),
-  o_c_causetoshiftto              : Joi.string().allow([null, ""]),
-  o_c_courtorderdate              : Joi.date().allow([null, ""]),
-  o_c_courtorderno                : Joi.string().allow([null, ""]),
-}));
+// const schema = Joi.alternatives().try(Joi.array().items(Joi.object({
+//   o_c_mrtno                       : Joi.string().required(),
+//   o_c_mrtno_internal              : Joi.number().required(),
+//   o_c_mrtcode                     : Joi.string().required(),
+//   o_c_mrtdescription              : Joi.string().required(),
+//   o_c_is_real_estate              : Joi.number().required(),
+//   o_c_dateofvaluation             : Joi.string().allow([null, ""]),
+//   o_c_mrtvalue                    : Joi.string().required(),
+//   o_c_mrtmaxlimit                 : Joi.string().required(),
+//   o_c_customer_firstname          : Joi.string().required(),
+//   o_c_customer_lastname           : Joi.string().required(),
+//   o_c_customer_isforeign          : Joi.number().required(),
+//   o_c_customer_registerno         : Joi.string().required(),
+//   o_c_organization_orgname        : Joi.string().required(),
+//   o_c_organization_localregistered: Joi.number().required(),
+//   o_c_organization_orgregisterno  : Joi.string().required(),
+//   o_c_organization_stateregisterno: Joi.string().allow([null, ""]),
+//   o_c_registeredtoauthority       : Joi.string().allow([null, ""]),
+//   o_c_mrtstateregisterno          : Joi.string().required(),
+//   o_c_mrtcertificateno            : Joi.string().required(),
+//   o_c_mrtconfirmeddate            : Joi.date().required(),
+//   o_c_mrtorgname                  : Joi.string().required(),
+//   o_c_mrtregistereddatefim        : Joi.date().required(),
+//   o_c_mrtregisterno               : Joi.string().required(),
+//   o_c_mrtcertificatenofim         : Joi.string().required(),
+//   o_c_causetoshiftto              : Joi.string().allow([null, ""]),
+//   o_c_courtorderdate              : Joi.date().allow([null, ""]),
+//   o_c_courtorderno                : Joi.string().allow([null, ""]),
+// })), Joi.object({
+//   o_c_mrtno                       : Joi.string().required(),
+//   o_c_mrtno_internal              : Joi.number().required(),
+//   o_c_mrtcode                     : Joi.string().required(),
+//   o_c_mrtdescription              : Joi.string().required(),
+//   o_c_is_real_estate              : Joi.number().required(),
+//   o_c_dateofvaluation             : Joi.string().allow([null, ""]),
+//   o_c_mrtvalue                    : Joi.string().required(),
+//   o_c_mrtmaxlimit                 : Joi.string().required(),
+//   o_c_customer_firstname          : Joi.string().required(),
+//   o_c_customer_lastname           : Joi.string().required(),
+//   o_c_customer_isforeign          : Joi.number().required(),
+//   o_c_customer_registerno         : Joi.string().required(),
+//   o_c_organization_orgname        : Joi.string().required(),
+//   o_c_organization_localregistered: Joi.number().required(),
+//   o_c_organization_orgregisterno  : Joi.string().required(),
+//   o_c_organization_stateregisterno: Joi.string().allow([null, ""]),
+//   o_c_registeredtoauthority       : Joi.string().allow([null, ""]),
+//   o_c_mrtstateregisterno          : Joi.string().required(),
+//   o_c_mrtcertificateno            : Joi.string().required(),
+//   o_c_mrtconfirmeddate            : Joi.date().required(),
+//   o_c_mrtorgname                  : Joi.string().required(),
+//   o_c_mrtregistereddatefim        : Joi.date().required(),
+//   o_c_mrtregisterno               : Joi.string().required(),
+//   o_c_mrtcertificatenofim         : Joi.string().required(),
+//   o_c_causetoshiftto              : Joi.string().allow([null, ""]),
+//   o_c_courtorderdate              : Joi.date().allow([null, ""]),
+//   o_c_courtorderno                : Joi.string().allow([null, ""]),
+// }));
 
 export default async ({ data, where }) => {
-  console.log("===========>MRTINFO_DS", data);
-  try {
-    await schema.validate(data);
-  }
-  catch (err) {
-    console.log(err);
-    throw new ValidationError(ERRORS.MRTINFO_PARSE_ERROR);
-  }
+  if (!data) return null;
+  // try {
+  //   await schema.validate(data);
+  // }
+  // catch (err) {
+  //   console.log(err);
+  //   throw new ValidationError(ERRORS.MRTINFO_PARSE_ERROR);
+  // }
   // console.log(data);
   let mortgages = [];
   if (Array.isArray(data)){

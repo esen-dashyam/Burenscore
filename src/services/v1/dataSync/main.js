@@ -93,26 +93,26 @@ const update = async ({ type, data, where, session }) => {
 
 export default logic(null, async (data, session) => {
   let customerInfo = data.o_c_customer_information;
-  delete customerInfo.$;
+  delete customerInfo?.$;
   let shareholderCustomer = customerInfo?.o_shareholdercustomers?.o_shareholdercustomer;
   let shareholderOrg = customerInfo?.o_shareholderorgs?.o_shareholderorg;
   let relationOrg = customerInfo?.o_c_relationorgs?.o_c_relationorg;
   let relationCustomer =customerInfo?.o_c_relationcustomers?.o_c_relationcustomer;
-  delete relationCustomer.$;
+  delete relationCustomer?.$;
   let financialInfo = data?.o_c_financial_information;
   let loanInfo = data?.o_c_onus_information?.o_c_loan_information;
   let leasingInfo = data?.o_c_onus_information?.o_c_leasing;
-  delete leasingInfo.$;
+  delete leasingInfo?.$;
   let accreditInfo = data?.o_c_onus_information?.o_c_accredit;
-  delete accreditInfo.$;
+  delete accreditInfo?.$;
   let guarenteeinfo = data?.o_c_onus_information?.o_c_guarantee;
-  delete guarenteeinfo.$;
+  delete guarenteeinfo?.$;
   let loanLineinfo = data?.o_c_onus_information?.o_c_loanline;
   let receivableInfo =data?.o_c_onus_information?.o_c_receivable;
   let onusInfo = data?.o_c_onus_information?.o_c_onus;
-  delete onusInfo.$;
+  delete onusInfo?.$;
   let bond = data?.o_c_onus_information?.o_bond;
-  delete bond.$;
+  delete bond?.$;
   let mrtInfo = data?.o_c_mortgage_information?.o_c_mortgage; // array orj irne
   let where = {
     o_c_customercode: customerInfo?.o_c_customercode,
@@ -134,7 +134,7 @@ export default logic(null, async (data, session) => {
     CUSTOMER.loanLineInfo = await parseLoanLine({ data: loanLineinfo, where });
     CUSTOMER.receivableInfo = await parseReceivable({ data: receivableInfo, where });
     CUSTOMER.onusInfo = await parseOnus({ data: onusInfo, where });
-    CUSTOMER.bondInfo = await parseBond({ data: { ...bond }, where });
+    CUSTOMER.bondInfo = await parseBond({ data: bond, where });
     CUSTOMER.mrtInfo = await parseMortgage({ data: mrtInfo, where });
   } catch (err) {
     console.log(err);

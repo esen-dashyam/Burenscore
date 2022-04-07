@@ -13,7 +13,7 @@ const schema = Joi.object({
   o_c_accredit_interestinperc: Joi.number().required(),
   o_c_accredit_commissionperc: Joi.number().required(),
   o_c_accredit_fee           : Joi.number().required(),
-  o_c_accredit_updatedexpdate: Joi.number().allow([null, ""]),
+  o_c_accredit_updatedexpdate: Joi.date().allow([null, ""]),
   o_c_accredit_extcount      : Joi.number().required(),
   o_c_accredit_balance       : Joi.number().required(),
   o_c_accredit_isapproved    : Joi.number().allow([null, ""]),
@@ -24,8 +24,9 @@ const schema = Joi.object({
     o_c_accreditrelno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
   }).optional().allow([null, ""]),
 
-});
+}).options({ allowUnknown: true });
 export default async ({ data, where }) => {
+  if (!data) return null;
   try {
     await schema.validate(data);
   } catch (err){

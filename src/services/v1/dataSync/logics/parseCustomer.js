@@ -34,6 +34,7 @@ const schema = Joi.object({
 }).options({ allowUnknown: true });
 
 export default async (customerInfo) => {
+  if (!customerInfo) return null;
   try {
     await schema.validate(customerInfo);
   } catch (err){
