@@ -16,7 +16,7 @@ const schema = Joi.object({
   o_c_accredit_updatedexpdate: Joi.number().allow([null, ""]),
   o_c_accredit_extcount      : Joi.number().required(),
   o_c_accredit_balance       : Joi.number().required(),
-  o_c_accredit_isapproved    : Joi.number().required(),
+  o_c_accredit_isapproved    : Joi.number().allow([null, ""]),
   o_c_accreditmrtnos         : Joi.object({
     o_c_accreditmrtno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
   }).optional().allow([null, ""]),

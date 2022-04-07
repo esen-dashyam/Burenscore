@@ -5,29 +5,47 @@ import { ERRORS } from "../../../../constants";
 import Joi from "joi";
 
 const schema = Joi.object({
-  o_c_provideloansize: Joi.number().required(),
-  o_c_loanmrtnos     : Joi.object({
-    o_c_loanmrtno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
-  }).optional().allow([null, ""]),
-  o_c_loanrelnos: Joi.object({
-    o_c_loanrelno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
-  }).optional().allow([null, ""]),
-  o_c_loan_loanprovenance: Joi.string().required(),
-  o_c_loan_balance       : Joi.number().required(),
-  o_c_loan_starteddate   : Joi.date().required(),
-  o_c_loan_expdate       : Joi.date().required(),
-  o_c_loan_currencycode  : Joi.string().required(),
-  o_c_loan_sectorcode    : Joi.string().required(),
-  o_c_loan_interestinperc: Joi.number().required(),
-  o_c_loan_commissionperc: Joi.number().required(),
-  o_c_loan_fee           : Joi.number().required(),
-  o_c_loan_extdate       : Joi.date().allow([null, ""]),
-  o_c_updatedexpdate     : Joi.date().allow([null, ""]),
-  o_c_loan_loanclasscode : Joi.string().required(),
-  o_c_loan_isapproved    : Joi.number().allow([null, ""]),
-  o_c_loan_loanintype    : Joi.string().required(),
+  o_c_loan_provideLoanSize: Joi.number().required(),
+  o_c_loan_balance        : Joi.number().required(),
+  o_c_loan_loanProvenance : Joi.string().required(),
+  o_c_loan_starteddate    : Joi.date().required(),
+  o_c_loan_expdate        : Joi.date().required(),
+  o_c_loan_currencycode   : Joi.string().required(),
+  o_c_loan_sectorcode     : Joi.string().required(),
+  o_c_loan_interestinperc : Joi.number().required(),
+  o_c_loan_commissionperc : Joi.number().required(),
+  o_c_loan_fee            : Joi.number().required(),
+  o_c_loan_loanclasscode  : Joi.string().required(),
+  o_c_loan_loanintype     : Joi.string().required(),
+  o_c_loantransactions    : Joi.object({
+    o_c_loan_loancharttype: Joi.string().required(),
+    o_c_loandetails       : Joi.object({
+      o_c_loandetail: Joi.array().items(Joi.object({
+        o_c_loandetail_datetopay  : Joi.date().required(),
+        o_c_loandetail_amounttopay: Joi.number().required(),
+      })),
+      o_c_loanperformances: Joi.object({
+        o_c_loanperformance: Joi.array().items(Joi.object({
+          o_c_loandetail_datetopay       : Joi.date().required(),
+          o_c_loanperformance_amounttopay: Joi.number().required(),
+        })),
+        o_c_loaninterestdetails: Joi.object({
+          o_c_loaninterestdetail: Joi.array().items(Joi.object({
+            o_c_loaninterestdetail_datetopay  : Joi.date().required(),
+            o_c_loaninterestdetail_amounttopay: Joi.number().required(),
+          })),
+          o_c_loaninterestperformances: Joi.object({
+            o_c_loaninterestperformance: Joi.array().items(Joi.object({
+              o_c_loaninterestperformance_datetopay  : Joi.date().required(),
+              o_c_loaninterestperformance_amounttopay: Joi.date().required(),
+            }))
+          })
+        })
+      })
+    })
+  })
+}).options({ allowUnknown: true });
 
-});
 export default async ({ data, where }) => {
   console.log("===========>LEAONINFO", data);
   try {
@@ -40,7 +58,6 @@ export default async ({ data, where }) => {
   let id = uuidv4();
   let mrtnos = [];
   let relnos = [];
-  console.log(data.o_c_loanrelnos.o_c_loanrelno);
   if (Array.isArray(data.o_c_loanmrtnos.o_c_loanmrtno)){
     data.o_c_loanmrtnos.o_c_loanmrtno.forEach(item => {
       mrtnos.push({

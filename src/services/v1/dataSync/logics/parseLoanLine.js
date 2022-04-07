@@ -2,33 +2,30 @@ import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import moment from "moment";
 import Joi from "joi";
 import { ERRORS } from "../../../../constants";
-
 const schema = Joi.object({
   o_c_loanline_type          : Joi.string().required(),
-  o_c_loanline_cardno        : Joi.number().allow([null, ""]),
   o_c_loanline_advamount     : Joi.number().required(),
   o_c_loanline_starteddate   : Joi.date().required(),
   o_c_loanline_expdate       : Joi.date().required(),
   o_c_loanline_currencycode  : Joi.string().required(),
   o_c_loanline_sectorcode    : Joi.string().required(),
   o_c_loanline_loaninterest  : Joi.number().required(),
-  o_c_loanline_timestoloan   : Joi.number().required(),
+  o_c_loanline_timestoloan   : Joi.date().required(),
   o_c_loanline_extdate       : Joi.date().required(),
   o_c_loanline_interestinperc: Joi.number().required(),
   o_c_loanline_commissionperc: Joi.number().required(),
   o_c_loanline_fee           : Joi.number().required(),
-  o_c_loanline_loanclasscode : Joi.string().allow([null, ""]),
   o_c_loanline_balance       : Joi.number().required(),
-  o_c_loanline_isapproved    : Joi.number().allow([null, ""])
-});
+}).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {
+  console.log("===========>loanLine", data);
   try {
     await schema.validate(data);
   }
   catch (err) {
     console.log(err);
-    throw new ValidationError(ERRORS.LEONINFO_PARSE_ERROR);
+    throw new ValidationError(ERRORS.LEONLINE_PARSE_ERROR);
   }
   let loanLine = {
     o_c_loanline_type          : data?.o_c_loanline_type,

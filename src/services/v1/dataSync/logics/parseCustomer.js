@@ -12,7 +12,7 @@ const schema = Joi.object({
   o_c_customername               : Joi.string().required(),
   c_lastname                     : Joi.string().allow([null, ""]),
   o_c_isforeign                  : Joi.number().required(),
-  o_c_birthdate                  : Joi.date().required(),
+  o_c_birthdate                  : Joi.date().allow([null, ""]),
   o_c_zipcode                    : Joi.string().allow([null, ""]),
   o_c_address                    : Joi.string().required(),
   o_c_registerno                 : Joi.string().required(),

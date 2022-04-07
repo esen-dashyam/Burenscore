@@ -6,28 +6,35 @@ import Joi from "joi";
 
 
 const schema = Joi.object({
-  o_c_leasing_advamount: Joi.number().required(),
-  o_c_leasingmrtnos    : Joi.object({
-    o_c_leasingmrtno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
-  }).optional().allow([null, ""]),
-  o_c_leasingrelnos: Joi.object({
-    o_c_leasingrelno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
-  }).optional().allow([null, ""]),
+  o_c_leasing_advamount     : Joi.number().required(),
   o_c_leasing_balance       : Joi.number().required(),
   o_c_leasing_starteddate   : Joi.date().required(),
+  o_c_leasing_expdate       : Joi.date().required(),
   o_c_leasing_currencycode  : Joi.string().required(),
-  o_c_leasing_sectorcode    : Joi.string().required(),
+  o_c_leasing_sectorcode    : Joi.number().required(),
   o_c_leasing_interestinperc: Joi.number().required(),
   o_c_leasing_commissionperc: Joi.number().required(),
   o_c_leasing_fee           : Joi.number().required(),
   o_c_leasing_updatedexpdate: Joi.date().required(),
   o_c_leasing_loanclasscode : Joi.string().required(),
-  o_c_leasing_isapproved    : Joi.number().required(),
   o_c_leasingtransactions   : Joi.object({
     o_c_leasing_loancharttype    : Joi.string().required(),
     o_c_leasing_interestcharttype: Joi.string().required(),
+    o_c_leasingdetails           : Joi.object({
+      o_c_leasingdetail: Joi.array().items(Joi.object({
+        o_c_leasingdetail_datetopay  : Joi.date().required(),
+        o_c_leasingdetail_amounttopay: Joi.number().required(),
+      }))
+    }),
+    o_c_leasingperformances: Joi.object({
+      o_c_leasingperformance: Joi.array().items(Joi.object({
+        o_c_leasingperformance_datetopay  : Joi.date().required(),
+        o_c_leasingperformance_amounttopay: Joi.number().required(),
+      }))
+    })
+
   }),
-});
+}).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {
   try {
