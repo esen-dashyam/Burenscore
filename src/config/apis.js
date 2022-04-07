@@ -60,5 +60,8 @@ export default configure(({ HOST, PORT, S3HOST, S3PORT }) => ({
   dev_gke: {
     PORT: 80
   },
+  bs_dev: {
+    PORT: 80
+  },
   production: {}
 });
