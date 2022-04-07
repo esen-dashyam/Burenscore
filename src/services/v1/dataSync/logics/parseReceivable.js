@@ -44,7 +44,7 @@ const schema =Joi.object({
   })
 }).options({ allowUnknown: true });
 export default async ({ data, where }) => {
-  console.log("===========>RECEIVEDABLE", data);
+  if (!data) return null;
   try {
     await schema.validate(data);
   }
