@@ -21,10 +21,9 @@ const schema = Joi.object({
   o_bond_interestinperc: Joi.number().required(),
   o_bond_balance       : Joi.number().required(),
   o_bond_isapproved    : Joi.number().optional().allow([null, ""])
-
 });
+
 export default async ({ data, where }) => {
-  console.log("===========>BONDS", data);
   try {
     await schema.validate(data);
   }

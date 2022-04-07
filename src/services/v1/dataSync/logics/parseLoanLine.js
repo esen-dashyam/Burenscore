@@ -1,6 +1,8 @@
+import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import moment from "moment";
-import { v4 as uuidv4 } from "uuid";
 import Joi from "joi";
+import { ERRORS } from "../../../../constants";
+
 const schema = Joi.object({
   o_c_loanline_type          : Joi.string().required(),
   o_c_loanline_cardno        : Joi.number().allow([null, ""]),
@@ -20,8 +22,14 @@ const schema = Joi.object({
   o_c_loanline_isapproved    : Joi.number().allow([null, ""])
 });
 
-
 export default async ({ data, where }) => {
+  try {
+    await schema.validate(data);
+  }
+  catch (err) {
+    console.log(err);
+    throw new ValidationError(ERRORS.LEONINFO_PARSE_ERROR);
+  }
   let loanLine = {
     o_c_loanline_type          : data?.o_c_loanline_type,
 	  o_c_loanline_cardno        : data?.o_c_loanline_cardno,

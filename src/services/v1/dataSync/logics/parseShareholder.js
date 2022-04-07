@@ -41,7 +41,7 @@ const schema = Joi.object({
       then: Joi.string().required(),
     }).optional().allow([null, ""]),
   }))
-}).length(3);
+});
 
 export default async ({ data, where, type }) => {
   // console.log("===========>SHAREHOLDER", data);

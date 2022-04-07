@@ -24,7 +24,6 @@ const schema = Joi.object({
   o_c_guaranteerelnos: Joi.object({
     o_c_guaranteerelno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
   }).optional().allow([null, ""]),
-
 });
 export default async ({ data, where }) => { console.log("===========>Gurantee", data);
   try {

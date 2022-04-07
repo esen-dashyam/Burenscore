@@ -45,8 +45,8 @@ export default configure(({ PORT, DBHOST, DBPORT, DBNAME, DBUSER, DBPASS }) => (
       port: 6379
     },
     LOGGING: {
-      //username: "admin",
-      //password: "monGoDBey100devG00d",
+      // username: "admin",
+      // password: "monGoDBey100devG00d",
       host    : "mongodb.mongo",
       port    : 27017,
       database: "micro_bs"

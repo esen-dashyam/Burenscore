@@ -25,18 +25,13 @@ const schema = Joi.object({
   }).optional().allow([null, ""]),
 
 });
-
-
 export default async ({ data, where }) => {
-  console.log("===========>ACCREDIT", data);
   try {
     await schema.validate(data);
   } catch (err){
     console.log(err);
     throw new ValidationError(ERRORS.ACCREDIT_PARSE_ERROR);
   }
-
-
   let id = uuidv4();
   let mrtnos = [];
   let relnos = [];
@@ -57,7 +52,6 @@ export default async ({ data, where }) => {
       mrtno      : data.o_c_accreditmrtnos.o_c_accreditmrtno
     });
   }
-  console.log("==========>", mrtnos);
   if (Array.isArray(data.o_c_accreditrelnos.o_c_accreditrelno)){
     data.o_c_accreditrelnos.o_c_accreditrelno.forEach(item => {
       relnos.push({
@@ -75,7 +69,6 @@ export default async ({ data, where }) => {
       relno      : data.o_c_accreditrelnos.o_c_accreditrelno
     });
   }
-  console.log("==========>", relnos);
   let accredit = {
     id                         : id,
     o_c_accredit_advamount     : data?.o_c_accredit_advamount,

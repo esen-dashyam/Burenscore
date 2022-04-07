@@ -26,39 +26,6 @@ const schema = Joi.object({
   o_c_loan_loanclasscode : Joi.string().required(),
   o_c_loan_isapproved    : Joi.number().allow([null, ""]),
   o_c_loan_loanintype    : Joi.string().required(),
-  o_c_loan_loancharttype : Joi.object({
-    o_c_loantransactions  : Joi.string().required(),
-    o_c_loan_loancharttype: Joi.string().required(),
-  }),
-  o_c_loan_interestcharttype: Joi.object({
-    o_c_loantransactions      : Joi.string().required(),
-    o_c_loan_interestcharttype: Joi.string().required(),
-  }),
-  orgmeasure              : Joi.string().allow([null, ""]),
-  measuredate             : Joi.date().allow([null, ""]),
-  measuredescription      : Joi.string().allow([null, ""]),
-  causetostartcase        : Joi.string().allow([null, ""]),
-  datetstartcase          : Joi.string().allow([null, ""]),
-  registertopolice        : Joi.number().allow([null, ""]),
-  registertopolicedate    : Joi.date().allow([null, ""]),
-  timesinpolice           : Joi.number().allow([null, ""]),
-  registertoprocuror      : Joi.number().allow([null, ""]),
-  registertoprocurordate  : Joi.date().allow([null, ""]),
-  timesinprocuror         : Joi.number().allow([null, ""]),
-  registertocourt         : Joi.number().allow([null, ""]),
-  registertocourtdate     : Joi.date().allow([null, ""]),
-  timesincourt            : Joi.number().allow([null, ""]),
-  shiftocourt2            : Joi.date().allow([null, ""]),
-  shifttocourt2date       : Joi.date().allow([null, ""]),
-  timesincourt2           : Joi.number().allow([null, ""]),
-  shiftocourtdecision     : Joi.number().allow([null, ""]),
-  shifttocourtdecisiondate: Joi.date().allow([null, ""]),
-  ignoredcrime            : Joi.number().allow([null, ""]),
-  ignoreddate             : Joi.date().allow([null, ""]),
-  courtorderno            : Joi.string().allow([null, ""]),
-
-
-
 
 });
 export default async ({ data, where }) => {

@@ -37,23 +37,28 @@ export default configure(({ HOST, PORT, S3HOST, S3PORT }) => ({
     PORT   : PORT || 30982,
     API_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYnMtZGF0YXNvdXJjZS1zZXJ2aWNlIn0.WNhhzT5OhIrOnVyyjVhlnjWlSQlUEhONCOnTo-s16wg"
   },
+  bs_audit_service: {
+    VERSION: "v1",
+    HOST   : HOST || `bs-audit-service.${process.env.NAMESPACE}`,
+    PORT   : PORT || 30992,
+    API_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYnMtYXVkaXQtc2VydmljZSJ9.qVSH47vq4BmRrfZqIrdsNOvxNjUo8nOJEpl7nRb0qgw"
+  },
 }), {
   development: {
     HOST  : "http://127.0.0.1",
-    S3HOST: "https://s3.burenscore.mn",
-    S3PORT: 443
+    S3HOST: "http://127.0.0.1",
+    S3PORT: 30988
   },
   test: {
     PORT: 80
   },
   dev: {
     S3HOST: "http://172.16.100.23",
-    S3PORT: 30211,
-    PORT  : 80
+    PORT  : 80,
+    S3PORT: 30211
   },
-  production: {
-    HOST  : "http://127.0.0.1",
-    S3HOST: "https://s3.burenscore.mn",
-    S3PORT: 443
-  }
+  dev_gke: {
+    PORT: 80
+  },
+  production: {}
 });

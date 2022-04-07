@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import Joi from "joi";
-import { ValidationError } from "@goodtechsoft/micro-service";
+import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERRORS } from "../../../../constants";
 
 const schema = Joi.object({
@@ -34,7 +34,6 @@ const schema = Joi.object({
 }).options({ allowUnknown: true });
 
 export default async (customerInfo) => {
-  console.log("===========>CUSTOMER_INFO", customerInfo);
   try {
     await schema.validate(customerInfo);
   } catch (err){

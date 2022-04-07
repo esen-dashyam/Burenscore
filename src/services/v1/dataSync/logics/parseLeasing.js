@@ -26,42 +26,10 @@ const schema = Joi.object({
   o_c_leasingtransactions   : Joi.object({
     o_c_leasing_loancharttype    : Joi.string().required(),
     o_c_leasing_interestcharttype: Joi.string().required(),
-    o_c_leasingdetails           : Joi.object({
-      o_c_leasingdetail: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
-    }).optional().allow([null, ""]),
   }),
-
-
-
-
-  // orgmeasure              : Joi.string().allow([null, ""]),
-  // measuredate             : Joi.date().allow([null, ""]),
-  // measuredescription      : Joi.string().allow([null, ""]),
-  // causetostartcase        : Joi.string().allow([null, ""]),
-  // datetstartcase          : Joi.date().allow([null, ""]),
-  // registertopolice        : Joi.number().allow([null, ""]),
-  // registertopolicedate    : Joi.date().allow([null, ""]),
-  // timesinpolice           : Joi.number().allow([null, ""]),
-  // registertoprocuror      : Joi.number().allow([null, ""]),
-  // registertoprocurordate  : Joi.date().allow([null, ""]),
-  // timesinprocuror         : Joi.number().allow([null, ""]),
-  // registertocourt         : Joi.number().allow([null, ""]),
-  // registertocourtdate     : Joi.date().allow([null, ""]),
-  // timesincourt            : Joi.number().allow([null, ""]),
-  // shiftocourt2            : Joi.number().allow([null, ""]),
-  // shifttocourt2date       : Joi.date().allow([null, ""]),
-  // timesincourt2           : Joi.number().allow([null, ""]),
-  // shiftocourtdecision     : Joi.number().allow([null, ""]),
-  // shifttocourtdecisiondate: Joi.date().allow([null, ""]),
-  // ignoredcrime            : Joi.number().allow([null, ""]),
-  // ignoreddate             : Joi.date().allow([null, ""]),
-  // courtorderno            : Joi.string().allow([null, ""]),
-
 });
 
-
 export default async ({ data, where }) => {
-  console.log("===========>LEASINGINFO", data);
   try {
     await schema.validate(data);
   }

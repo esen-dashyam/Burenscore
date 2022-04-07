@@ -1,11 +1,8 @@
 export default async ({ data, where }) => {
-  console.log("===========>FINANCIALINFO");
-
   let financialInfo = {
     business: {
       ...data?.c_business,
       ...where
-
     },
     family: {
       ...data?.c_family,
