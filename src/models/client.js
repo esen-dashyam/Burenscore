@@ -47,11 +47,6 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey  : false,
       defaultValue: 0
     },
-    expiry_hours: {
-      type      : DataTypes.INTEGER,
-      allowNull : false,
-      primaryKey: false,
-    },
     session_id: {
       type      : DataTypes.STRING(45),
       allowNull : false,
