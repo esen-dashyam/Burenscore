@@ -11,7 +11,7 @@ const schema = Joi.object({
   o_c_leasing_starteddate   : Joi.date().required(),
   o_c_leasing_expdate       : Joi.date().required(),
   o_c_leasing_currencycode  : Joi.string().required(),
-  o_c_leasing_sectorcode    : Joi.number().required(),
+  o_c_leasing_sectorcode    : Joi.string().required(),
   o_c_leasing_interestinperc: Joi.number().required(),
   o_c_leasing_commissionperc: Joi.number().required(),
   o_c_leasing_fee           : Joi.number().required(),
@@ -38,7 +38,7 @@ const schema = Joi.object({
 
 export default async ({ data, where }) => {
   if (!data) return null;
-
+  console.log(data.o_c_leasingtransactions.o_c_leasingdetails);
   try {
     await schema.validate(data);
   }
