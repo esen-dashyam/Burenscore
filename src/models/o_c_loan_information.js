@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_loan_sectorcode: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(45),
       allowNull: true,
     },
     o_c_loan_interestinperc: {
@@ -80,15 +80,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_loan_loanintype: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(45),
       allowNull: true,
     },
     o_c_loan_loancharttype: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(45),
       allowNull: true,
     },
     o_c_loan_interestcharttype: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(45),
       allowNull: true,
     },
     payment_status: {

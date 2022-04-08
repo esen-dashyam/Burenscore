@@ -49,7 +49,7 @@ export default async ({ data, where }) => {
   let id = uuidv4();
   let mrtnos = [];
   let relnos = [];
-  if (Array.isArray(data.o_c_leasingmrtnos.o_c_leasingmrtno)){
+  if (Array.isArray(data?.o_c_leasingmrtnos?.o_c_leasingmrtno)){
     data.o_c_leasingmrtnos.o_c_leasingmrtno.forEach(item => {
       mrtnos.push({
         ...where,
@@ -63,7 +63,7 @@ export default async ({ data, where }) => {
       ...where,
       relation_id: id,
       type       : "LEASING",
-      mrtno      : data.o_c_leasingmrtno.o_c_leasingmrtno
+      mrtno      : data?.o_c_leasingmrtno?.o_c_leasingmrtno
     });
   }
   console.log("==========>", mrtnos);
@@ -81,7 +81,7 @@ export default async ({ data, where }) => {
       ...where,
       relation_id: id,
       type       : "LEASING",
-      relno      : data.o_c_leasingrelnos.o_c_leasingrelno
+      relno      : data?.o_c_leasingrelnos?.o_c_leasingrelno
     });
   }
   console.log("==========>", relnos);

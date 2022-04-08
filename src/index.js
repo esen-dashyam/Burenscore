@@ -24,7 +24,6 @@ const dbMigrate = async () => {
     await db.OCReceivable.sync({ force: true });
     await db.OCRelationcustomer.sync({ force: true });
     await db.OCRelationorg.sync({ force: true });
-    await db.OCSectorcode.sync({ force: true });
     await db.OCLoanInformation.sync({ force: true });
     await db.OMReport.sync({ force: true });
     await db.OReport.sync({ force: true });
@@ -34,7 +33,7 @@ const dbMigrate = async () => {
     await db.Relno.sync({ force: true });
     await db.Transaction.sync({ force: true });
     await db.Currency.sync({ force: true });
-    // await db.Client.sync({ force: true });OCLoanInformation
+    // await db.Client.sync({ force: true });
   } catch (err){
     console.log(err);
   }
@@ -46,7 +45,7 @@ setup(__dirname)(config.database, async () => {
 
   http.listen(config.server.port, async () => {
     console.log(`Server: ${config.server.port} is listening ...`);
-    console.log('Config ...', config);
+    console.log("Config ...", config);
   });
 
   const req = {

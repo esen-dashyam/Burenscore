@@ -110,7 +110,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_mrtregisterno: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(16),
       allowNull: true,
     },
     o_c_mrtcertificatenofim: {

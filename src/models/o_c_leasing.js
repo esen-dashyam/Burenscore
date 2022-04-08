@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_leasing_sectorcode: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(10),
       allowNull: true,
     },
     o_c_leasing_interestinperc: {
