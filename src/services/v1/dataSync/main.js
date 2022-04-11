@@ -165,42 +165,66 @@ export default logic(null, async (data, session) => {
     if (CUSTOMER?.relationCustomer){
       await insert(() => db.bulkCreate(db.OCRelationcustomer, CUSTOMER?.relationCustomer, session));
     }
-    await insert(() => db.create(db.CBusiness, { ...CUSTOMER?.financialInfo?.business }, session));
-    await insert(() => db.create(db.CFamily, { ...CUSTOMER?.financialInfo?.family }, session));
-    await insert(() => db.create(db.CCapital, { ...CUSTOMER?.financialInfo?.capital }, session));
-    await insert(() => db.create(db.OMReport, { ...CUSTOMER?.financialInfo?.o_m_report }, session));
-    await insert(() => db.create(db.OReport, { ...CUSTOMER?.financialInfo?.o_report }, session));
-    await insert(() => db.create(db.OTReport, { ...CUSTOMER?.financialInfo?.o_t_report }, session));
+    if (CUSTOMER?.financialInfo?.business){
+      await insert(() => db.create(db.CBusiness, { ...CUSTOMER?.financialInfo?.business }, session));
+    }
+    if (CUSTOMER?.financialInfo?.family){
+      await insert(() => db.create(db.CFamily, { ...CUSTOMER?.financialInfo?.family }, session));
+    }
+    if (CUSTOMER?.financialInfo?.capital){
+      await insert(() => db.create(db.CCapital, { ...CUSTOMER?.financialInfo?.capital }, session));
+    }
+    if (CUSTOMER?.financialInfo?.o_m_report){
+      await insert(() => db.create(db.OMReport, { ...CUSTOMER?.financialInfo?.o_m_report }, session));
+    }
+    if (CUSTOMER?.financialInfo?.o_report){
+      await insert(() => db.create(db.OReport, { ...CUSTOMER?.financialInfo?.o_report }, session));
+    }
+    if (CUSTOMER?.financialInfo?.o_t_report){
+      await insert(() => db.create(db.OTReport, { ...CUSTOMER?.financialInfo?.o_t_report }, session));
+    }
     // LOAN START
     if (CUSTOMER?.loanInfo){
       await insert(() => db.create(db.OCLoanInformation, { ...CUSTOMER?.loanInfo }, session));
-      await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.loanInfo?.o_c_loanmrtnos, session));
-      await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.loanInfo?.o_c_loanrelnos, session));
-      await insert(() => db.create(db.NeoInfo, { ...CUSTOMER?.loanInfo?.neoInfo }, session));
-      await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.loanInfo?.transactions, session));
+      if (CUSTOMER?.loanInfo?.o_c_loanmrtnos && CUSTOMER?.loanInfo?.o_c_loanmrtnos.length >0)
+        await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.loanInfo?.o_c_loanmrtnos, session));
+      if (CUSTOMER?.loanInfo?.o_c_loanrelnos && CUSTOMER?.loanInfo?.o_c_loanrelnos.length > 0)
+        await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.loanInfo?.o_c_loanrelnos, session));
+      if (CUSTOMER?.loanInfo?.neoInfo)
+        await insert(() => db.create(db.NeoInfo, { ...CUSTOMER?.loanInfo?.neoInfo }, session));
+      if (CUSTOMER?.loanInfo?.transactions && CUSTOMER?.loanInfo?.transactions.length > 0)
+        await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.loanInfo?.transactions, session));
     }
     // LOAN END
     // LEASING START
     if (CUSTOMER?.leasingInfo){
       await insert(() => db.create(db.OCLeasing, { ...CUSTOMER?.leasingInfo }, session));
-      await insert(() => db.create(db.NeoInfo, { ...CUSTOMER?.leasingInfo?.neoInfo }, session));
-      await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.leasingInfo?.o_c_leasingmrtnos, session));
-      await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.leasingInfo?.o_c_leasingrelnos, session));
-      await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.leasingInfo?.transactions, session));
+      if (CUSTOMER?.leasingInfo?.neoInfo)
+        await insert(() => db.create(db.NeoInfo, { ...CUSTOMER?.leasingInfo?.neoInfo }, session));
+      if (CUSTOMER?.leasingInfo?.o_c_leasingmrtno && CUSTOMER?.leasingInfo?.o_c_leasingmrtno.length > 0)
+        await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.leasingInfo?.o_c_leasingmrtnos, session));
+      if (CUSTOMER?.leasingInfo?.o_c_leasingrelnos && CUSTOMER?.leasingInfo?.o_c_leasingrelnos.length > 0)
+        await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.leasingInfo?.o_c_leasingrelnos, session));
+      if (CUSTOMER?.leasingInfo?.transactions && CUSTOMER?.leasingInfo?.transactions.length >0)
+        await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.leasingInfo?.transactions, session));
     }
     // LEASING END
     // ACCREDIT START
     if (CUSTOMER?.accreditInfo){
       await insert(() => db.create(db.OCAccredit, { ...CUSTOMER?.accreditInfo }, session));
-      await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.accreditInfo?.o_c_accreditmrtnos, session));
-      await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.accreditInfo?.o_c_accreditrelnos, session));
+      if (CUSTOMER?.accreditInfo?.o_c_accreditmrtnos && CUSTOMER?.accreditInfo?.o_c_accreditmrtnos.length > 0)
+        await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.accreditInfo?.o_c_accreditmrtnos, session));
+      if (CUSTOMER?.accreditInfo?.o_c_accreditrelnos && CUSTOMER?.accreditInfo?.o_c_accreditrelnos.length)
+        await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.accreditInfo?.o_c_accreditrelnos, session));
     }
     // ACCREDIT END
     // GUARENTEE START
     if (CUSTOMER?.guarenteeInfo){
       await insert(() => db.create(db.OCGuarantee, { ...CUSTOMER?.guarenteeInfo }, session));
-      await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.guarenteeInfo?.o_c_guaranteemrtnos, session));
-      await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos, session));
+      if (CUSTOMER?.guarenteeInfo?.o_c_guaranteemrtnos && CUSTOMER?.guarenteeInfo?.o_c_guaranteemrtnos.length > 0)
+        await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.guarenteeInfo?.o_c_guaranteemrtnos, session));
+      if (CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos && CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos.length > 0)
+        await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos, session));
     }
     // GUARENTEE END
     if (CUSTOMER?.loanLineInfo){
@@ -209,25 +233,33 @@ export default logic(null, async (data, session) => {
     // RECEIVABLE START
     if (CUSTOMER?.receivableInfo){
       await insert(() => db.create(db.OCReceivable, { ...CUSTOMER?.receivableInfo }, session));
-      await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.receivableInfo?.transactions, session));
-      await insert(() => db.create(db.NeoInfo, { ...CUSTOMER?.receivableInfo?.neoInfo }, session));
+      if (CUSTOMER?.receivableInfo?.transactions && CUSTOMER?.receivableInfo?.transactions.length > 0)
+        await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.receivableInfo?.transactions, session));
+      if (CUSTOMER?.receivableInfo?.neoInfo)
+        await insert(() => db.create(db.NeoInfo, { ...CUSTOMER?.receivableInfo?.neoInfo }, session));
     }
     // RECEIVABLE END
     // ONUS INFO START
     if (CUSTOMER?.onusInfo){
       await insert(() => db.create(db.OCOnusInformation, { ...CUSTOMER?.onusInfo }, session));
-      await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.onusInfo?.o_c_onusmrtnos, session));
-      await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.onusInfo?.o_c_onusrelnos, session));
-      await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.onusInfo?.transactions, session));
-      await insert(() => db.create(db.NeoInfo, { ...CUSTOMER?.onusInfo?.neoInfo }, session));
+      if (CUSTOMER?.onusInfo?.o_c_onusmrtnos && CUSTOMER?.onusInfo?.o_c_onusmrtnos > 0)
+        await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.onusInfo?.o_c_onusmrtnos, session));
+      if (CUSTOMER?.onusInfo?.o_c_onusrelnos && CUSTOMER?.onusInfo?.o_c_onusrelnos.length > 0)
+        await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.onusInfo?.o_c_onusrelnos, session));
+      if (CUSTOMER?.onusInfo?.transactions && CUSTOMER?.onusInfo?.transactions.length > 0)
+        await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.onusInfo?.transactions, session));
+      if (CUSTOMER?.onusInfo?.neoInfo)
+        await insert(() => db.create(db.NeoInfo, { ...CUSTOMER?.onusInfo?.neoInfo }, session));
     }
     // ONUS INFO END
     if (CUSTOMER?.bondInfo){
       await insert(() => db.create(db.OBond, { ...CUSTOMER?.bondInfo }, session));
-      await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.bondInfo?.o_c_bondmrtnos, session));
-      await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.bondInfo?.o_c_bondrelnos, session));
+      if (CUSTOMER?.bondInfo?.o_c_bondmrtnos && CUSTOMER?.bondInfo?.o_c_bondmrtnos.length > 0)
+        await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.bondInfo?.o_c_bondmrtnos, session));
+      if (CUSTOMER?.bondInfo?.o_c_bondrelnos && CUSTOMER?.bondInfo?.o_c_bondrelnos.length > 0)
+        await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.bondInfo?.o_c_bondrelnos, session));
     }
-    if (CUSTOMER?.mrtInfo){
+    if (CUSTOMER?.mrtInfo.length > 0){
       await insert(() => db.bulkCreate(db.OCMortgage, CUSTOMER?.mrtInfo, session));
     }
     // await Promise.all([insert(() => db.create(db.OBond, { ...CUSTOMER?.bondInfo }, session)),
@@ -256,12 +288,24 @@ export default logic(null, async (data, session) => {
       await bulkUpdate({ type: "relationCustomer", data: CUSTOMER?.shareholderCustomer, attribute: "o_c_relationcustomer_registerno", where, session });
     }
     if (CUSTOMER?.financialInfo){
-      await update({ type: "business", data: CUSTOMER?.financialInfo?.business, where, session });
-      await update({ type: "family", data: CUSTOMER?.financialInfo?.family, where, session });
-      await update({ type: "capital", data: CUSTOMER?.financialInfo?.capital, where, session });
-      await update({ type: "omReport", data: CUSTOMER?.financialInfo?.o_m_report, where, session });
-      await update({ type: "oReport", data: CUSTOMER?.financialInfo?.o_report, where, session });
-      await update({ type: "otReport", data: CUSTOMER?.financialInfo?.o_t_report, where, session });
+      if (CUSTOMER?.financialInfo?.business){
+        await update({ type: "business", data: CUSTOMER?.financialInfo?.business, where, session });
+      }
+      if (CUSTOMER?.financialInfo?.family){
+        await update({ type: "family", data: CUSTOMER?.financialInfo?.family, where, session });
+      }
+      if (CUSTOMER?.financialInfo?.capital){
+        await update({ type: "capital", data: CUSTOMER?.financialInfo?.capital, where, session });
+      }
+      if (CUSTOMER?.financialInfo?.o_m_report){
+        await update({ type: "omReport", data: CUSTOMER?.financialInfo?.o_m_report, where, session });
+      }
+      if (CUSTOMER?.financialInfo?.o_report){
+        await update({ type: "oReport", data: CUSTOMER?.financialInfo?.o_report, where, session });
+      }
+      if (CUSTOMER?.financialInfo?.o_t_report){
+        await update({ type: "otReport", data: CUSTOMER?.financialInfo?.o_t_report, where, session });
+      }
     }
     if (CUSTOMER?.loanInfo){
       let loan = await update({ type : "loanInfo", data : { ...CUSTOMER?.loanInfo }, where: {
@@ -269,10 +313,14 @@ export default logic(null, async (data, session) => {
         o_c_loan_starteddate: moment(CUSTOMER?.loanInfo?.o_c_loan_starteddate)
       }, session });
       if (loan) {
-        await bulkUpdate({ type: "mrtno", data: CUSTOMER?.loanInfo?.o_c_loanmrtnos, attribute: "mrtno", where: { ...where, type: "LOAN", relation_id: loan.id }, session });
-        await bulkUpdate({ type: "relno", data: CUSTOMER?.loanInfo?.o_c_loanrelnos, attribute: "relno", where: { ...where, type: "LOAN", relation_id: loan.id }, session });
-        await bulkUpdate({ type: "transaction", data: CUSTOMER?.loanInfo?.transactions, attribute: "datetopay", where: { ...where, relation_type: "LOAN", relation_id: loan.id }, session });
-        await update({ type: "neoInfo", data: { ...CUSTOMER?.loanInfo?.neoInfo }, where: { ...where, registertopolicedate: CUSTOMER?.loanInfo?.neoInfo?.registertopolicedate, relation_id: loan.id, relation_type: "LOAN" }, session });
+        if (CUSTOMER?.loanInfo?.o_c_loanmrtnos && CUSTOMER?.loanInfo?.o_c_loanmrtnos.length >0)
+          await bulkUpdate({ type: "mrtno", data: CUSTOMER?.loanInfo?.o_c_loanmrtnos, attribute: "mrtno", where: { ...where, type: "LOAN", relation_id: loan.id }, session });
+        if (CUSTOMER?.loanInfo?.o_c_loanrelnos && CUSTOMER?.loanInfo?.o_c_loanrelnos.length > 0)
+          await bulkUpdate({ type: "relno", data: CUSTOMER?.loanInfo?.o_c_loanrelnos, attribute: "relno", where: { ...where, type: "LOAN", relation_id: loan.id }, session });
+        if (CUSTOMER?.loanInfo?.neoInfo)
+          await update({ type: "neoInfo", data: { ...CUSTOMER?.loanInfo?.neoInfo }, where: { ...where, registertopolicedate: CUSTOMER?.loanInfo?.neoInfo?.registertopolicedate, relation_id: loan.id, relation_type: "LOAN" }, session });
+        if (CUSTOMER?.loanInfo?.transactions && CUSTOMER?.loanInfo?.transactions.length > 0)
+          await bulkUpdate({ type: "transaction", data: CUSTOMER?.loanInfo?.transactions, attribute: "datetopay", where: { ...where, relation_type: "LOAN", relation_id: loan.id }, session });
       }
     }
     if (CUSTOMER?.leasingInfo){
@@ -281,10 +329,14 @@ export default logic(null, async (data, session) => {
         o_c_leasing_starteddate: moment(CUSTOMER?.leasingInfo?.o_c_leasing_starteddate)
       }, session });
       if (leasing){
-        await bulkUpdate({ type: "mrtno", data: CUSTOMER?.leasingInfo?.o_c_leasingmrtnos, attribute: "mrtno", where: { ...where, type: "LEASING", relation_id: leasing.id }, session });
-        await bulkUpdate({ type: "relno", data: CUSTOMER?.leasingInfo?.o_c_leasingrelnos, attribute: "relno", where: { ...where, type: "LEASING", relation_id: leasing.id }, session });
-        await bulkUpdate({ type: "transaction", data: CUSTOMER?.leasingInfo?.transactions, attribute: "datetopay", where: { ...where, relation_type: "LEASING", relation_id: leasing.id }, session });
-        await update({ type: "neoInfo", data: CUSTOMER?.leasingInfo?.neoInfo, where: { ...where, registertopolicedate: moment(CUSTOMER?.loanInfo?.neoInfo?.registertopolicedate), relation_type: "LEASING", relation_id: leasing.id }, session });
+        if (CUSTOMER?.leasingInfo?.neoInfo)
+          await update({ type: "neoInfo", data: CUSTOMER?.leasingInfo?.neoInfo, where: { ...where, registertopolicedate: moment(CUSTOMER?.loanInfo?.neoInfo?.registertopolicedate), relation_type: "LEASING", relation_id: leasing.id }, session });
+        if (CUSTOMER?.leasingInfo?.o_c_leasingmrtno && CUSTOMER?.leasingInfo?.o_c_leasingmrtno.length > 0)
+          await bulkUpdate({ type: "mrtno", data: CUSTOMER?.leasingInfo?.o_c_leasingmrtnos, attribute: "mrtno", where: { ...where, type: "LEASING", relation_id: leasing.id }, session });
+        if (CUSTOMER?.leasingInfo?.o_c_leasingrelnos && CUSTOMER?.leasingInfo?.o_c_leasingrelnos.length > 0)
+          await bulkUpdate({ type: "relno", data: CUSTOMER?.leasingInfo?.o_c_leasingrelnos, attribute: "relno", where: { ...where, type: "LEASING", relation_id: leasing.id }, session });
+        if (CUSTOMER?.leasingInfo?.transactions && CUSTOMER?.leasingInfo?.transactions.length >0)
+          await bulkUpdate({ type: "transaction", data: CUSTOMER?.leasingInfo?.transactions, attribute: "datetopay", where: { ...where, relation_type: "LEASING", relation_id: leasing.id }, session });
       }
     }
     if (CUSTOMER?.accreditInfo){
@@ -293,8 +345,10 @@ export default logic(null, async (data, session) => {
         o_c_accredit_starteddate: moment(CUSTOMER?.accreditInfo?.o_c_accredit_starteddate)
       }, session });
       if (accredit){
-        await bulkUpdate({ type: "mrtno", data: CUSTOMER?.accreditInfo?.o_c_accreditmrtnos, attribute: "mrtno", where: { ...where, type: "ACCREDIT", relation_id: accredit.id }, session });
-        await bulkUpdate({ type: "relno", data: CUSTOMER?.accreditInfo?.o_c_accreditrelnos, attribute: "relno", where: { ...where, type: "ACCREDIT", relation_id: accredit.id }, session });
+        if (CUSTOMER?.accreditInfo?.o_c_accreditmrtnos && CUSTOMER?.accreditInfo?.o_c_accreditmrtnos.length > 0)
+          await bulkUpdate({ type: "mrtno", data: CUSTOMER?.accreditInfo?.o_c_accreditmrtnos, attribute: "mrtno", where: { ...where, type: "ACCREDIT", relation_id: accredit.id }, session });
+        if (CUSTOMER?.accreditInfo?.o_c_accreditrelnos && CUSTOMER?.accreditInfo?.o_c_accreditrelnos.length)
+          await bulkUpdate({ type: "relno", data: CUSTOMER?.accreditInfo?.o_c_accreditrelnos, attribute: "relno", where: { ...where, type: "ACCREDIT", relation_id: accredit.id }, session });
       }
     }
     if (CUSTOMER?.guarenteeInfo){
@@ -303,8 +357,10 @@ export default logic(null, async (data, session) => {
         o_c_guarantee_starteddate: moment(CUSTOMER?.guarenteeInfo?.o_c_guarantee_starteddate)
       }, session });
       if (gurantee){
-        await bulkUpdate({ type: "mrtno", data: CUSTOMER?.guarenteeInfo?.o_c_guaranteemrtnos, attribute: "mrtno", where: { ...where, type: "GUARANTEE", relation_id: gurantee.id }, session });
-        await bulkUpdate({ type: "relno", data: CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos, attribute: "relno", where: { ...where, type: "GUARANTEE", relation_id: gurantee.id }, session });
+        if (CUSTOMER?.guarenteeInfo?.o_c_guaranteemrtnos && CUSTOMER?.guarenteeInfo?.o_c_guaranteemrtnos.length > 0)
+          await bulkUpdate({ type: "mrtno", data: CUSTOMER?.guarenteeInfo?.o_c_guaranteemrtnos, attribute: "mrtno", where: { ...where, type: "GUARANTEE", relation_id: gurantee.id }, session });
+        if (CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos && CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos.length > 0)
+          await bulkUpdate({ type: "relno", data: CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos, attribute: "relno", where: { ...where, type: "GUARANTEE", relation_id: gurantee.id }, session });
       }
     }
     if (CUSTOMER?.loanLineInfo){
@@ -319,8 +375,10 @@ export default logic(null, async (data, session) => {
         o_c_receivable_starteddate: moment(CUSTOMER?.receivableInfo?.o_c_receivable_starteddate)
       }, session });
       if (receivable){
-        await bulkUpdate({ type: "transaction", data: CUSTOMER?.receivableInfo?.transactions, attribute: "datetopay", where: { ...where, relation_type: "RECEIVABLE", relation_id: receivable.id }, session });
-        await update({ type: "neoInfo", data: CUSTOMER?.receivableInfo?.neoInfo, where: { ...where, registertopolicedate: moment(CUSTOMER?.loanInfo?.neoInfo?.registertopolicedate), relation_type: "RECEIVABLE", relation_id: receivable.id }, session });
+        if (CUSTOMER?.receivableInfo?.transactions && CUSTOMER?.receivableInfo?.transactions.length > 0)
+          await bulkUpdate({ type: "transaction", data: CUSTOMER?.receivableInfo?.transactions, attribute: "datetopay", where: { ...where, relation_type: "RECEIVABLE", relation_id: receivable.id }, session });
+        if (CUSTOMER?.receivableInfo?.neoInfo)
+          await update({ type: "neoInfo", data: CUSTOMER?.receivableInfo?.neoInfo, where: { ...where, registertopolicedate: moment(CUSTOMER?.loanInfo?.neoInfo?.registertopolicedate), relation_type: "RECEIVABLE", relation_id: receivable.id }, session });
       }
     }
     if (CUSTOMER?.onusInfo){
@@ -329,10 +387,14 @@ export default logic(null, async (data, session) => {
         o_c_onus_starteddate: moment(CUSTOMER?.onusInfo?.o_c_onus_starteddate)
       }, session });
       if (onus) {
-        await bulkUpdate({ type: "mrtno", data: CUSTOMER?.onusInfo?.o_c_onusmrtnos, attribute: "mrtno", where: { ...where, type: "ONUS", relation_id: onus.id }, session });
-        await bulkUpdate({ type: "relno", data: CUSTOMER?.onusInfo?.o_c_onusrelnos, attribute: "relno", where: { ...where, type: "ONUS", relation_id: onus.id }, session });
-        await bulkUpdate({ type: "transaction", data: CUSTOMER?.onusInfo?.transactions, attribute: "datetopay", where: { ...where, relation_type: "ONUS", relation_id: onus.id }, session });
-        await update({ type: "neoInfo", data: CUSTOMER?.onusInfo?.neoInfo, where: { ...where, registertopolicedate: moment(CUSTOMER?.onusInfo?.neoInfo?.registertopolicedate), relation_type: "ONUS", relation_id: onus.id }, session });
+        if (CUSTOMER?.onusInfo?.o_c_onusmrtnos && CUSTOMER?.onusInfo?.o_c_onusmrtnos > 0)
+          await bulkUpdate({ type: "mrtno", data: CUSTOMER?.onusInfo?.o_c_onusmrtnos, attribute: "mrtno", where: { ...where, type: "ONUS", relation_id: onus.id }, session });
+        if (CUSTOMER?.onusInfo?.o_c_onusrelnos && CUSTOMER?.onusInfo?.o_c_onusrelnos.length > 0)
+          await bulkUpdate({ type: "relno", data: CUSTOMER?.onusInfo?.o_c_onusrelnos, attribute: "relno", where: { ...where, type: "ONUS", relation_id: onus.id }, session });
+        if (CUSTOMER?.onusInfo?.transactions && CUSTOMER?.onusInfo?.transactions.length > 0)
+          await bulkUpdate({ type: "transaction", data: CUSTOMER?.onusInfo?.transactions, attribute: "datetopay", where: { ...where, relation_type: "ONUS", relation_id: onus.id }, session });
+        if (CUSTOMER?.onusInfo?.neoInfo)
+          await update({ type: "neoInfo", data: CUSTOMER?.onusInfo?.neoInfo, where: { ...where, registertopolicedate: moment(CUSTOMER?.onusInfo?.neoInfo?.registertopolicedate), relation_type: "ONUS", relation_id: onus.id }, session });
       }
     }
     if (CUSTOMER?.bondInfo){
@@ -341,8 +403,10 @@ export default logic(null, async (data, session) => {
         o_bond_starteddate: moment(CUSTOMER?.bondInfo?.o_bond_starteddate)
       }, session });
       if (bond) {
-        await bulkUpdate({ type: "mrtno", data: CUSTOMER?.bondInfo?.o_c_bondmrtnos, attribute: "mrtno", where: { ...where, type: "BOND", relation_id: bond.id }, session });
-        await bulkUpdate({ type: "relno", data: CUSTOMER?.bondInfo?.o_c_bondrelnos, attribute: "relno", where: { ...where, type: "BOND", relation_id: bond.id }, session });
+        if (CUSTOMER?.bondInfo?.o_c_bondmrtnos && CUSTOMER?.bondInfo?.o_c_bondmrtnos.length > 0)
+          await bulkUpdate({ type: "mrtno", data: CUSTOMER?.bondInfo?.o_c_bondmrtnos, attribute: "mrtno", where: { ...where, type: "BOND", relation_id: bond.id }, session });
+        if (CUSTOMER?.bondInfo?.o_c_bondrelnos && CUSTOMER?.bondInfo?.o_c_bondrelnos.length > 0)
+          await bulkUpdate({ type: "relno", data: CUSTOMER?.bondInfo?.o_c_bondrelnos, attribute: "relno", where: { ...where, type: "BOND", relation_id: bond.id }, session });
       }
     }
     if (CUSTOMER.mrtInfo){

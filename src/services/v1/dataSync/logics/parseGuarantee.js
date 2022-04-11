@@ -40,14 +40,13 @@ export default async ({ data, where }) => {
         mrtno      : item
       });
     });
-  } else {
+  } else if (data.o_c_guaranteemrtnos.o_c_guaranteemrtno)
     mrtnos.push({
       ...where,
       relation_id: id,
       type       : "GUARANTEE",
       mrtno      : data.o_c_guaranteemrtnos.o_c_guaranteemrtno
     });
-  }
   console.log("==========>", mrtnos);
   if (Array.isArray(data.o_c_guaranteerelnos.o_c_guaranteerelno)){
     data.o_c_guaranteerelnos.o_c_guaranteerelno.forEach(item => {
@@ -58,14 +57,13 @@ export default async ({ data, where }) => {
         relno      : item
       });
     });
-  } else {
+  } else if (data.o_c_guaranteerelnos.o_c_guaranteerelno)
     relnos.push({
       ...where,
       relation_id: id,
       type       : "GUARANTEE",
       relno      : data.o_c_guaranteerelnos.o_c_guaranteerelno
     });
-  }
   let guarentee = {
     o_c_guarantee_advamount     : data?.o_c_guarantee_advamount,
     o_c_guarantee_starteddate   : moment(data?.o_c_guarantee_starteddate),

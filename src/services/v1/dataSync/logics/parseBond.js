@@ -20,7 +20,7 @@ const schema = Joi.object({
   o_bond_bondunitprice : Joi.number().required(),
   o_bond_interestinperc: Joi.number().required(),
   o_bond_balance       : Joi.number().required(),
-  o_bond_isapproved    : Joi.number().optional().allow([null, ""])
+  o_bond_isapproved    : Joi.boolean().optional().allow([null, ""])
 });
 
 export default async ({ data, where }) => {
@@ -46,14 +46,13 @@ export default async ({ data, where }) => {
         mrtno      : item
       });
     });
-  } else {
+  } else if (data.o_c_bondmrtnos.o_c_bondmrtno)
     mrtnos.push({
       ...where,
       relation_id: id,
       type       : "BOND",
       mrtno      : data.o_c_bondmrtnos.o_c_bondmrtno
     });
-  }
   // console.log("==========>", mrtnos);
   if (Array.isArray(data.o_c_bondrelnos.o_c_bondrelno)){
     data.o_c_bondrelnos.o_c_bondrelno.forEach(item => {
@@ -64,14 +63,13 @@ export default async ({ data, where }) => {
         relno      : item
       });
     });
-  } else {
+  } else if (data.o_c_bondrelnos.o_c_bondrelno)
     relnos.push({
       ...where,
       relation_id: id,
       type       : "BOND",
       relno      : data.o_c_bondrelnos.o_c_bondrelno
     });
-  }
   // console.log("==========>", relnos);
 
 

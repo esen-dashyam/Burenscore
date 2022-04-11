@@ -17,33 +17,33 @@ const schema = Joi.object({
   o_c_loan_fee            : Joi.number().required(),
   o_c_loan_loanclasscode  : Joi.string().required(),
   o_c_loan_loanintype     : Joi.string().required(),
-  o_c_loantransactions    : Joi.object({
-    o_c_loan_loancharttype: Joi.string().required(),
-    o_c_loandetails       : Joi.object({
-      o_c_loandetail: Joi.array().items(Joi.object({
-        o_c_loandetail_datetopay  : Joi.date().required(),
-        o_c_loandetail_amounttopay: Joi.number().required(),
-      })),
-      o_c_loanperformances: Joi.object({
-        o_c_loanperformance: Joi.array().items(Joi.object({
-          o_c_loandetail_datetopay       : Joi.date().required(),
-          o_c_loanperformance_amounttopay: Joi.number().required(),
-        })),
-        o_c_loaninterestdetails: Joi.object({
-          o_c_loaninterestdetail: Joi.array().items(Joi.object({
-            o_c_loaninterestdetail_datetopay  : Joi.date().required(),
-            o_c_loaninterestdetail_amounttopay: Joi.number().required(),
-          })),
-          o_c_loaninterestperformances: Joi.object({
-            o_c_loaninterestperformance: Joi.array().items(Joi.object({
-              o_c_loaninterestperformance_datetopay  : Joi.date().required(),
-              o_c_loaninterestperformance_amounttopay: Joi.date().required(),
-            }))
-          })
-        })
-      })
-    })
-  }).required()
+  // o_c_loantransactions    : Joi.object({
+  //   o_c_loan_loancharttype: Joi.string().required(),
+  //   o_c_loandetails       : Joi.object({
+  //     o_c_loandetail: Joi.array().items(Joi.object({
+  //       o_c_loandetail_datetopay  : Joi.date().required(),
+  //       o_c_loandetail_amounttopay: Joi.number().required(),
+  //     })),
+  //     o_c_loanperformances: Joi.object({
+  //       o_c_loanperformance: Joi.array().items(Joi.object({
+  //         o_c_loandetail_datetopay       : Joi.date().required(),
+  //         o_c_loanperformance_amounttopay: Joi.number().required(),
+  //       })),
+  //       o_c_loaninterestdetails: Joi.object({
+  //         o_c_loaninterestdetail: Joi.array().items(Joi.object({
+  //           o_c_loaninterestdetail_datetopay  : Joi.date().required(),
+  //           o_c_loaninterestdetail_amounttopay: Joi.number().required(),
+  //         })),
+  //         o_c_loaninterestperformances: Joi.object({
+  //           o_c_loaninterestperformance: Joi.array().items(Joi.object({
+  //             o_c_loaninterestperformance_datetopay  : Joi.date().required(),
+  //             o_c_loaninterestperformance_amounttopay: Joi.date().required(),
+  //           }))
+  //         })
+  //       })
+  //     })
+  //   })
+  // }).required()
 }).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {
@@ -55,7 +55,7 @@ export default async ({ data, where }) => {
   }
   catch (err) {
     console.log(err);
-    throw new ValidationError(ERRORS.LEONINFO_PARSE_ERROR);
+    throw new ValidationError(ERRORS.LOAN_PARSE_ERROR);
   }
   let id = uuidv4();
   let mrtnos = [];
@@ -69,15 +69,14 @@ export default async ({ data, where }) => {
         mrtno      : item
       });
     });
-  } else {
+  } else if (data?.o_c_loanmrtnos?.o_c_loanmrtno){
     mrtnos.push({
       ...where,
       relation_id: id,
       type       : "LOAN",
-      mrtno      : data.o_c_loanmrtnos.o_c_loanmrtno
+      mrtno      : data?.o_c_loanmrtnos?.o_c_loanmrtno
     });
   }
-  console.log("==========>", mrtnos);
   if (Array.isArray(data?.o_c_loanrelnos?.o_c_loanrelno)){
     data.o_c_loanmrtnos.o_c_loanmrtno.forEach(item => {
       relnos.push({
@@ -87,15 +86,13 @@ export default async ({ data, where }) => {
         relno      : item
       });
     });
-  } else {
+  } else if (data?.o_c_loanrelnos?.o_c_loanrelno)
     relnos.push({
       ...where,
       relation_id: id,
       type       : "LOAN",
       relno      : data?.o_c_loanrelnos?.o_c_loanrelno
     });
-  }
-  console.log("==========>", relnos);
 
   let loanInfo = {
     id                        : id,

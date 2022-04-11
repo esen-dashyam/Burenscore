@@ -16,7 +16,7 @@ const schema = Joi.object({
   o_c_accredit_updatedexpdate: Joi.date().allow([null, ""]),
   o_c_accredit_extcount      : Joi.number().required(),
   o_c_accredit_balance       : Joi.number().required(),
-  o_c_accredit_isapproved    : Joi.number().allow([null, ""]),
+  // o_c_accredit_isapproved    : Joi.number().allow([null, ""]),
   o_c_accreditmrtnos         : Joi.object({
     o_c_accreditmrtno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
   }).optional().allow([null, ""]),
@@ -45,14 +45,13 @@ export default async ({ data, where }) => {
         mrtno      : item
       });
     });
-  } else {
+  } else if (data?.o_c_accreditmrtnos?.o_c_accreditmrtno)
     mrtnos.push({
       ...where,
       relation_id: id,
       type       : "ACCREDIT",
       mrtno      : data.o_c_accreditmrtnos.o_c_accreditmrtno
     });
-  }
   if (Array.isArray(data.o_c_accreditrelnos.o_c_accreditrelno)){
     data.o_c_accreditrelnos.o_c_accreditrelno.forEach(item => {
       relnos.push({
@@ -62,14 +61,13 @@ export default async ({ data, where }) => {
         relno      : item
       });
     });
-  } else {
+  } else if (data?.o_c_accreditrelnos?.o_c_accreditrelno)
     relnos.push({
       ...where,
       relation_id: id,
       type       : "ACCREDIT",
       relno      : data.o_c_accreditrelnos.o_c_accreditrelno
     });
-  }
   let accredit = {
     id                         : id,
     o_c_accredit_advamount     : data?.o_c_accredit_advamount,

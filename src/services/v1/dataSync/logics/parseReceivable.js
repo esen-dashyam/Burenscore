@@ -12,36 +12,36 @@ const schema =Joi.object({
   o_c_receivable_currencycode : Joi.string().required(),
   o_c_receivable_type         : Joi.string().required(),
   o_c_receivable_loanclasscode: Joi.string().required(),
-  o_c_receivable_isapproved   : Joi.number().allow([null, ""]),
+  o_c_receivable_isapproved   : Joi.boolean().allow([null, ""]),
   o_c_receivable_extdate      : Joi.date().required(),
-  o_c_receivabletransactions  : Joi.object({
-    o_c_receivable_loancharttype    : Joi.string().required(),
-    o_c_receivable_interestcharttype: Joi.string().required(),
-    o_c_receivabledetails           : Joi.object({
-      o_c_receivabledetail: Joi.array().items(Joi.object({
-        o_c_receivabledetail_datetopay  : Joi.date().required(),
-        o_c_receivabledetail_amounttopay: Joi.number().required(),
-      })),
-      o_c_receivableperformances: Joi.object({
-        o_c_receivableperformance: Joi.array().items(Joi.object({
-          o_c_receivableperformance_datetopay  : Joi.date().required(),
-          o_c_receivableperformance_amounttopay: Joi.number().required(),
-        })),
-        o_c_receivableinterestdetails: Joi.object({
-          o_c_receivableinterestdetail: Joi.array().items(Joi.object({
-            o_c_receivableinterestdetail_datetopay  : Joi.date().required(),
-            o_c_receivableinterestdetail_amounttopay: Joi.number().required(),
-          })),
-          o_c_receivableinterestperformances: Joi.object({
-            o_c_receivableinterestperformance: Joi.array().items(Joi.object({
-              o_c_receivableinterestperformance_datetopay  : Joi.date().required(),
-              o_c_receivableinterestperformance_amounttopay: Joi.number().required(),
-            }))
-          })
-        })
-      })
-    })
-  })
+  // o_c_receivabletransactions  : Joi.object({
+  //   o_c_receivable_loancharttype    : Joi.string().required(),
+  //   o_c_receivable_interestcharttype: Joi.string().required(),
+  //   o_c_receivabledetails           : Joi.object({
+  //     o_c_receivabledetail: Joi.array().items(Joi.object({
+  //       o_c_receivabledetail_datetopay  : Joi.date().required(),
+  //       o_c_receivabledetail_amounttopay: Joi.number().required(),
+  //     })),
+  //     o_c_receivableperformances: Joi.object({
+  //       o_c_receivableperformance: Joi.array().items(Joi.object({
+  //         o_c_receivableperformance_datetopay  : Joi.date().required(),
+  //         o_c_receivableperformance_amounttopay: Joi.number().required(),
+  //       })),
+  //       o_c_receivableinterestdetails: Joi.object({
+  //         o_c_receivableinterestdetail: Joi.array().items(Joi.object({
+  //           o_c_receivableinterestdetail_datetopay  : Joi.date().required(),
+  //           o_c_receivableinterestdetail_amounttopay: Joi.number().required(),
+  //         })),
+  //         o_c_receivableinterestperformances: Joi.object({
+  //           o_c_receivableinterestperformance: Joi.array().items(Joi.object({
+  //             o_c_receivableinterestperformance_datetopay  : Joi.date().required(),
+  //             o_c_receivableinterestperformance_amounttopay: Joi.number().required(),
+  //           }))
+  //         })
+  //       })
+  //     })
+  //   })
+  // })
 }).options({ allowUnknown: true });
 export default async ({ data, where }) => {
   if (!data) return null;
