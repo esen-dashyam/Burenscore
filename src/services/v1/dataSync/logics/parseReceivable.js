@@ -12,7 +12,7 @@ const schema =Joi.object({
   o_c_receivable_currencycode : Joi.string().required(),
   o_c_receivable_type         : Joi.string().required(),
   o_c_receivable_loanclasscode: Joi.string().required(),
-  o_c_receivable_isapproved   : Joi.boolean().allow([null, ""]),
+  o_c_receivable_isapproved   : Joi.number().allow([null, ""]),
   o_c_receivable_extdate      : Joi.date().required(),
   // o_c_receivabletransactions  : Joi.object({
   //   o_c_receivable_loancharttype    : Joi.string().required(),

@@ -20,7 +20,7 @@ const schema = Joi.object({
   o_bond_bondunitprice : Joi.number().required(),
   o_bond_interestinperc: Joi.number().required(),
   o_bond_balance       : Joi.number().required(),
-  o_bond_isapproved    : Joi.boolean().optional().allow([null, ""])
+  o_bond_isapproved    : Joi.number().optional().allow([null, ""])
 });
 
 export default async ({ data, where }) => {
