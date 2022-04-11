@@ -35,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey  : false,
       defaultValue: 0
     },
+    expiry_hours: {
+      type      : DataTypes.INTEGER,
+      allowNull : false,
+      primaryKey: false,
+    },
     success_request: {
       type        : DataTypes.FLOAT,
       allowNull   : false,

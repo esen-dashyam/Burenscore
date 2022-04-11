@@ -28,6 +28,7 @@ export default logic(schema, async (data, session) => {
     is_active,
     client_id         : client_id,
     client_secret     : secretKey,
+    expiry_hours      : 72,
     session_id        : "session_id",
     client_status     : CLIENT_STATUS.ACTIVE,
     client_status_date: new Date()
