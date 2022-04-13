@@ -34,6 +34,8 @@ export default method.post("/sync/insert", schema, async (req, res, session) => 
     date      : new Date()
   }, session);
   console.log("REQUEST===========>", request);
+  let errors = [];
+
   await asyncPooled(1, array, async (data) => {
     let falls = data.map(item =>{
       return async () => {
@@ -46,6 +48,11 @@ export default method.post("/sync/insert", schema, async (req, res, session) => 
             error      : result.error.code,
             date       : new Date(),
           }, session);
+          errors.push({
+            register_no: result.error.customer,
+            error      : result.error.code,
+            date       : new Date(),
+          });
         }
         await Promise.resolve();
       };
@@ -55,5 +62,6 @@ export default method.post("/sync/insert", schema, async (req, res, session) => 
 
   res.json({
     request_id: request._id,
+    errors
   });
 });

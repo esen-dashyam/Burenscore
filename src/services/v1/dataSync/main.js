@@ -259,7 +259,7 @@ export default logic(null, async (data, session) => {
       if (CUSTOMER?.bondInfo?.o_c_bondrelnos && CUSTOMER?.bondInfo?.o_c_bondrelnos.length > 0)
         await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.bondInfo?.o_c_bondrelnos, session));
     }
-    if (CUSTOMER?.mrtInfo.length > 0){
+    if (CUSTOMER?.mrtInfo?.length > 0){
       await insert(() => db.bulkCreate(db.OCMortgage, CUSTOMER?.mrtInfo, session));
     }
     // await Promise.all([insert(() => db.create(db.OBond, { ...CUSTOMER?.bondInfo }, session)),
@@ -409,7 +409,7 @@ export default logic(null, async (data, session) => {
           await bulkUpdate({ type: "relno", data: CUSTOMER?.bondInfo?.o_c_bondrelnos, attribute: "relno", where: { ...where, type: "BOND", relation_id: bond.id }, session });
       }
     }
-    if (CUSTOMER.mrtInfo){
+    if (CUSTOMER?.mrtInfo){
       let falls = CUSTOMER.mrtInfo.map(item => {
         return async () => {
           if (item.o_c_mrtstateregisterno){

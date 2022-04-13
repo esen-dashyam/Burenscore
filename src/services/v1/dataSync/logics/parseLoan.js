@@ -78,7 +78,7 @@ export default async ({ data, where }) => {
     });
   }
   if (Array.isArray(data?.o_c_loanrelnos?.o_c_loanrelno)){
-    data.o_c_loanmrtnos.o_c_loanmrtno.forEach(item => {
+    data.o_c_loanrelnos.o_c_loanrelno.forEach(item => {
       relnos.push({
         ...where,
         relation_id: id,
