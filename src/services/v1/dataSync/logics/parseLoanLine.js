@@ -11,7 +11,7 @@ const schema = Joi.object({
   o_c_loanline_sectorcode    : Joi.string().required(),
   o_c_loanline_loaninterest  : Joi.number().required(),
   o_c_loanline_timestoloan   : Joi.date().required(),
-  o_c_loanline_extdate       : Joi.date().required(),
+  o_c_loanline_extdate       : Joi.date().optional().allow([null, ""]),
   o_c_loanline_interestinperc: Joi.number().required(),
   o_c_loanline_commissionperc: Joi.number().required(),
   o_c_loanline_fee           : Joi.number().required(),

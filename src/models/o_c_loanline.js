@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_loanline_currencycode: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(45),
       allowNull: true,
     },
     o_c_loanline_sectorcode: {
