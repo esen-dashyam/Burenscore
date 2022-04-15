@@ -46,12 +46,20 @@ export default method.post("/sync/insert", schema, async (req, res, session) => 
             request_id : request._id,
             register_no: result.error.customer,
             error      : result.error.code,
+            sync_status: "FAILED",
             date       : new Date(),
           }, session);
           errors.push({
             register_no: result.error.customer,
             error      : result.error.code,
             date       : new Date(),
+          });
+        } else {
+          await auditService.insert_error({
+            request_id : request.id,
+            register_no: result.customer.customerInfo.o_c_registerno,
+            sync_status: "SUCCESS",
+            date       : new Date()
           });
         }
         await Promise.resolve();

@@ -267,7 +267,7 @@ export default logic(null, async (data, session) => {
     //   insert(() => db.bulkCreate(db.Relno, CUSTOMER?.bondInfo?.o_c_bondrelnos, session)),
     //   insert(() => db.bulkCreate(db.OCMortgage, CUSTOMER?.mrtInfo, session))]);
 
-    return ({ cusotmer: CUSTOMER });
+    return ({ customer: CUSTOMER });
   }
   if (customer){
 
