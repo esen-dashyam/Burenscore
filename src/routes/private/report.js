@@ -109,18 +109,18 @@ export default method.post("/report", schema, async (req, res, session) => {
     if (item.payment_status === "PAID"){
       PAID_LOANS.push({
         ...item.dataValues,
-        o_c_loan_starteddate: moment(o_c_loan_starteddate).format("YYYY-MM-DD"),
-        o_c_loan_expdate:moment(o_c_loan_expdate).format("YYYY-MM-DD"),
-        o_c_loan_extdate:moment(o_c_loan_extdate).format("YYYY-MM-DD"),
-        o_c_updatedexpdate:moment(o_c_updatedexpdate).format("YYYY-MM-DD")
+        o_c_loan_starteddate: moment(item.o_c_loan_starteddate).format("YYYY-MM-DD"),
+        o_c_loan_expdate    : moment(item.o_c_loan_expdate).format("YYYY-MM-DD"),
+        o_c_loan_extdate    : moment(item.o_c_loan_extdate).format("YYYY-MM-DD"),
+        o_c_updatedexpdate  : moment(item.o_c_updatedexpdate).format("YYYY-MM-DD")
       });
     } else {
       UNPAID_LOANS.push({
         ...item.dataValues,
-        o_c_loan_starteddate: moment(o_c_loan_starteddate).format("YYYY-MM-DD"),
-        o_c_loan_expdate:moment(o_c_loan_expdate).format("YYYY-MM-DD"),
-        o_c_loan_extdate:moment(o_c_loan_extdate).format("YYYY-MM-DD"),
-        o_c_updatedexpdate:moment(o_c_updatedexpdate).format("YYYY-MM-DD")
+        o_c_loan_starteddate: moment(item.o_c_loan_starteddate).format("YYYY-MM-DD"),
+        o_c_loan_expdate    : moment(item.o_c_loan_expdate).format("YYYY-MM-DD"),
+        o_c_loan_extdate    : moment(item.o_c_loan_extdate).format("YYYY-MM-DD"),
+        o_c_updatedexpdate  : moment(item.o_c_updatedexpdate).format("YYYY-MM-DD")
       });
     }
     switch (item.o_c_loan_loanclasscode) {
@@ -187,17 +187,17 @@ export default method.post("/report", schema, async (req, res, session) => {
   leasings.forEach(item => {
     console.log("o_c_leasing_loanclasscode:", item.o_c_leasing_loanclasscode);
     if (item.payment_status === "PAID"){
-      PAID_LEASINGS.push({ 
-         ...item.dataValues,
-         o_c_leasing_starteddate: moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
-         o_c_leasing_expdate:moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD")
-        });
-    } else {
-      UNPAID_LEASINGS.push({ 
+      PAID_LEASINGS.push({
         ...item.dataValues,
         o_c_leasing_starteddate: moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
-        o_c_leasing_expdate:moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD")
-       });
+        o_c_leasing_expdate    : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD")
+      });
+    } else {
+      UNPAID_LEASINGS.push({
+        ...item.dataValues,
+        o_c_leasing_starteddate: moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
+        o_c_leasing_expdate    : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD")
+      });
     }
     switch (item.o_c_leasing_loanclasscode) {
       case "01": {
@@ -266,18 +266,18 @@ export default method.post("/report", schema, async (req, res, session) => {
     if (item.payment_status === "PAID"){
       PAID_ONUS.push({
         ...item.dataValues,
-        o_c_onus_rightopeneddate: moment(item.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
-        o_c_onus_starteddate:moment(item.o_c_onus_starteddate).format("YYYY-MM-DD"),
-        o_c_onus_paymentfinaldate:moment(item.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
-        o_c_onus_expdate:moment(item.o_c_onus_expdate).format("YYYY-MM-DD")
+        o_c_onus_rightopeneddate : moment(item.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
+        o_c_onus_starteddate     : moment(item.o_c_onus_starteddate).format("YYYY-MM-DD"),
+        o_c_onus_paymentfinaldate: moment(item.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
+        o_c_onus_expdate         : moment(item.o_c_onus_expdate).format("YYYY-MM-DD")
       });
     } else {
       UNPAID_ONUS.push({
         ...item.dataValues,
-        o_c_onus_rightopeneddate: moment(item.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
-        o_c_onus_starteddate:moment(item.o_c_onus_starteddate).format("YYYY-MM-DD"),
-        o_c_onus_paymentfinaldate:moment(item.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
-        o_c_onus_expdate:moment(item.o_c_onus_expdate).format("YYYY-MM-DD")
+        o_c_onus_rightopeneddate : moment(item.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
+        o_c_onus_starteddate     : moment(item.o_c_onus_starteddate).format("YYYY-MM-DD"),
+        o_c_onus_paymentfinaldate: moment(item.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
+        o_c_onus_expdate         : moment(item.o_c_onus_expdate).format("YYYY-MM-DD")
       });
     }
     switch (item.o_c_onus_loanclasscode) {
@@ -347,14 +347,14 @@ export default method.post("/report", schema, async (req, res, session) => {
       PAID_RECEIVABLS.push({
         ...item.dataValues,
         o_c_receivable_starteddate: moment(item.o_c_receivable_starteddate).format("YYYY-MM-DD"),
-        o_c_receivable_expdate:moment(item.o_c_receivable_expdate).format("YYYY-MM-DD"),
+        o_c_receivable_expdate    : moment(item.o_c_receivable_expdate).format("YYYY-MM-DD"),
       });
     } else {
       UNPAID_RECEIVABLS.push({
         ...item.dataValues,
         o_c_receivable_starteddate: moment(item.o_c_receivable_starteddate).format("YYYY-MM-DD"),
-        o_c_receivable_expdate:moment(item.o_c_receivable_expdate).format("YYYY-MM-DD"),
-        o_c_receivable_extdate:moment(item.o_c_receivable_extdate).format("YYYY-MM-DD")
+        o_c_receivable_expdate    : moment(item.o_c_receivable_expdate).format("YYYY-MM-DD"),
+        o_c_receivable_extdate    : moment(item.o_c_receivable_extdate).format("YYYY-MM-DD")
       });
     }
     switch (item.o_c_receivable_loanclasscode) {
@@ -424,17 +424,17 @@ export default method.post("/report", schema, async (req, res, session) => {
       PAID_LOANLINES.push({
         ...item.dataValues,
         o_c_loanline_starteddate: moment(item.o_c_loanline_starteddate).format("YYYY-MM-DD"),
-        o_c_receivable_expdate:moment(item.o_c_receivable_expdate).format("YYYY-MM-DD"),
-        o_c_loanline_timestoloan:moment(item.o_c_loanline_timestoloan).format("YYYY-MM-DD"),
-        o_c_receivable_extdate:moment(item.o_c_receivable_extdate).format("YYYY-MM-DD")
+        o_c_receivable_expdate  : moment(item.o_c_receivable_expdate).format("YYYY-MM-DD"),
+        o_c_loanline_timestoloan: moment(item.o_c_loanline_timestoloan).format("YYYY-MM-DD"),
+        o_c_receivable_extdate  : moment(item.o_c_receivable_extdate).format("YYYY-MM-DD")
       });
     } else {
       UNPAID_LOANLINES.push({
         ...item.dataValues,
         o_c_loanline_starteddate: moment(item.o_c_loanline_starteddate).format("YYYY-MM-DD"),
-        o_c_receivable_expdate:moment(item.o_c_receivable_expdate).format("YYYY-MM-DD"),
-        o_c_loanline_timestoloan:moment(item.o_c_loanline_timestoloan).format("YYYY-MM-DD"),
-        o_c_receivable_extdate:moment(item.o_c_receivable_extdate).format("YYYY-MM-DD")
+        o_c_receivable_expdate  : moment(item.o_c_receivable_expdate).format("YYYY-MM-DD"),
+        o_c_loanline_timestoloan: moment(item.o_c_loanline_timestoloan).format("YYYY-MM-DD"),
+        o_c_receivable_extdate  : moment(item.o_c_receivable_extdate).format("YYYY-MM-DD")
       });
     }
     switch (item.o_c_loanline_loanclasscode) {
@@ -506,14 +506,14 @@ export default method.post("/report", schema, async (req, res, session) => {
       PAID_BONDS.push({
         ...item.dataValues,
         o_bond_starteddate: moment(item.o_bond_starteddate).format("YYYY-MM-DD"),
-        o_bond_expdate:moment(item.o_bond_expdate).format("YYYY-MM-DD")
+        o_bond_expdate    : moment(item.o_bond_expdate).format("YYYY-MM-DD")
       });
       PAID_COUNT.NORMAL +=1;
     } else {
       UNPAID_BONDS.push({
         ...item.dataValues,
-        o_bond_starteddate:moment(item.o_bond_starteddate).format("YYYY-MM-DD"),
-        o_bond_expdate:moment(item.o_bond_expdate).format("YYYY-MM-DD")
+        o_bond_starteddate: moment(item.o_bond_starteddate).format("YYYY-MM-DD"),
+        o_bond_expdate    : moment(item.o_bond_expdate).format("YYYY-MM-DD")
       });
       UNPAID_COUNT.NORMAL +=1;
       UNPAID_NORMAL[item.o_c_loanline_currencycode] =+ item.o_c_loanline_balance;
