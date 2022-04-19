@@ -2,19 +2,130 @@ import { v4 as uuidv4 } from "uuid";
 import Joi from "joi";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERRORS } from "../../../../constants";
+import { errors } from "@goodtechsoft/micro-service";
 
 const schema = Joi.object({
-  o_c_customercode               : Joi.string().required(),
-  o_c_loandescription            : Joi.string().allow([null, ""]),
-  o_c_bankCode                   : Joi.string().required(),
+  o_c_customercode: Joi.string().min(10).max(20).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "M12310";
+          break;
+          case "string.min":
+          err.message = "10";
+          break;
+          case "string.max":
+          err.message = "20";
+          break;
+          default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_loandescription: Joi.string(250).allow([null, ""]).error(errors=> {
+    errors.forEach(err=> {
+      switch (err.type){
+        case "string.max":
+          err.message="ME2013-o_c_customer_information-ны loandescription таагийн утгын урт заасан хэмжээнээс хэтэрсэн байна.";
+          break;
+          default:
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_bankCode: Joi.string().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME3643-o_c_bankCode таагийн утга нь жагсаалтанд байхгүй байна.";
+          break;
+          default :
+          break;
+      }
+    });
+    return errors;
+  }),
   o_c_branchcode                 : Joi.string().allow([null, ""]),
-  o_c_isorganization             : Joi.number().required(),
-  o_c_customername               : Joi.string().allow([null, ""]),
-  c_lastname                     : Joi.string().allow([null, ""]),
-  o_c_isforeign                  : Joi.number().required(),
-  o_c_birthdate                  : Joi.date().allow([null, ""]),
+  o_c_isorganization             : Joi.number().required().error(errors=>{
+    errors.forEach(err =>{
+      switch (err.type){
+        case "any.required":
+          err.message="ME3637-'o_c_customer_information-ны isorganization таагийн байхгүй учир цааш шалгахгүй.";
+          break;
+          case"any.number":
+          err.message="ME2019.o_c_customer_information-ны isorganization таагийн утга 0 эсвэл 1 биш байна"
+          default :
+          break;
+      }
+    });
+  }),
+  o_c_customername               : Joi.string(100).required().error(errors=> {
+    errors.forEach(err=>{
+      switch (err.type){
+        case "any.required":
+          err.message="ME2020-o_c_customer_information-ны customername тааг байхгүй байна";
+          break;
+          case"string.max":
+          err.message="ME2021-o_c_customer_information-ны customername таагийн утгын урт заасан хэмжээнээс хэтэрсэн байна."
+          break;
+          default: 
+          break;
+      }
+    })
+  }),
+  c_lastname                     : Joi.string(50).allow([null, ""]).error(errors=>{
+    errors.forEach(err=>{
+      switch (err.type){
+        case "string.max":
+          err.message="ME2022-o_c_customer_information-ны lastname таагийн утгын урт заасан хэмжээнээс хэтэрсэн байна"
+          break;
+          default:
+          break;
+      }
+    })
+  }),
+  o_c_isforeign                  : Joi.number().required().error(errors=>{
+    errors.forEach(err=>{
+      switch (err.type){
+        case "any.required":
+          err.message="ME2023-o_c_customer_information-ны isforeign тааг байхгүй байна."
+          break;
+          case "any.number":
+          err.message="ME2024-o_c_customer_information-ны isforeign таагийн утга 0 эсвэл 1 биш байна."
+          break;
+          default:
+          break;
+      }
+    })
+}),
+  o_c_birthdate                  : Joi.date().allow([null, ""]).error(errors=>{
+    errors.forEach(err=>{
+      switch (err.type){
+        case "any.date":
+          err.message="ME2025-o_c_customer_information-ны birthdate таагийн оруулсан утгын формат буруу байна."
+          break;
+          default:
+          break;
+      }
+    })
+  }),
   o_c_zipcode                    : Joi.string().allow([null, ""]),
-  o_c_address                    : Joi.string().required(),
+  o_c_address                    : Joi.string(300).required().error(errors=>{
+    errors.forEach(err=>{
+      switch (err.type){
+        case "any.required":
+          err.message="ME2028-o_c_customer_information-ны address тааг байхгүй байна."
+          break;
+          case "string.max":
+          err.message="ME2029-o_c_customer_information-ны address таагийн утгын урт заасан хэмжээнээс хэтэрсэн байна."
+          break;
+          default:
+          break;
+      }
+    })
+  }),
   o_c_registerno                 : Joi.string().required(),
   o_c_stateregister_passportorno : Joi.string().allow([null, ""]),
   o_c_numofemployee              : Joi.number().allow([null, ""]),
@@ -38,8 +149,10 @@ export default async (customerInfo) => {
   try {
     await schema.validate(customerInfo);
   } catch (err){
-    console.log(err);
-    throw new ValidationError(ERRORS.CUSTOMER_PARSE_ERROR);
+    console.log("=======================================================");
+    console.log(err.details);
+    console.log("=======================================================");
+    throw new ValidationError(err.details[0].message);
   }
   let customer = {
     id                             : uuidv4(),
