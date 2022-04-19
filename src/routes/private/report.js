@@ -602,7 +602,10 @@ export default method.post("/report", schema, async (req, res, session) => {
   RISK_VALUE = { NORMAL: parseFloat(RISK_VALUE.NORMAL).toFixed(2), OVERDUE: parseFloat(RISK_VALUE.OVERDUE).toFixed(2), ABNORMAL: parseFloat(RISK_VALUE.ABNORMAL).toFixed(2), UNCERTAIN: parseFloat(RISK_VALUE.UNCERTAIN).toFixed(2), BAD: parseFloat(RISK_VALUE.BAD).toFixed(2), };
 
   res.json({
-    customer,
+    customer: {
+      ...customer.dataValues,
+      o_c_birthdate: moment(customer.o_c_birthdate).format("YYYY-MM-DD")
+    },
     PAID_LOANS,
     PAID_LEASINGS,
     PAID_ONUS,
