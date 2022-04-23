@@ -5,15 +5,163 @@ import { ERRORS } from "../../../../constants";
 import Joi from "joi";
 
 const schema =Joi.object({
-  o_c_receivable_balance      : Joi.number().required(),
-  o_c_receivable_advamount    : Joi.number().required(),
-  o_c_receivable_starteddate  : Joi.date().required(),
-  o_c_receivable_expdate      : Joi.date().required(),
-  o_c_receivable_currencycode : Joi.string().required(),
-  o_c_receivable_type         : Joi.string().required(),
-  o_c_receivable_loanclasscode: Joi.string().required(),
-  o_c_receivable_isapproved   : Joi.number().allow([null, ""]),
-  o_c_receivable_extdate      : Joi.date().required(),
+  o_c_receivable_balance: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME3661";
+          break;
+        case "any.empty":
+          err.message = "ME3661";
+          break;
+        case "string.regex.base":
+          err.message = "ME3664";
+          break;
+        case "string.max":
+          err.message = "ME3662";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_receivable_advamount: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME3402";
+          break;
+        case "any.empty":
+          err.message = "ME3402";
+          break;
+        case "string.regex.base":
+          err.message = "ME3405";
+          break;
+        case "string.max":
+          err.message = "ME3403";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_receivable_starteddate: Joi.string()
+    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
+      errors.forEach(err => {
+        switch (err.type){
+          case "any.required":
+            err.message = "ME3406";
+            break;
+          case "any.empty":
+            err.message = "ME3406";
+            break;
+          case "string.regex.base":
+            err.message = "ME3407";
+            break;
+          default :
+            break;
+        }
+      });
+      return errors;
+    }),
+  o_c_receivable_expdate: Joi.string()
+    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
+      errors.forEach(err => {
+        switch (err.type){
+          case "any.required":
+            err.message = "ME3408";
+            break;
+          case "any.empty":
+            err.message = "ME3408";
+            break;
+          case "string.regex.base":
+            err.message = "ME3409";
+            break;
+          default :
+            break;
+        }
+      });
+      return errors;
+    }),
+  o_c_receivable_currencycode: Joi.string().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME3410";
+          break;
+        case "any.empty":
+          err.message = "ME3410";
+          break;
+        case "string.max":
+          err.message = "ME3411";
+          break;
+        case "string.base":
+          err.message = "ME3412";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_receivable_type: Joi.string().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME3413";
+          break;
+        case "any.empty":
+          err.message = "ME3413";
+          break;
+        case "string.max":
+          err.message = "ME3414";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_receivable_loanclasscode: Joi.string().max(16).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME3416";
+          break;
+        case "any.empty":
+          err.message = "ME3416";
+          break;
+        case "string.max":
+          err.message = "ME3417";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_receivable_isapproved: Joi.number().allow([null, ""]),
+  o_c_receivable_extdate   : Joi.string()
+    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
+      errors.forEach(err => {
+        switch (err.type){
+          case "any.required":
+            err.message = "ME3418";
+            break;
+          case "any.empty":
+            err.message = "ME3418";
+            break;
+          case "string.regex.base":
+            err.message = "ME3419";
+            break;
+          default :
+            break;
+        }
+      });
+      return errors;
+    }),
   // o_c_receivabletransactions  : Joi.object({
   //   o_c_receivable_loancharttype    : Joi.string().required(),
   //   o_c_receivable_interestcharttype: Joi.string().required(),
@@ -49,8 +197,8 @@ export default async ({ data, where }) => {
     await schema.validate(data);
   }
   catch (err) {
-    console.log(err);
-    throw new ValidationError(ERRORS.RECEIVEDABLE_PARSE_ERROR);
+    console.log("================================", err);
+    throw new ValidationError(err.details[0].message);
   }
   let receivableInfo = {
     id                              : uuidv4(),
