@@ -5,6 +5,7 @@ import { NotfoundError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERRORS } from "../../constants";
 import axios from "axios";
 import moment from "moment";
+import { APPENDIX } from "../../constants";
 const { Op } = Sequelize;
 
 const getCurrencies = async ({ currencyCode }) => {
@@ -602,7 +603,10 @@ export default method.post("/report", schema, async (req, res, session) => {
   RISK_VALUE = { NORMAL: parseFloat(RISK_VALUE.NORMAL).toFixed(2), OVERDUE: parseFloat(RISK_VALUE.OVERDUE).toFixed(2), ABNORMAL: parseFloat(RISK_VALUE.ABNORMAL).toFixed(2), UNCERTAIN: parseFloat(RISK_VALUE.UNCERTAIN).toFixed(2), BAD: parseFloat(RISK_VALUE.BAD).toFixed(2), };
 
   res.json({
-    customer,
+    customer: {
+      ...customer.dataValues,
+      c_occupation: APPENDIX.APPENDIX_Y[customer.c_occupation]
+    },
     PAID_LOANS,
     PAID_LEASINGS,
     PAID_ONUS,
