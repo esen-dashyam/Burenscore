@@ -3,24 +3,204 @@ import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERRORS } from "../../../../constants";
 import Joi from "joi";
+import { max } from "joi/lib/types/array";
 const schema = Joi.object({
-  o_bond_advamount: Joi.string().required(),
-  o_c_bondmrtnos  : Joi.object({
+  o_bond_advamount: Joi.string().regex(/^[0-9]/).max(22).required().error(errors => {
+    errors.forEach(err => {
+      console.log("=============saaa========", err.type);
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2061";
+          break;
+        case "any.empty":
+          err.message = "ME2063";
+          break;
+        case "string.regex.base":
+          err.message = "ME2065";
+          break;
+        case "string.base":
+          err.message = "ME2066";
+          break;
+        case "string.max":
+          err.message = "ME2064";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_bondmrtnos: Joi.object({
     o_c_bondmrtno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
   }).optional().allow([null, ""]),
   o_c_bondrelnos: Joi.object({
     o_c_bondrelno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
   }).optional().allow([null, ""]),
-  o_bond_starteddate   : Joi.date().required(),
-  o_bond_expdate       : Joi.date().required(),
-  o_bond_currencycode  : Joi.string().required(),
-  o_bond_type          : Joi.string().required(),
-  o_bond_bondmarket    : Joi.string().allow([null, ""]),
-  o_bond_numberofbonds : Joi.number().required(),
-  o_bond_bondunitprice : Joi.number().required(),
-  o_bond_interestinperc: Joi.number().required(),
-  o_bond_balance       : Joi.number().required(),
-  o_bond_isapproved    : Joi.number().optional().allow([null, ""])
+  o_bond_starteddate: Joi.string()
+    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
+      errors.forEach(err => {
+        switch (err.type){
+          case "any.empty":
+            err.message = "ME2067";
+            break;
+          case "string.regex.base":
+            err.message = "ME2068";
+            break;
+          default :
+            break;
+        }
+      });
+      return errors;
+    }),
+  o_bond_expdate: Joi.string()
+    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
+      errors.forEach(err => {
+        switch (err.type){
+          case "any.empty":
+            err.message = "ME2069";
+            break;
+          case "string.regex.base":
+            err.message = "ME2070";
+            break;
+          default :
+            break;
+        }
+      });
+      return errors;
+    }),
+  o_bond_currencycode: Joi.string().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2071";
+          break;
+        case "any.empty":
+          err.message = "ME2073";
+          break;
+        case "string.max":
+          err.message = "ME2072";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_bond_type: Joi.string().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2074";
+          break;
+        case "any.empty":
+          err.message = "ME2076";
+          break;
+        case "string.max":
+          err.message = "ME2075";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_bond_bondmarket: Joi.string().allow([null, ""]).error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2076";
+          break;
+        case "string.max":
+          err.message = "ME2077";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_bond_numberofbonds: Joi.string().regex(/^[0-9]/).max(20).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.empty":
+          err.message = "ME2078";
+          break;
+        case "string.max":
+          err.message = "ME2077";
+          break;
+        case "string.regex.base":
+          err.message = "ME2079";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_bond_bondunitprice: Joi.string().regex(/^[0-9]/).max(22).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2080";
+          break;
+        case "any.empty":
+          err.message = "ME2080";
+          break;
+        case "string.max":
+          err.message = "ME2081";
+          break;
+        case "string.regex.base":
+          err.message = "ME2083";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_bond_interestinperc: Joi.string().regex(/^[0-9]/).max(9).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2084";
+          break;
+        case "any.empty":
+          err.message = "ME2084";
+          break;
+        case "string.max":
+          err.message = "ME2085";
+          break;
+        case "string.regex.base":
+          err.message = "ME2086";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_bond_balance: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME3669";
+          break;
+        case "any.empty":
+          err.message = "ME3669";
+          break;
+        case "string.max":
+          err.message = "ME3670";
+          break;
+        case "string.regex.base":
+          err.message = "ME3671";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_bond_isapproved: Joi.number().optional().allow([null, ""])
 });
 
 export default async ({ data, where }) => {
@@ -31,7 +211,7 @@ export default async ({ data, where }) => {
   }
   catch (err) {
     console.log(err);
-    throw new ValidationError(ERRORS.BOND_PARSE_ERROR);
+    throw new ValidationError(err.details[0].message);
   }
 
   let id = uuidv4();
@@ -53,7 +233,7 @@ export default async ({ data, where }) => {
       type       : "BOND",
       mrtno      : data.o_c_bondmrtnos.o_c_bondmrtno
     });
-  // console.log("==========>", mrtnos);
+
   if (Array.isArray(data.o_c_bondrelnos.o_c_bondrelno)){
     data.o_c_bondrelnos.o_c_bondrelno.forEach(item => {
       relnos.push({
@@ -70,7 +250,7 @@ export default async ({ data, where }) => {
       type       : "BOND",
       relno      : data.o_c_bondrelnos.o_c_bondrelno
     });
-  // console.log("==========>", relnos);
+
 
 
   let bond = {

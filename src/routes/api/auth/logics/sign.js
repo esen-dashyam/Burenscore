@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import config from "../../../../config";
-
 export default async (client) => {
   let accessToken = await jwt.sign({
     uid: client.id,

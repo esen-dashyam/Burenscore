@@ -3,21 +3,203 @@ import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERRORS } from "../../../../constants";
 import Joi from "joi";
+import number from "joi/lib/types/number";
 
 const schema = Joi.object({
-  o_c_accredit_advamount     : Joi.number().required(),
-  o_c_accredit_starteddate   : Joi.date().required(),
-  o_c_accredit_expdate       : Joi.date().required(),
-  o_c_accredit_currencycode  : Joi.string().required(),
-  o_c_accredit_type          : Joi.string().required(),
-  o_c_accredit_interestinperc: Joi.number().required(),
-  o_c_accredit_commissionperc: Joi.number().required(),
-  o_c_accredit_fee           : Joi.number().required(),
-  o_c_accredit_updatedexpdate: Joi.date().allow([null, ""]),
-  o_c_accredit_extcount      : Joi.number().required(),
-  o_c_accredit_balance       : Joi.number().required(),
-  // o_c_accredit_isapproved    : Joi.number().allow([null, ""]),
-  o_c_accreditmrtnos         : Joi.object({
+  o_c_accredit_advamount: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME7002";
+          break;
+        case "any.empty":
+          err.message = "ME7002";
+          break;
+        case "string.max":
+          err.message = "ME7003";
+          break;
+        case "string.regex.base":
+          err.message = "ME7004";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_accredit_starteddate: Joi.string()
+    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
+      errors.forEach(err => {
+        switch (err.type){
+          case "any.required":
+            err.message = "ME7006";
+            break;
+          case "any.empty":
+            err.message = "ME7006";
+            break;
+          case "string.regex.base":
+            err.message = "ME7007";
+            break;
+          default :
+            break;
+        }
+      });
+      return errors;
+    }),
+  o_c_accredit_expdate: Joi.string()
+    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
+      errors.forEach(err => {
+        switch (err.type){
+          case "any.required":
+            err.message = "ME7008";
+            break;
+          case "any.empty":
+            err.message = "ME7008";
+            break;
+          case "string.regex.base":
+            err.message = "ME7009";
+            break;
+          default :
+            break;
+        }
+      });
+      return errors;
+    }),
+  o_c_accredit_currencycode: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME7010";
+          break;
+        case "any.empty":
+          err.message = "ME7012";
+          break;
+        case "string.max":
+          err.message = "ME7011";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_accredit_type: Joi.string().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME7013";
+          break;
+        case "any.empty":
+          err.message = "ME7015";
+          break;
+        case "number.max":
+          err.message = "ME7014";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_accredit_interestinperc: Joi.string().regex(/^[0-9]/).max(9).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME7016";
+          break;
+        case "any.empty":
+          err.message = "ME7016";
+          break;
+        case "string.regex.base":
+          err.message = "ME7018";
+          break;
+        case "string.max":
+          err.message = "ME7017";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_accredit_commissionperc: Joi.string().regex(/^[0-9]/).max(9).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME7020";
+          break;
+        case "any.empty":
+          err.message = "ME7020";
+          break;
+        case "string.regex.base":
+          err.message = "ME7019";
+          break;
+        case "string.max":
+          err.message = "ME7023";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_accredit_fee: Joi.string().regex(/^[0-9]/).max(15).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME7024";
+          break;
+        case "any.empty":
+          err.message = "ME7024";
+          break;
+        case "string.regex.base":
+          err.message = "ME7026";
+          break;
+        case "string.max":
+          err.message = "ME7025";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_accredit_updatedexpdate: Joi.date().allow([null, ""]).error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "date.format":
+          err.message = "ME7027";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_accredit_extcount: Joi.string()
+    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
+      errors.forEach(err => {
+        console.log("========================AAAA============", err.type);
+        switch (err.type){
+          case "any.required":
+            err.message = "ME7029";
+            break;
+          case "any.empty":
+            err.message = "ME7029";
+            break;
+          case "string.regex.base":
+            err.message = "ME7030";
+            break;
+          case "string.max":
+            err.message = "ME7031";
+            break;
+          default :
+            break;
+        }
+      });
+    }),
+  o_c_accredit_balance: Joi.number().required(),
+  o_c_accreditmrtnos  : Joi.object({
     o_c_accreditmrtno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
   }).optional().allow([null, ""]),
   o_c_accreditrelnos: Joi.object({
@@ -31,7 +213,7 @@ export default async ({ data, where }) => {
     await schema.validate(data);
   } catch (err){
     console.log(err);
-    throw new ValidationError(ERRORS.ACCREDIT_PARSE_ERROR);
+    throw new ValidationError(err.details[0].message);
   }
   let id = uuidv4();
   let mrtnos = [];

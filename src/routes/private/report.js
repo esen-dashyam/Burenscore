@@ -606,6 +606,7 @@ export default method.post("/report", schema, async (req, res, session) => {
     customer: {
       ...customer.dataValues,
       c_occupation: APPENDIX.APPENDIX_Y[customer.c_occupation]
+      o_c_birthdate: moment(customer.o_c_birthdate).format("YYYY-MM-DD")
     },
     PAID_LOANS,
     PAID_LEASINGS,
