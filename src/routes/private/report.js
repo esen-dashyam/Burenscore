@@ -110,10 +110,11 @@ export default method.post("/report", schema, async (req, res, session) => {
     if (item.payment_status === "PAID"){
       PAID_LOANS.push({
         ...item.dataValues,
-        o_c_loan_starteddate: moment(item.o_c_loan_starteddate).format("YYYY-MM-DD"),
-        o_c_loan_expdate    : moment(item.o_c_loan_expdate).format("YYYY-MM-DD"),
-        o_c_loan_extdate    : moment(item.o_c_loan_extdate).format("YYYY-MM-DD"),
-        o_c_updatedexpdate  : moment(item.o_c_updatedexpdate).format("YYYY-MM-DD")
+        o_c_loan_starteddate  : moment(item.o_c_loan_starteddate).format("YYYY-MM-DD"),
+        o_c_loan_expdate      : moment(item.o_c_loan_expdate).format("YYYY-MM-DD"),
+        o_c_loan_extdate      : moment(item.o_c_loan_extdate).format("YYYY-MM-DD"),
+        o_c_updatedexpdate    : moment(item.o_c_updatedexpdate).format("YYYY-MM-DD"),
+        o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[]
       });
     } else {
       UNPAID_LOANS.push({
@@ -602,7 +603,7 @@ export default method.post("/report", schema, async (req, res, session) => {
   RISK_VALUE = { NORMAL: parseFloat(RISK_VALUE.NORMAL).toFixed(2), OVERDUE: parseFloat(RISK_VALUE.OVERDUE).toFixed(2), ABNORMAL: parseFloat(RISK_VALUE.ABNORMAL).toFixed(2), UNCERTAIN: parseFloat(RISK_VALUE.UNCERTAIN).toFixed(2), BAD: parseFloat(RISK_VALUE.BAD).toFixed(2), };
 
   res.json({
-    get_date: moment(new Date).format("YYYY-MM-DD HH:mm"),
+    get_date: moment(new Date).format("YYYY-MM-DD HH:mm").tz('Asia/Ulaanbaatar'),
     customer: {
       ...customer.dataValues,
       c_occupation : APPENDIX.APPENDIX_Y[customer.c_occupation],
