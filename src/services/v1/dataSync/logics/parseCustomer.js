@@ -114,25 +114,26 @@ const schema = Joi.object({
       }
     }); return errors;
   }),
-  // o_c_isforeign: Joi.number().required().error(errors=>{
-  //   errors.forEach(err=>{
-  //     switch (err.type){
-  //       case "any.required":
-  //         err.message="ME2023";
-  //         break;
-  //       case "any.number":
-  //         err.message="ME2024";
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //   });
-  //   return errors;
-  // }),
-  o_c_birthdate: Joi.date().allow([null, ""]).error(errors=>{
+  o_c_isforeign: Joi.number().required().error(errors=>{
     errors.forEach(err=>{
       switch (err.type){
-        case "any.date":
+        case "any.required":
+          err.message="ME2023";
+          break;
+        case "any.number":
+          err.message="ME2024";
+          break;
+        default:
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_birthdate: Joi.string()
+  .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).allow([null, ""]).allow([null, ""]).error(errors=>{
+    errors.forEach(err=>{
+      switch (err.type){
+        case "string.regex.base":
           err.message="ME2025";
           break;
         default:
@@ -192,15 +193,18 @@ const schema = Joi.object({
       }
     });
   }),
-  o_c_numofemployee: Joi.number().allow([null, ""]).error(errors=> {
+  o_c_numofemployee: Joi.number().integer().max(99999).allow([null, ""]).error(errors=> {
     errors.forEach(err=>{
       switch (err.type){
         case "any.empty":
           err.message = "ME2032";
           break;
-        case "string.max":
+        case "number.max":
           err.message="ME2033";
           break;
+        case "number.integer":
+         err.message="ME2034";
+        break;
         default:
           break;
       }
