@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERRORS } from "../../../../constants";
 import Joi from "joi";
-import { max } from "joi/lib/types/array";
+
 const schema = Joi.object({
   o_bond_advamount: Joi.string().regex(/^[0-9]/).max(22).required().error(errors => {
     errors.forEach(err => {
@@ -183,18 +183,15 @@ const schema = Joi.object({
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
-          err.message = "ME3669";
+          err.message = "ME2084";
           break;
         case "any.empty":
-          err.message = "ME3669";
+          err.message = "ME2084";
           break;
         case "string.max":
-          err.message = "ME3670";
+          err.message = "ME2085";
           break;
-        case "string.regex.base":
-          err.message = "ME3671";
-          break;
-        default :
+        default:
           break;
       }
     });
