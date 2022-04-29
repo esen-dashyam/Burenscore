@@ -310,7 +310,7 @@ export default logic(null, async (data, session) => {
     if (CUSTOMER?.loanInfo){
       let loan = await update({ type : "loanInfo", data : { ...CUSTOMER?.loanInfo }, where: {
         ...where,
-        o_c_loan_starteddate: moment(CUSTOMER?.loanInfo?.o_c_loan_starteddate)
+        o_c_loan_starteddate: CUSTOMER.loanInfo?.o_c_loan_starteddate
       }, session });
       if (loan) {
         if (CUSTOMER?.loanInfo?.o_c_loanmrtnos && CUSTOMER?.loanInfo?.o_c_loanmrtnos.length >0)
@@ -326,7 +326,7 @@ export default logic(null, async (data, session) => {
     if (CUSTOMER?.leasingInfo){
       let leasing = await update({ type : "leasingInfo", data : { ...CUSTOMER?.leasingInfo }, where: {
         ...where,
-        o_c_leasing_starteddate: moment(CUSTOMER?.leasingInfo?.o_c_leasing_starteddate)
+        o_c_leasing_starteddate: CUSTOMER?.leasingInfo?.o_c_leasing_starteddate
       }, session });
       if (leasing){
         if (CUSTOMER?.leasingInfo?.neoInfo)
@@ -342,7 +342,7 @@ export default logic(null, async (data, session) => {
     if (CUSTOMER?.accreditInfo){
       let accredit = await update({ type : "accreditInfo", data : { ...CUSTOMER?.accreditInfo }, where: {
         ...where,
-        o_c_accredit_starteddate: moment(CUSTOMER?.accreditInfo?.o_c_accredit_starteddate)
+        o_c_accredit_starteddate: CUSTOMER?.accreditInfo?.o_c_accredit_starteddate
       }, session });
       if (accredit){
         if (CUSTOMER?.accreditInfo?.o_c_accreditmrtnos && CUSTOMER?.accreditInfo?.o_c_accreditmrtnos.length > 0)
@@ -354,7 +354,7 @@ export default logic(null, async (data, session) => {
     if (CUSTOMER?.guarenteeInfo){
       let gurantee = await update({ type : "guarantee", data : CUSTOMER?.guarenteeInfo, where: {
         ...where,
-        o_c_guarantee_starteddate: moment(CUSTOMER?.guarenteeInfo?.o_c_guarantee_starteddate)
+        o_c_guarantee_starteddate: CUSTOMER?.guarenteeInfo?.o_c_guarantee_starteddate
       }, session });
       if (gurantee){
         if (CUSTOMER?.guarenteeInfo?.o_c_guaranteemrtnos && CUSTOMER?.guarenteeInfo?.o_c_guaranteemrtnos.length > 0)
@@ -366,13 +366,13 @@ export default logic(null, async (data, session) => {
     if (CUSTOMER?.loanLineInfo){
       await update({ type : "loanLine", data : CUSTOMER?.loanLineInfo, where: {
         ...where,
-        o_c_loanline_starteddate: moment(CUSTOMER?.loanLineInfo?.o_c_loanline_starteddate)
+        o_c_loanline_starteddate: CUSTOMER?.loanLineInfo?.o_c_loanline_starteddate
       }, session });
     }
     if (CUSTOMER?.receivableInfo){
       let receivable = await update({ type : "receivable", data : { ...CUSTOMER?.receivableInfo }, where: {
         ...where,
-        o_c_receivable_starteddate: moment(CUSTOMER?.receivableInfo?.o_c_receivable_starteddate)
+        o_c_receivable_starteddate: CUSTOMER?.receivableInfo?.o_c_receivable_starteddate
       }, session });
       if (receivable){
         if (CUSTOMER?.receivableInfo?.transactions && CUSTOMER?.receivableInfo?.transactions.length > 0)
@@ -384,7 +384,7 @@ export default logic(null, async (data, session) => {
     if (CUSTOMER?.onusInfo){
       let onus = await update({ type : "onus", data : { ...CUSTOMER?.onusInfo, }, where: {
         ...where,
-        o_c_onus_starteddate: moment(CUSTOMER?.onusInfo?.o_c_onus_starteddate)
+        o_c_onus_starteddate: CUSTOMER?.onusInfo?.o_c_onus_starteddate
       }, session });
       if (onus) {
         if (CUSTOMER?.onusInfo?.o_c_onusmrtnos && CUSTOMER?.onusInfo?.o_c_onusmrtnos > 0)
@@ -400,7 +400,7 @@ export default logic(null, async (data, session) => {
     if (CUSTOMER?.bondInfo){
       let bond = await update({ type : "bond", data : { ...CUSTOMER?.bondInfo }, where: {
         ...where,
-        o_bond_starteddate: moment(CUSTOMER?.bondInfo?.o_bond_starteddate)
+        o_bond_starteddate: CUSTOMER?.bondInfo?.o_bond_starteddate
       }, session });
       if (bond) {
         if (CUSTOMER?.bondInfo?.o_c_bondmrtnos && CUSTOMER?.bondInfo?.o_c_bondmrtnos.length > 0)
