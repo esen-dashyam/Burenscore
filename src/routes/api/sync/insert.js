@@ -3,7 +3,6 @@ import { asyncPooled, fall, chunkArray } from "../../../utils";
 import { dataSync } from "../../../services/v1";
 import { request_log as auditService } from "../../../apis/bs_audit_service";
 import Joi from "joi";
-import { db } from "@goodtechsoft/sequelize-postgres";
 
 const schema = Joi.object({
   customers: Joi.object({
@@ -17,7 +16,7 @@ export default method.post("/sync/insert", schema, async (req, res, session) => 
       customer
     },
   } = req.body;
-  console.log(req.user);
+  console.log(customer);
 
   let customers = [];
   if (Array.isArray(customer)){
@@ -47,20 +46,33 @@ export default method.post("/sync/insert", schema, async (req, res, session) => 
             error      : result.error.code,
             date       : new Date(),
           });
-          auditService.insert_error({
-            request_id : request._id,
-            register_no: result.error.customer,
-            error      : result.error.code,
-            sync_status: "FAILED",
-            date       : new Date(),
-          }, session);
+          try {
+            auditService.insert_error({
+              request_id    : request._id,
+              register_no   : result.error.customer,
+              error         : result.error.code,
+              request_status: "FAILED",
+              date          : new Date(),
+            }, session);
+          } catch (err){
+            console.log(err);
+          }
         } else {
-          auditService.insert_error({
-            request_id : request.id,
-            register_no: result.customer.customerInfo.o_c_registerno,
-            sync_status: "SUCCESS",
-            date       : new Date()
-          });
+          console.log("==================================================");
+          console.log(request);
+          console.log(result.customer.customerInfo.o_c_registerno);
+          console.log("==================================================");
+          try {
+            await auditService.insert_error({
+              request_id    : request._id,
+              register_no   : result.customer.customerInfo.o_c_registerno,
+              request_status: "SUCCESS",
+              date          : new Date()
+            });
+          } catch (err){
+            console.log("==================>", err.code.details);
+          }
+
         }
         await Promise.resolve();
       };

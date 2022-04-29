@@ -7,10 +7,12 @@ import { errors } from "@goodtechsoft/micro-service";
 const schema = Joi.object({
   o_c_customercode: Joi.string().max(16).required().error(errors => {
     errors.forEach(err => {
-      console.log("===============================================================", err.type);
       switch (err.type){
-        case "any.empty":
+        case "any.required":
           err.message = "ME2011";
+          break;
+        case "any.empty":
+          err.message="ME2011";
           break;
         case "string.max":
           err.message = "ME2012";
@@ -21,12 +23,9 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_loandescription: Joi.string().allow([null, ""]).max(200).error(errors=> {
+  o_c_loandescription: Joi.string().allow([null, ""]).max(250).error(errors=> {
     errors.forEach(err=> {
       switch (err.type){
-        case "any.empty":
-          err.message = "ME2013";
-          break;
         case "string.max":
           err.message="ME2013";
           break;
@@ -54,11 +53,13 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_branchcode: Joi.string().allow([null, ""]).max(10).error(errors=>{
+  o_c_branchcode: Joi.string().required().max(10).error(errors=>{
     errors.forEach(err =>{
-      console.log("===============================", err.type);
       switch (err.type){
         case "any.empty":
+          err.message = "ME2016";
+          break;
+        case "any.required":
           err.message = "ME2016";
           break;
         case "string.max":
@@ -70,10 +71,19 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_isorganization: Joi.string().regex(/^[0-1]/).max(1).required().error(errors=>{
+  o_c_isorganization: Joi.number().integer().min(0).max(1).required().error(errors=>{
     errors.forEach(err =>{
       switch (err.type){
-        case "string.max":
+        case "any.required":
+          err.message="ME2018";
+          break;
+        case "any.number":
+          err.message="ME2019";
+          break;
+        case "number.min":
+          err.message="ME2019";
+          break;
+        case "number.max":
           err.message="ME2019";
           break;
         default :
@@ -84,7 +94,6 @@ const schema = Joi.object({
   }),
   o_c_customername: Joi.string().max(100).required().error(errors=> {
     errors.forEach(err=>{
-      console.log("------------------", err.type);
       switch (err.type){
         case "any.required":
           err.message="ME2020";
@@ -100,12 +109,9 @@ const schema = Joi.object({
       }
     }); return errors;
   }),
-  c_lastname: Joi.string().allow([null, ""]).error(errors=>{
+  c_lastname: Joi.string().max(50).allow([null, ""]).error(errors=>{
     errors.forEach(err=>{
       switch (err.type){
-        case "any.empty":
-          err.message = "ME2021";
-          break;
         case "string.max":
           err.message="ME2022";
           break;
@@ -142,15 +148,97 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_zipcode: Joi.string().allow([null, ""]),
-  o_c_address: Joi.string().required().error(errors=>{
+  o_c_birthdate: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors=>{
+    errors.forEach(err=>{
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2026";
+          break;
+        case "any.empty":
+          err.message="ME2026";
+          break;
+        case "string.regex.base":
+          err.message="ME2027";
+          break;
+        default:
+          break;
+      }
+    });
+    return errors;
+  })
+    .when("o_c_isforeign", {
+      is  : 1,
+      then: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).allow([null, ""]).error(errors=>{
+        errors.forEach(err=>{
+          switch (err.type){
+            case "string.regex.base":
+              err.message="ME2027";
+              break;
+            case "any.empty":
+              err.message="ME2026";
+              break;
+            default:
+              break;
+          }
+        });
+        return errors;
+      }),
+    })
+    .when("o_c_isorganization", {
+      is  : 1,
+      then: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).allow([null, ""]).error(errors=>{
+        errors.forEach(err=>{
+          switch (err.type){
+            case "string.regex.base":
+              err.message="ME2027";
+              break;
+            case "any.empty":
+              err.message="ME2026";
+              break;
+            default:
+              break;
+          }
+        });
+        return errors;
+      }),
+    }).required().error(errors=>{
+      errors.forEach(err=>{
+        switch (err.type){
+          case "any.required":
+            err.message = "ME2026";
+            break;
+          case "string.regax.base":
+            err.message="ME2027";
+            break;
+          default:
+            break;
+        }
+      });
+      return errors;
+    }),
+  o_c_zipcode: Joi.number().allow([null, ""]).error(errors=>{
+    errors.forEach(err=>{
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2026";
+          break;
+        case "number.base":
+          err.message="ME2027";
+          break;
+        default:
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_address: Joi.string().max(300).required().error(errors=>{
     errors.forEach(err=>{
       switch (err.type){
         case "any.required":
           err.message="ME2028";
           break;
         case "any.empty":
-          err.message = "ME2028";
+          err.message="ME2028";
           break;
         case "string.max":
           err.message="ME2029";
@@ -161,16 +249,16 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_registerno: Joi.string().required().error(errors=>{
+  o_c_registerno: Joi.string().regex(/^[0-9]$|[Ф,Й,Я,Ц,Ы,Ч,У,Б,Ё,Ж,Ө,С,Э,А,Н,Х,М,И,Г,Р,Т,Ш,О,Ь,Y,Л,В,З,Д,Ю,К,Ъ,П,Е,Щ]$|[ф,й,я,ц,ы,ч,у,б,ё,ж,ө,с,э,а,м,н,х,и,г,р,т,ш,о,ь,ү,л,в,з,д,ю,к,ъ,п,е,щ]$|[-,_]$|[a-z]$/).required().error(errors=>{
     errors.forEach(err=>{
       switch (err.type){
         case "any.required":
-          err.message="ME2030";
-          break;
-        case "any.empty":
           err.message = "ME2030";
           break;
-        case "string.base":
+        case "any.empty":
+          err.message="ME2030";
+          break;
+        case "string.regex.base ":
           err.message="ME2031";
           break;
         default:
@@ -178,7 +266,75 @@ const schema = Joi.object({
       }
     });
     return errors;
-  }),
+  })
+    .when("o_c_isforeign", {
+      is  : 1,
+      then: Joi.string().allow([null, ""]).error(errors=>{
+        errors.forEach(err=>{
+          switch (err.type){
+            case "string.regex.base":
+              err.message="ME2027";
+              break;
+            case "any.empty":
+              err.message="ME2026";
+              break;
+            default:
+              break;
+          }
+        });
+        return errors;
+      }),
+    })
+    .when("o_c_isorganization", {
+      is  : 1,
+      then: Joi.string().allow([null, ""]).error(errors=>{
+        errors.forEach(err=>{
+          switch (err.type){
+            case "string.regex.base":
+              err.message="ME2027";
+              break;
+            case "any.empty":
+              err.message="ME2026";
+              break;
+            default:
+              break;
+          }
+        });
+        return errors;
+      }),
+    }).required().error(errors=>{
+      errors.forEach(err=>{
+        switch (err.type){
+          case "any.required":
+            err.message = "ME2030";
+            break;
+          case "string.regax.base":
+            err.message="ME2027";
+            break;
+          default:
+            break;
+        }
+      });
+      return errors;
+    }),
+  // error(errors=>{
+  //     errors.forEach(err=>{
+  //       switch (err.type){
+  //         case "any.required":
+  //           err.message="ME2030";
+  //           break;
+  //         case "any.empty":
+  //           err.message = "ME2030";
+  //           break;
+  //         case "string.base":
+  //           err.message="ME2031";
+  //           break;
+  //         default:
+  //           break;
+  //       }
+  //     });
+  //     return errors;
+  //   }),
   o_c_stateregister_passportorno: Joi.string().allow([null, ""]).error(errors=> {
     errors.forEach(err=>{
       switch (err.type){
@@ -372,8 +528,33 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  c_familynumofunemployed: Joi.number().allow([null, ""]),
-  c_job                  : Joi.string().allow([null, ""]),
+  c_familynumofunemployed: Joi.number().allow([null, ""]).error(errors=> {
+    errors.forEach(err=>{
+      switch (err.type){
+        case "any.empty":
+          err.message = "ME2035";
+          break;
+        case "string.max":
+          err.message="ME2036";
+          break;
+        default:
+          break;
+      }
+    });
+    return errors;
+  }),
+  c_job: Joi.string().allow([null, ""]).error(errors=> {
+    errors.forEach(err=>{
+      switch (err.type){
+        case "string.max":
+          err.message="ME2039";
+          break;
+        default:
+          break;
+      }
+    });
+    return errors;
+  }),
 }).options({ allowUnknown: true });
 
 export default async (customerInfo) => {

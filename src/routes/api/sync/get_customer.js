@@ -2,10 +2,9 @@ import { method } from "@goodtechsoft/micro-service";
 import Joi from "joi";
 import { db, Sequelize } from "@goodtechsoft/sequelize-postgres";
 import { NotfoundError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERRORS } from "../../constants";
+import { ERRORS } from "../../../constants";
 import axios from "axios";
 import moment from "moment";
-import { APPENDIX } from "../../constants";
 const { Op } = Sequelize;
 
 const getCurrencies = async ({ currencyCode }) => {
@@ -36,7 +35,7 @@ const schema = Joi.object({
   register_no: Joi.string().max(12).required(),
 });
 // USD|RUB|CNY|DEM|GBP|JPY|CHF|ATS|CAD|FRF|HKD|EUR|ITL|KRW|THB|KZT|BGL|KPW|AUD|DKK|SEK|BEF|FIM|INR|TWD|LAK|VND|HUF|SGD|TRL|EGP|CZK|IDR|MYR|KWD
-export default method.post("/report", schema, async (req, res, session) => {
+export default method.post("/sync/get_customer", schema, async (req, res, session) => {
   const {
     register_no,
   } = req.body;
@@ -603,11 +602,7 @@ export default method.post("/report", schema, async (req, res, session) => {
   RISK_VALUE = { NORMAL: parseFloat(RISK_VALUE.NORMAL).toFixed(2), OVERDUE: parseFloat(RISK_VALUE.OVERDUE).toFixed(2), ABNORMAL: parseFloat(RISK_VALUE.ABNORMAL).toFixed(2), UNCERTAIN: parseFloat(RISK_VALUE.UNCERTAIN).toFixed(2), BAD: parseFloat(RISK_VALUE.BAD).toFixed(2), };
 
   res.json({
-    customer: {
-      ...customer.dataValues,
-      c_occupation: APPENDIX.APPENDIX_Y[customer.c_occupation]
-      o_c_birthdate: moment(customer.o_c_birthdate).format("YYYY-MM-DD")
-    },
+    customer,
     PAID_LOANS,
     PAID_LEASINGS,
     PAID_ONUS,
