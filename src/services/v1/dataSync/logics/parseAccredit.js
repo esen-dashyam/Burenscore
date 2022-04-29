@@ -1,7 +1,7 @@
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERRORS } from "../../../../constants";
+import { ERRORS, ERROR_DETAILS } from "../../../../constants";
 import Joi from "joi";
 import number from "joi/lib/types/number";
 
@@ -213,7 +213,7 @@ export default async ({ data, where }) => {
     await schema.validate(data);
   } catch (err){
     console.log(err);
-    throw new ValidationError(err.details[0].message);
+    throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
   }
   let id = uuidv4();
   let mrtnos = [];

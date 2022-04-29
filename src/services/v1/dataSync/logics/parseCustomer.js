@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import Joi from "joi";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERRORS } from "../../../../constants";
+import { ERRORS, ERROR_DETAILS } from "../../../../constants";
 import { errors } from "@goodtechsoft/micro-service";
 
 const schema = Joi.object({
@@ -380,7 +380,7 @@ export default async (customerInfo) => {
     console.log("=======================================================");
     console.log("==============================================", err);
     console.log("=======================================================");
-    throw new ValidationError(err.details[0].message);
+    throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
   }
 
   let customer = {

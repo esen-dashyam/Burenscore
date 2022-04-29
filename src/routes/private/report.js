@@ -39,7 +39,11 @@ const schema = Joi.object({
 export default method.post("/report", schema, async (req, res, session) => {
   const {
     register_no,
+    report_rel_types
   } = req.body;
+  console.log("=======================================================================================");
+  console.log(report_rel_types);
+  console.log("=======================================================================================");
   let TOTAL_COUNT = { NORMAL: 0, OVERDUE: 0, ABNORMAL: 0, UNCERTAIN: 0, BAD: 0, };
   let TOTAL_VALUE = { NORMAL: 0, OVERDUE: 0, ABNORMAL: 0, UNCERTAIN: 0, BAD: 0, };
   let TOTAL_NORMAL = { MNT: 0, USD: 0, EUR: 0, CNY: 0, JPY: 0, RUB: 0, OTHER: 0 };
@@ -610,7 +614,7 @@ export default method.post("/report", schema, async (req, res, session) => {
   RISK_VALUE = { NORMAL: parseFloat(RISK_VALUE.NORMAL).toFixed(2), OVERDUE: parseFloat(RISK_VALUE.OVERDUE).toFixed(2), ABNORMAL: parseFloat(RISK_VALUE.ABNORMAL).toFixed(2), UNCERTAIN: parseFloat(RISK_VALUE.UNCERTAIN).toFixed(2), BAD: parseFloat(RISK_VALUE.BAD).toFixed(2), };
 
   res.json({
-    get_date: moment(new Date).format("YYYY-MM-DD HH:mm").tz("Asia/Ulaanbaatar"),
+    get_date: moment(new Date).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD HH:mm"),
     customer: {
       ...customer.dataValues,
       c_occupation : APPENDIX.APPENDIX_Y[customer.c_occupation],

@@ -44,6 +44,7 @@ export default method.post("/sync/insert", schema, async (req, res, session) => 
           errors.push({
             register_no: result.error.customer,
             error      : result.error.code,
+            message    : result.error.message,
             date       : new Date(),
           });
           try {

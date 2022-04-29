@@ -141,6 +141,7 @@ export default logic(null, async (data, session) => {
     return ({
       error: {
         code    : err.code,
+        message : err.message,
         customer: customerInfo?.o_c_registerno
       }
     });
