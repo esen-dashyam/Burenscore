@@ -565,7 +565,6 @@ export default method.post("/report", schema, async (req, res, session) => {
       }
     };
   });
-  console.log(CURRENCIES);
   TOTAL_VALUE.NORMAL = (TOTAL_NORMAL.MNT) + (TOTAL_NORMAL.USD * CURRENCIES.USD) + (TOTAL_NORMAL.EUR * CURRENCIES.EUR) + (TOTAL_NORMAL.CNY * CURRENCIES.CNY) + (TOTAL_NORMAL.JPY * CURRENCIES.JPY) + (TOTAL_NORMAL.RUB * CURRENCIES.RUB);
   TOTAL_VALUE.OVERDUE = (TOTAL_OVERDUE.MNT) + (TOTAL_OVERDUE.USD * CURRENCIES.USD) + (TOTAL_OVERDUE.EUR * CURRENCIES.EUR)+ (TOTAL_OVERDUE.CNY * CURRENCIES.CNY)+ (TOTAL_OVERDUE.JPY * CURRENCIES.JPY)+ (TOTAL_OVERDUE.RUB * CURRENCIES.RUB) ;
   TOTAL_VALUE.ABNORMAL = (TOTAL_ABNORMAL.MNT) + (TOTAL_ABNORMAL.USD * CURRENCIES.USD) + (TOTAL_ABNORMAL.EUR * CURRENCIES.EUR)+ (TOTAL_ABNORMAL.CNY * CURRENCIES.CNY)+ (TOTAL_ABNORMAL.JPY * CURRENCIES.JPY)+ (TOTAL_ABNORMAL.RUB * CURRENCIES.RUB);
@@ -603,6 +602,7 @@ export default method.post("/report", schema, async (req, res, session) => {
   RISK_VALUE = { NORMAL: parseFloat(RISK_VALUE.NORMAL).toFixed(2), OVERDUE: parseFloat(RISK_VALUE.OVERDUE).toFixed(2), ABNORMAL: parseFloat(RISK_VALUE.ABNORMAL).toFixed(2), UNCERTAIN: parseFloat(RISK_VALUE.UNCERTAIN).toFixed(2), BAD: parseFloat(RISK_VALUE.BAD).toFixed(2), };
 
   res.json({
+    get_date: moment(new Date).format("YYYY-MM-DD HH:mm"),
     customer: {
       ...customer.dataValues,
       c_occupation : APPENDIX.APPENDIX_Y[customer.c_occupation],
