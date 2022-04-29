@@ -140,8 +140,8 @@ export default logic(null, async (data, session) => {
     console.log(err);
     return ({
       error: {
-        code    : err.code,
-        message : err.message,
+        code    : err?.code,
+        message : err?.message,
         customer: customerInfo?.o_c_registerno
       }
     });
