@@ -179,7 +179,6 @@ const schema = Joi.object({
   o_c_accredit_extcount: Joi.string()
     .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
       errors.forEach(err => {
-        console.log("========================AAAA============", err.type);
         switch (err.type){
           case "any.required":
             err.message = "ME7029";
@@ -198,8 +197,25 @@ const schema = Joi.object({
         }
       });
     }),
-  o_c_accredit_balance: Joi.number().required(),
-  o_c_accreditmrtnos  : Joi.object({
+  o_c_accredit_balance: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2084";
+          break;
+        case "any.empty":
+          err.message = "ME2084";
+          break;
+        case "string.max":
+          err.message = "ME2085";
+          break;
+        default:
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_accreditmrtnos: Joi.object({
     o_c_accreditmrtno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
   }).optional().allow([null, ""]),
   o_c_accreditrelnos: Joi.object({
