@@ -14,7 +14,7 @@ export default async (data, session) => {
     filters.o_c_relationorg_orgrelation = "03";
     let relationOrg = await db.findAll(db.OCRelationorg, { where: filters }, session);
     if (relationOrg.length > 0) {
-      relnos = await db.findAll(db.Relno, { where: relationOrg.map(item => item.o_c_relationcustomer_relno) }, session);
+      relnos = await db.findAll(db.Relno, { where: { relno: relationOrg.map(item => item.o_c_relationcustomer_relno) } }, session);
       console.log("RELNOS=====================================>", relnos);
     }
   } else {
@@ -22,7 +22,7 @@ export default async (data, session) => {
     filters.o_c_relationcustomer_citizenrelation = "04";
     let relationCustomers = await db.findAll(db.OCRelationcustomer, { where: filters }, session);
     if (relationCustomers.length > 0){
-      relnos = await db.findAll(db.Relno, { where: relationCustomers.map(item => item.o_c_relationcustomer_relno) }, session);
+      relnos = await db.findAll(db.Relno, { where: { relno: relationCustomers.map(item => item.o_c_relationcustomer_relno) } }, session);
       console.log("relationCustomers=====================================>", relationCustomers);
     }
   }
