@@ -1,5 +1,3 @@
-
-
 import { db } from "@goodtechsoft/sequelize-postgres";
 import { fall } from "../../../../utils";
 
