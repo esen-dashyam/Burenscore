@@ -40,7 +40,7 @@ export default async (register_no, session) => {
     }
   } else {
     filters.o_c_relationcustomer_registerno = where.o_c_registerno;
-    // filters.o_c_relationcustomer_citizenrelation = "04";
+    filters.o_c_relationcustomer_citizenrelation = "04";
     console.log(filters);
     let relationCustomers = await db.findAll(db.OCRelationcustomer, { where: filters }, session);
     console.log(relationCustomers);
@@ -170,6 +170,7 @@ export default async (register_no, session) => {
   });
   await fall(falls);
   return {
+    get_date: moment(new Date).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD HH:mm"),
     customer,
     PAID_LOANS,
     PAID_BONDS,
