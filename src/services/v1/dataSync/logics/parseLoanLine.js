@@ -137,13 +137,13 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_loanline_timestoloan: Joi.date().required().error(errors => {
+  o_c_loanline_timestoloan: Joi.number().integer(9999).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
           err.message = "ME2421";
           break;
-        case "number":
+        case "number.integer":
           err.message = "ME2422";
           break;
         default :

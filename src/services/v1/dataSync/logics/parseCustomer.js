@@ -135,19 +135,6 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_birthdate: Joi.string()
-  .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).allow([null, ""]).allow([null, ""]).error(errors=>{
-    errors.forEach(err=>{
-      switch (err.type){
-        case "string.regex.base":
-          err.message="ME2025";
-          break;
-        default:
-          break;
-      }
-    });
-    return errors;
-  }),
   o_c_birthdate: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors=>{
     errors.forEach(err=>{
       switch (err.type){
@@ -249,7 +236,20 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_registerno: Joi.string().regex(/^[0-9]$|[Ф,Й,Я,Ц,Ы,Ч,У,Б,Ё,Ж,Ө,С,Э,А,Н,Х,М,И,Г,Р,Т,Ш,О,Ь,Y,Л,В,З,Д,Ю,К,Ъ,П,Е,Щ]$|[ф,й,я,ц,ы,ч,у,б,ё,ж,ө,с,э,а,м,н,х,и,г,р,т,ш,о,ь,ү,л,в,з,д,ю,к,ъ,п,е,щ]$|[-,_]$|[a-z]$/).required().error(errors=>{
+  o_c_registerno: Joi.string().required()
+  .when("is_organization", {
+    is : 0,
+    then : Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required()
+  })
+  .when("is_organization", {
+    is : 1,
+    then : Joi.string().regex(/[0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required()
+  })
+  .when("is_foreign", {
+    is : 1,
+    then : Joi.string().required()
+  })
+  .error(errors=>{
     errors.forEach(err=>{
       switch (err.type){
         case "any.required":
@@ -317,24 +317,6 @@ const schema = Joi.object({
       });
       return errors;
     }),
-  // error(errors=>{
-  //     errors.forEach(err=>{
-  //       switch (err.type){
-  //         case "any.required":
-  //           err.message="ME2030";
-  //           break;
-  //         case "any.empty":
-  //           err.message = "ME2030";
-  //           break;
-  //         case "string.base":
-  //           err.message="ME2031";
-  //           break;
-  //         default:
-  //           break;
-  //       }
-  //     });
-  //     return errors;
-  //   }),
   o_c_stateregister_passportorno: Joi.string().allow([null, ""]).error(errors=> {
     errors.forEach(err=>{
       switch (err.type){
