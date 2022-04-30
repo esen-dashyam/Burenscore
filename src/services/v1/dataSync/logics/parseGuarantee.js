@@ -1,7 +1,7 @@
 import moment from "moment";
 import Joi from "joi";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERRORS, ERROR_DETAILS } from "../../../../constants";
+import { ERROR_DETAILS } from "../../../../constants";
 import { v4 as uuidv4 } from "uuid";
 const schema = Joi.object({
   o_c_guarantee_advamount: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
