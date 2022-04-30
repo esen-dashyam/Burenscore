@@ -1,7 +1,7 @@
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import moment from "moment";
 import Joi from "joi";
-import { ERRORS } from "../../../../constants";
+import { ERRORS, ERROR_DETAILS } from "../../../../constants";
 const schema = Joi.object({
   o_c_loanline_type: Joi.string().regex(/^[0-9]/).required().error(errors => {
     errors.forEach(err => {
@@ -240,7 +240,7 @@ export default async ({ data, where }) => {
   }
   catch (err) {
     console.log(err);
-    throw new ValidationError(err.details[0].message);
+    throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
   }
   let loanLine = {
     o_c_loanline_type          : data?.o_c_loanline_type,

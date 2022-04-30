@@ -42,15 +42,16 @@ export default method.post("/sync/insert", schema, async (req, res, session) => 
         console.log("========INSERT_API_RESULT============>", result);
         if (result.error) {
           errors.push({
-            register_no: result.error.customer,
-            error      : result.error.code,
+            register_no: result.error?.customer,
+            error      : result.error?.code,
+            message    : result.error?.message,
             date       : new Date(),
           });
           try {
             auditService.insert_error({
               request_id    : request._id,
-              register_no   : result.error.customer,
-              error         : result.error.code,
+              register_no   : result.error?.customer,
+              error         : result.error?.code,
               request_status: "FAILED",
               date          : new Date(),
             }, session);
