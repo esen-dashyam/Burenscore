@@ -7,62 +7,62 @@ import Joi from "joi";
 //   o_c_relationcustomer_firstName: Joi.when("type", {
 //     is  : "CUSTOMER",
 //     then: Joi.string().required()
-//   }).optional().allow([null, ""]),
+//   }).optional().optional().allow([null, ""]),
 //   o_c_relationcustomer_lastName: Joi.when("type", {
 //     is  : "CUSTOMER",
 //     then: Joi.string().required()
-//   }).optional().allow([null, ""]),
+//   }).optional().optional().allow([null, ""]),
 //   o_c_relationcustomer_isforeign: Joi.when("type", {
 //     is  : "CUSTOMER",
 //     then: Joi.number().required()
-//   }).optional().allow([null, ""]),
+//   }).optional().optional().allow([null, ""]),
 //   o_c_relationcustomer_registerno: Joi.when("type", {
 //     is  : "CUSTOMER",
 //     then: Joi.string().required()
-//   }).optional().allow([null, ""]),
+//   }).optional().optional().allow([null, ""]),
 //   o_c_relationcustomer_citizenrelation: Joi.when("type", {
 //     is  : "CUSTOMER",
 //     then: Joi.string().required()
-//   }).optional().allow([null, ""]),
+//   }).optional().optional().allow([null, ""]),
 //   o_c_relationcustomer_isfinancialonus: Joi.when("type", {
 //     is  : "CUSTOMER",
 //     then: Joi.number().required()
-//   }).optional().allow([null, ""]),
+//   }).optional().optional().allow([null, ""]),
 //   o_c_relationcustomer_relno: Joi.when("type", {
 //     is  : "CUSTOMER",
 //     then: Joi.string().required()
-//   }).optional().allow([null, ""]),
+//   }).optional().optional().allow([null, ""]),
 
 //   // ------->ORG
 
 //   o_c_relationorg_orgname: Joi.when("type", {
 //     is  : "ORG",
 //     then: Joi.string().required()
-//   }).optional().allow([null, ""]),
+//   }).optional().optional().allow([null, ""]),
 //   o_c_relationorg_isforeign: Joi.when("type", {
 //     is  : "ORG",
 //     then: Joi.string().required()
-//   }).optional().allow([null, ""]),
+//   }).optional().optional().allow([null, ""]),
 //   o_c_relationorg_stateregisterno: Joi.when("type", {
 //     is  : "ORG",
 //     then: Joi.string().required()
-//   }).optional().allow([null, ""]),
+//   }).optional().optional().allow([null, ""]),
 //   o_c_relationorg_registerno: Joi.when("type", {
 //     is  : "ORG",
 //     then: Joi.string().required()
-//   }).optional().allow([null, ""]),
+//   }).optional().optional().allow([null, ""]),
 //   o_c_relationorg_orgrelation: Joi.when("type", {
 //     is  : "ORG",
 //     then: Joi.string().required()
-//   }).optional().allow([null, ""]),
+//   }).optional().optional().allow([null, ""]),
 //   o_c_relationorg_isfinancialonus: Joi.when("type", {
 //     is  : "ORG",
 //     then: Joi.number().required()
-//   }).optional().allow([null, ""]),
+//   }).optional().optional().allow([null, ""]),
 //   o_c_relationorg_relno: Joi.when("type", {
 //     is  : "ORG",
 //     then: Joi.string().required()
-//   }).optional().allow([null, ""]),
+//   }).optional().optional().allow([null, ""]),
 // });
 
 

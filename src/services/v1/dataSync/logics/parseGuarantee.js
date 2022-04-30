@@ -182,7 +182,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_guarantee_updatedexpdate: Joi.date().allow([null, ""]).error(errors => {
+  o_c_guarantee_updatedexpdate: Joi.date().optional().allow([null, ""]).error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "date":

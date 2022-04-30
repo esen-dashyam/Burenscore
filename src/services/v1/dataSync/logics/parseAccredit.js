@@ -164,7 +164,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_accredit_updatedexpdate: Joi.date().allow([null, ""]).error(errors => {
+  o_c_accredit_updatedexpdate: Joi.date().optional().allow([null, ""]).error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "date.format":
@@ -217,10 +217,10 @@ const schema = Joi.object({
   }),
   o_c_accreditmrtnos: Joi.object({
     o_c_accreditmrtno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
-  }).optional().allow([null, ""]),
+  }).optional().optional().allow([null, ""]),
   o_c_accreditrelnos: Joi.object({
     o_c_accreditrelno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string()))
-  }).optional().allow([null, ""]),
+  }).optional().optional().allow([null, ""]),
 
 }).options({ allowUnknown: true });
 export default async ({ data, where }) => {

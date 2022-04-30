@@ -9,37 +9,37 @@ import Joi from "joi";
 //     o_shareholder_firstname: Joi.when("type", {
 //       is  : "CUSTOMER",
 //       then: Joi.string().required()
-//     }).optional().allow([null, ""]),
+//     }).optional().optional().allow([null, ""]),
 //     o_shareholder_lastname: Joi.when("type", {
 //       is  : "CUSTOMER",
 //       then: Joi.string(),
-//     }).optional().allow([null, ""]),
+//     }).optional().optional().allow([null, ""]),
 //     o_shareholdercus_isforeign: Joi.when("type", {
 //       is  : "CUSTOMER",
 //       then: Joi.number().required(),
-//     }).optional().allow([null, ""]),
+//     }).optional().optional().allow([null, ""]),
 //     o_shareholdercus_registerno: Joi.when("type", {
 //       is  : "CUSTOMER",
 //       then: Joi.string().required(),
-//     }).optional().allow([null, ""]),
+//     }).optional().optional().allow([null, ""]),
 //   })), Joi.object({
 //     type                   : Joi.string().required(),
 //     o_shareholder_firstname: Joi.when("type", {
 //       is  : "CUSTOMER",
 //       then: Joi.string().required()
-//     }).optional().allow([null, ""]),
+//     }).optional().optional().allow([null, ""]),
 //     o_shareholder_lastname: Joi.when("type", {
 //       is  : "CUSTOMER",
 //       then: Joi.string(),
-//     }).optional().allow([null, ""]),
+//     }).optional().optional().allow([null, ""]),
 //     o_shareholdercus_isforeign: Joi.when("type", {
 //       is  : "CUSTOMER",
 //       then: Joi.number().required(),
-//     }).optional().allow([null, ""]),
+//     }).optional().optional().allow([null, ""]),
 //     o_shareholdercus_registerno: Joi.when("type", {
 //       is  : "CUSTOMER",
 //       then: Joi.string().required(),
-//     }).optional().allow([null, ""]),
+//     }).optional().optional().allow([null, ""]),
 //   }))
 // });
 

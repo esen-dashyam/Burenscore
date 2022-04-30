@@ -153,7 +153,7 @@ const schema = Joi.object({
     return errors;
   }),
   o_c_loanline_extdate: Joi.string()
-    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]).error(errors => {
+    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().optional().allow([null, ""]).error(errors => {
       errors.forEach(err => {
         console.log("================AA===========", err.type);
         switch (err.type){

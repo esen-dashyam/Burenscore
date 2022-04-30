@@ -4,32 +4,32 @@ import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERROR_DETAILS } from "../../../../constants";
 const schema = Joi.object({
   c_business: Joi.object({
-    c_b_totalsale       : Joi.string().allow([null, "", undefined]),
-    c_b_totalcost       : Joi.string().allow([null, "", undefined]),
-    c_b_totalprofit     : Joi.string().allow([null, "", undefined]),
-    c_b_operatingexpense: Joi.string().allow([null, "", undefined]),
-    c_b_operatingincome : Joi.string().allow([null, "", undefined]),
-    c_b_otherincome     : Joi.string().allow([null, "", undefined]),
-    c_b_otherexpense    : Joi.string().allow([null, "", undefined]),
-    c_b_profitbeforetax : Joi.string().allow([null, "", undefined]),
-    c_b_tax             : Joi.string().allow([null, "", undefined]),
-    c_b_netprofit       : Joi.string().allow([null, "", undefined])
-  }).allow([null, "", undefined]),
+    c_b_totalsale       : Joi.string().optional().allow([null, ""]),
+    c_b_totalcost       : Joi.string().optional().allow([null, ""]),
+    c_b_totalprofit     : Joi.string().optional().allow([null, ""]),
+    c_b_operatingexpense: Joi.string().optional().allow([null, ""]),
+    c_b_operatingincome : Joi.string().optional().allow([null, ""]),
+    c_b_otherincome     : Joi.string().optional().allow([null, ""]),
+    c_b_otherexpense    : Joi.string().optional().allow([null, ""]),
+    c_b_profitbeforetax : Joi.string().optional().allow([null, ""]),
+    c_b_tax             : Joi.string().optional().allow([null, ""]),
+    c_b_netprofit       : Joi.string().optional().allow([null, ""])
+  }).optional().allow([null, ""]),
   c_family: Joi.object({
 
-  }).allow([null, "", undefined]),
+  }).optional().allow([null, ""]),
   c_capital: Joi.object({
 
-  }).allow([null, "", undefined]),
+  }).optional().allow([null, ""]),
   o_m_Report: Joi.object({
 
-  }).allow([null, "", undefined]),
+  }).optional().allow([null, ""]),
   o_Report: Joi.object({
 
-  }).allow([null, "", undefined]),
+  }).optional().allow([null, ""]),
   o_t_Report: Joi.object({
 
-  }).allow([null, "", undefined]),
+  }).optional().allow([null, ""]),
 }).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {

@@ -143,7 +143,7 @@ const schema =Joi.object({
     });
     return errors;
   }),
-  o_c_receivable_isapproved: Joi.number().allow([null, ""]),
+  o_c_receivable_isapproved: Joi.number().optional().allow([null, ""]),
   o_c_receivable_extdate   : Joi.string()
     .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
       errors.forEach(err => {
