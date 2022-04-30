@@ -548,15 +548,10 @@ const schema = Joi.object({
 export default async (customerInfo) => {
   if (!customerInfo) return null;
   try {
-    console.log("======EEIDDA", customerInfo.c_lastname);
     await schema.validate(customerInfo);
   } catch (err){
-    console.log("=======================================================");
-    console.log("==============================================", err);
-    console.log("=======================================================");
     throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
   }
-
   let customer = {
     id                             : uuidv4(),
     o_c_customercode               : customerInfo?.o_c_customercode,
