@@ -3,7 +3,6 @@ import { ERRORS, ERROR_DETAILS } from "../../../../constants";
 import Joi from "joi";
 
 const customerSchemaObject = Joi.object({
-  type                                : Joi.string().required(),
   o_c_relationcustomer_firstName      : Joi.string().required(),
   o_c_relationcustomer_lastName       : Joi.string().required(),
   o_c_relationcustomer_isforeign      : Joi.number().required(),
@@ -13,7 +12,6 @@ const customerSchemaObject = Joi.object({
   o_c_relationcustomer_relno          : Joi.string().required(),
 });
 const customerSchemaArray = Joi.array().items(Joi.object({
-  type                                : Joi.string().required(),
   o_c_relationcustomer_firstName      : Joi.string().required(),
   o_c_relationcustomer_lastName       : Joi.string().required(),
   o_c_relationcustomer_isforeign      : Joi.number().required(),
@@ -24,7 +22,6 @@ const customerSchemaArray = Joi.array().items(Joi.object({
 }));
 
 const orgSchemaObject = Joi.object({
-  type                           : Joi.string().required(),
   o_c_relationorg_orgname        : Joi.string().required(),
   o_c_relationorg_isforeign      : Joi.number().required(),
   o_c_relationorg_stateregisterno: Joi.string().required(),
@@ -34,7 +31,6 @@ const orgSchemaObject = Joi.object({
   o_c_relationorg_relno          : Joi.string().required(),
 });
 const orgSchemaArray = Joi.array().items(Joi.object({
-  type                           : Joi.string().required(),
   o_c_relationorg_orgname        : Joi.string().required(),
   o_c_relationorg_isforeign      : Joi.number().required(),
   o_c_relationorg_stateregisterno: Joi.string().required(),
