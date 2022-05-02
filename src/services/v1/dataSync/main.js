@@ -93,25 +93,25 @@ const update = async ({ type, data, where, session }) => {
 
 export default logic(null, async (data, session) => {
   let customerInfo = data.o_c_customer_information;
-  delete customerInfo?.$;
   let shareholderCustomer = customerInfo?.o_shareholdercustomers?.o_shareholdercustomer;
   let shareholderOrg = customerInfo?.o_shareholderorgs?.o_shareholderorg;
   let relationOrg = customerInfo?.o_c_relationorgs?.o_c_relationorg;
   let relationCustomer =customerInfo?.o_c_relationcustomers?.o_c_relationcustomer;
-  delete relationCustomer?.$;
   let financialInfo = data?.o_c_financial_information;
   let loanInfo = data?.o_c_onus_information?.o_c_loan_information;
   let leasingInfo = data?.o_c_onus_information?.o_c_leasing;
-  delete leasingInfo?.$;
   let accreditInfo = data?.o_c_onus_information?.o_c_accredit;
-  delete accreditInfo?.$;
   let guarenteeinfo = data?.o_c_onus_information?.o_c_guarantee;
-  delete guarenteeinfo?.$;
   let loanLineinfo = data?.o_c_onus_information?.o_c_loanline;
   let receivableInfo =data?.o_c_onus_information?.o_c_receivable;
   let onusInfo = data?.o_c_onus_information?.o_c_onus;
-  delete onusInfo?.$;
   let bond = data?.o_c_onus_information?.o_bond;
+  delete customerInfo?.$;
+  delete relationCustomer?.$;
+  delete guarenteeinfo?.$;
+  delete onusInfo?.$;
+  delete leasingInfo?.$;
+  delete accreditInfo?.$;
   delete bond?.$;
   let mrtInfo = data?.o_c_mortgage_information?.o_c_mortgage; // array orj irne
   let where = {
