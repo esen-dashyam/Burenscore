@@ -1,88 +1,63 @@
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERRORS } from "../../../../constants";
+import { ERRORS, ERROR_DETAILS } from "../../../../constants";
 import Joi from "joi";
 
-// const schema = Joi.object({
-//   type                          : Joi.string().required(),
-//   o_c_relationcustomer_firstName: Joi.when("type", {
-//     is  : "CUSTOMER",
-//     then: Joi.string().required()
-//   }).optional().optional().allow([null, ""]),
-//   o_c_relationcustomer_lastName: Joi.when("type", {
-//     is  : "CUSTOMER",
-//     then: Joi.string().required()
-//   }).optional().optional().allow([null, ""]),
-//   o_c_relationcustomer_isforeign: Joi.when("type", {
-//     is  : "CUSTOMER",
-//     then: Joi.number().required()
-//   }).optional().optional().allow([null, ""]),
-//   o_c_relationcustomer_registerno: Joi.when("type", {
-//     is  : "CUSTOMER",
-//     then: Joi.string().required()
-//   }).optional().optional().allow([null, ""]),
-//   o_c_relationcustomer_citizenrelation: Joi.when("type", {
-//     is  : "CUSTOMER",
-//     then: Joi.string().required()
-//   }).optional().optional().allow([null, ""]),
-//   o_c_relationcustomer_isfinancialonus: Joi.when("type", {
-//     is  : "CUSTOMER",
-//     then: Joi.number().required()
-//   }).optional().optional().allow([null, ""]),
-//   o_c_relationcustomer_relno: Joi.when("type", {
-//     is  : "CUSTOMER",
-//     then: Joi.string().required()
-//   }).optional().optional().allow([null, ""]),
+const customerSchemaObject = Joi.object({
+  type                                : Joi.string().required(),
+  o_c_relationcustomer_firstName      : Joi.string().required(),
+  o_c_relationcustomer_lastName       : Joi.string().required(),
+  o_c_relationcustomer_isforeign      : Joi.number().required(),
+  o_c_relationcustomer_registerno     : Joi.string().required(),
+  o_c_relationcustomer_citizenrelation: Joi.string().required(),
+  o_c_relationcustomer_isfinancialonus: Joi.number().required(),
+  o_c_relationcustomer_relno          : Joi.string().required(),
+});
+const customerSchemaArray = Joi.array().items(Joi.object({
+  type                                : Joi.string().required(),
+  o_c_relationcustomer_firstName      : Joi.string().required(),
+  o_c_relationcustomer_lastName       : Joi.string().required(),
+  o_c_relationcustomer_isforeign      : Joi.number().required(),
+  o_c_relationcustomer_registerno     : Joi.string().required(),
+  o_c_relationcustomer_citizenrelation: Joi.string().required(),
+  o_c_relationcustomer_isfinancialonus: Joi.number().required(),
+  o_c_relationcustomer_relno          : Joi.string().required(),
+}));
 
-//   // ------->ORG
-
-//   o_c_relationorg_orgname: Joi.when("type", {
-//     is  : "ORG",
-//     then: Joi.string().required()
-//   }).optional().optional().allow([null, ""]),
-//   o_c_relationorg_isforeign: Joi.when("type", {
-//     is  : "ORG",
-//     then: Joi.string().required()
-//   }).optional().optional().allow([null, ""]),
-//   o_c_relationorg_stateregisterno: Joi.when("type", {
-//     is  : "ORG",
-//     then: Joi.string().required()
-//   }).optional().optional().allow([null, ""]),
-//   o_c_relationorg_registerno: Joi.when("type", {
-//     is  : "ORG",
-//     then: Joi.string().required()
-//   }).optional().optional().allow([null, ""]),
-//   o_c_relationorg_orgrelation: Joi.when("type", {
-//     is  : "ORG",
-//     then: Joi.string().required()
-//   }).optional().optional().allow([null, ""]),
-//   o_c_relationorg_isfinancialonus: Joi.when("type", {
-//     is  : "ORG",
-//     then: Joi.number().required()
-//   }).optional().optional().allow([null, ""]),
-//   o_c_relationorg_relno: Joi.when("type", {
-//     is  : "ORG",
-//     then: Joi.string().required()
-//   }).optional().optional().allow([null, ""]),
-// });
-
+const orgSchemaObject = Joi.object({
+  type                           : Joi.string().required(),
+  o_c_relationorg_orgname        : Joi.string().required(),
+  o_c_relationorg_isforeign      : Joi.number().required(),
+  o_c_relationorg_stateregisterno: Joi.string().required(),
+  o_c_relationorg_registerno     : Joi.string().required(),
+  o_c_relationorg_orgrelation    : Joi.string().required(),
+  o_c_relationorg_isfinancialonus: Joi.number().required(),
+  o_c_relationorg_relno          : Joi.string().required(),
+});
+const orgSchemaArray = Joi.array().items(Joi.object({
+  type                           : Joi.string().required(),
+  o_c_relationorg_orgname        : Joi.string().required(),
+  o_c_relationorg_isforeign      : Joi.number().required(),
+  o_c_relationorg_stateregisterno: Joi.string().required(),
+  o_c_relationorg_registerno     : Joi.string().required(),
+  o_c_relationorg_orgrelation    : Joi.string().required(),
+  o_c_relationorg_isfinancialonus: Joi.number().required(),
+  o_c_relationorg_relno          : Joi.string().required(),
+}));
 
 export default async ({ data, where, type }) => {
   if (!data) return null;
-  // try {
-  //   await schema.validate({
-  //     ...data,
-  //     type
-  //   });
-  // }
-  // catch (err) {
-  //   console.log(err);
-  //   throw new ValidationError(ERRORS.RELATIONCUSTOMER_PARSE_ERROR);
-  // }
   let shareholder = [];
   console.log(data);
   if (type === "CUSTOMER"){
     console.log("data_IS_ARRAY", Array.isArray(data));
     if (Array.isArray(data)){
+      try {
+        await customerSchemaArray.validate(data);
+      }
+      catch (err) {
+        console.log("================================", err);
+        throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
+      }
       data.forEach(item => {
         shareholder.push({
           ...where,
@@ -96,6 +71,13 @@ export default async ({ data, where, type }) => {
         });
       });
     } else {
+      try {
+        await customerSchemaObject.validate(data);
+      }
+      catch (err) {
+        console.log("================================", err);
+        throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
+      }
       shareholder.push({
         ...where,
         o_c_relationcustomer_firstName      : data?.o_c_relationcustomer_firstName,
@@ -111,6 +93,13 @@ export default async ({ data, where, type }) => {
   if (type === "ORG"){
     console.log("data_IS_ARRAY", Array.isArray(data));
     if (Array.isArray(data)){
+      try {
+        await orgSchemaArray.validate(data);
+      }
+      catch (err) {
+        console.log("================================", err);
+        throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
+      }
       data.forEach(item => {
         shareholder.push({
           ...where,
@@ -124,6 +113,13 @@ export default async ({ data, where, type }) => {
         });
       });
     } else {
+      try {
+        await orgSchemaObject.validate(data);
+      }
+      catch (err) {
+        console.log("================================", err);
+        throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
+      }
       shareholder.push({
         ...where,
         o_c_relationorg_orgname        : data?.o_c_relationorg_orgname,

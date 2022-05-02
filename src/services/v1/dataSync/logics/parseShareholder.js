@@ -1,65 +1,45 @@
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERRORS } from "../../../../constants";
+import { ERROR_DETAILS } from "../../../../constants";
 import Joi from "joi";
 
-// const schema = Joi.object({
-//   type: Joi.string().required(),
-//   data: Joi.alternatives().try(Joi.array().items(Joi.object({
-//     type                   : Joi.string().required(),
-//     o_shareholder_firstname: Joi.when("type", {
-//       is  : "CUSTOMER",
-//       then: Joi.string().required()
-//     }).optional().optional().allow([null, ""]),
-//     o_shareholder_lastname: Joi.when("type", {
-//       is  : "CUSTOMER",
-//       then: Joi.string(),
-//     }).optional().optional().allow([null, ""]),
-//     o_shareholdercus_isforeign: Joi.when("type", {
-//       is  : "CUSTOMER",
-//       then: Joi.number().required(),
-//     }).optional().optional().allow([null, ""]),
-//     o_shareholdercus_registerno: Joi.when("type", {
-//       is  : "CUSTOMER",
-//       then: Joi.string().required(),
-//     }).optional().optional().allow([null, ""]),
-//   })), Joi.object({
-//     type                   : Joi.string().required(),
-//     o_shareholder_firstname: Joi.when("type", {
-//       is  : "CUSTOMER",
-//       then: Joi.string().required()
-//     }).optional().optional().allow([null, ""]),
-//     o_shareholder_lastname: Joi.when("type", {
-//       is  : "CUSTOMER",
-//       then: Joi.string(),
-//     }).optional().optional().allow([null, ""]),
-//     o_shareholdercus_isforeign: Joi.when("type", {
-//       is  : "CUSTOMER",
-//       then: Joi.number().required(),
-//     }).optional().optional().allow([null, ""]),
-//     o_shareholdercus_registerno: Joi.when("type", {
-//       is  : "CUSTOMER",
-//       then: Joi.string().required(),
-//     }).optional().optional().allow([null, ""]),
-//   }))
-// });
+const customerSchemaObject = Joi.object({
+  o_shareholder_firstname    : Joi.string().required(),
+  o_shareholder_lastname     : Joi.string().required(),
+  o_shareholdercus_isforeign : Joi.number().required(),
+  o_shareholdercus_registerno: Joi.string().required(),
+});
+const customerSchemaArray = Joi.array().items(Joi.object({
+  o_shareholder_firstname    : Joi.string().required(),
+  o_shareholder_lastname     : Joi.string().required(),
+  o_shareholdercus_isforeign : Joi.number().required(),
+  o_shareholdercus_registerno: Joi.string().required(),
+}));
+
+const orgSchemaObject = Joi.object({
+  o_shareholder_orgname        : Joi.string().required(),
+  o_shareholderorg_isforeign   : Joi.number().required(),
+  o_shareholderorg_registerno  : Joi.string().required(),
+  o_shareholder_stateregisterno: Joi.string().required(),
+});
+const orgSchemaArray = Joi.array().items(Joi.object({
+  o_shareholder_orgname        : Joi.string().required(),
+  o_shareholderorg_isforeign   : Joi.number().required(),
+  o_shareholderorg_registerno  : Joi.string().required(),
+  o_shareholder_stateregisterno: Joi.string().required(),
+}));
 
 export default async ({ data, where, type }) => {
   if (!data) return null;
-  // console.log("===========>SHAREHOLDER", data);
-  // try {
-  //   await schema.validate({
-  //     data,
-  //     type
-  //   });
-  // }
-  // catch (err) {
-  //   console.log(err);
-  //   throw new ValidationError(ERRORS.SHAREHOLDERCUSTOMER_PARSE_ERROR);
-  // }
   let shareholder = [];
-  // console.log(data);
   if (type === "CUSTOMER"){
     if (Array.isArray(data)){
+      try {
+        await customerSchemaArray.validate(data);
+      }
+      catch (err) {
+        console.log("================================", err);
+        throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
+      }
       data.forEach(item => {
         shareholder.push({
           ...where,
@@ -70,6 +50,13 @@ export default async ({ data, where, type }) => {
         });
       });
     } else {
+      try {
+        await customerSchemaObject.validate(data);
+      }
+      catch (err) {
+        console.log("================================", err);
+        throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
+      }
       shareholder.push({
         ...where,
         o_shareholder_firstname    : data?.o_shareholder_firstname,
@@ -81,6 +68,13 @@ export default async ({ data, where, type }) => {
   }
   if (type === "ORG"){
     if (Array.isArray(data)){
+      try {
+        await orgSchemaArray.validate(data);
+      }
+      catch (err) {
+        console.log("================================", err);
+        throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
+      }
       data.forEach(item => {
         shareholder.push({
           ...where,
@@ -91,6 +85,13 @@ export default async ({ data, where, type }) => {
         });
       });
     } else {
+      try {
+        await orgSchemaObject.validate(data);
+      }
+      catch (err) {
+        console.log("================================", err);
+        throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
+      }
       shareholder.push({
         ...where,
         o_shareholder_orgname        : data?.o_shareholder_orgname,
