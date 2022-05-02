@@ -361,7 +361,7 @@ export default async ({ data, where }) => {
     o_c_provideloansize       : data?.o_c_loan_provideLoanSize,
     o_c_loanmrtnos            : mrtnos,
     o_c_loanrelnos            : relnos,
-    o_c_loan_loanprovenance   : data?.o_c_loanProvenance,
+    o_c_loan_loanprovenance   : data?.o_c_loan_loanProvenance,
     o_c_loan_balance          : data?.o_c_loan_balance,
     o_c_loan_starteddate      : moment(data?.o_c_loan_starteddate),
     o_c_loan_expdate          : data?.o_c_loan_expdate,
