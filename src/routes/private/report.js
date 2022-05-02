@@ -3,9 +3,9 @@ import Joi from "joi";
 import { co_owner, owner } from "./logics";
 
 const schema = Joi.object({
-  register_no: Joi.string().max(12).required(),
+  register_no     : Joi.string().max(12).required(),
+  report_rel_types: Joi.string().valid(["OWNER", "CO_OWNER"]).required()
 });
-// USD|RUB|CNY|DEM|GBP|JPY|CHF|ATS|CAD|FRF|HKD|EUR|ITL|KRW|THB|KZT|BGL|KPW|AUD|DKK|SEK|BEF|FIM|INR|TWD|LAK|VND|HUF|SGD|TRL|EGP|CZK|IDR|MYR|KWD
 export default method.post("/report", schema, async (req, res, session) => {
   const {
     register_no,
