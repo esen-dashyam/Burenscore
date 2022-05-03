@@ -168,3 +168,4 @@ export default async ({ data, where }) => {
   };
   return financialInfo;
 };
+// why are we here? just to suffer everyday
