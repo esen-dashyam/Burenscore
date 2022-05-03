@@ -18,7 +18,7 @@ const schema = Joi.object({
   c_family: Joi.object({
     c_g_salary        : Joi.number().precision(2).positive().optional().allow([null, ""]),
     c_g_otherincome   : Joi.number().precision(2).positive().optional().allow([null, ""]),
-    c_g_totalincome   : Joi.number().precision(2).positive().optional().allow([null, ""]),
+    c_g_totalincome   : Joi.number().precision(2).positive().optional().allow([null, ""]), 
     c_g_foodexpense   : Joi.number().precision(2).positive().optional().allow([null, ""]),
     c_g_expensetolease: Joi.number().precision(2).positive().optional().allow([null, ""]),
     c_g_commexpense   : Joi.number().precision(2).positive().optional().allow([null, ""]),
@@ -168,3 +168,4 @@ export default async ({ data, where }) => {
   };
   return financialInfo;
 };
+
