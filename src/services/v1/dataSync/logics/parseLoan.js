@@ -6,7 +6,7 @@ import Joi from "joi";
 import { max } from "joi/lib/types/array";
 
 const schema = Joi.object({
-  o_c_loan_provideLoanSize: Joi.string().regex(/^[0-9]/).max(20).required().error(errors => {
+  o_c_loan_provideLoanSize: Joi.number().unsafe().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -15,7 +15,7 @@ const schema = Joi.object({
         case "string.max":
           err.message = "ME2353";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME2354";
           break;
         case "string.base":
