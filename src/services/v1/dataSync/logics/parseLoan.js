@@ -34,7 +34,7 @@ const schema = Joi.object({
     errors.forEach(err => {
       console.log("===============================================================", err.type);
       switch (err.type){
-        case "any.requireds":
+        case "any.required":
           err.message = "ME3645";
           break;
         case "any.empty":

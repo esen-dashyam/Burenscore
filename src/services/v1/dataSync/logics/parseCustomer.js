@@ -76,7 +76,7 @@ const schema = Joi.object({
         case "any.required":
           err.message="ME2018";
           break;
-        case "any.number":
+        case "number.base":
           err.message="ME2019";
           break;
         case "number.min":
