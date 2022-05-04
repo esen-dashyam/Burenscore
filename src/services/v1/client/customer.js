@@ -12,7 +12,7 @@ export default logic(schema, async (data, session) => {
   const {
     id,
   } = data;
-  console.log(data);
+  // console.log(data);
   let client = await db.find(db.Client, {
     where: { client_id: id },
   }, session);

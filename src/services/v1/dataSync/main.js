@@ -33,7 +33,7 @@ const insert = async (callback) => {
   try {
     await callback();
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 };
 
@@ -47,7 +47,7 @@ const bulkUpdate = async ({ type, data, attribute, where, session }) => {
         where     : where,
         attributes: [attribute]
       }, session))?.map(item => moment(item[attribute]));
-      console.log("OLD_DATA_DATETOPAY:", oldData);
+      // console.log("OLD_DATA_DATETOPAY:", oldData);
       data.forEach(item => {
         if (oldData.find(data => data === item.datetopay))
           INSERT_DATA.push(item);
@@ -67,7 +67,7 @@ const bulkUpdate = async ({ type, data, attribute, where, session }) => {
     if (INSERT_DATA.length > 0)
       await db.bulkCreate(model[type], INSERT_DATA, session);
   } catch (err){
-    console.log(err);
+    // console.log(err);
   }
 };
 const update = async ({ type, data, where, session }) => {
@@ -76,7 +76,7 @@ const update = async ({ type, data, where, session }) => {
       where: where
     }, session);
     let updatedData;
-    console.log("OLD_DATA_SINGLE", oldData);
+    // console.log("OLD_DATA_SINGLE", oldData);
     if (!oldData){
       updatedData = await db.create(model[type], data, session);
     } else {
@@ -87,7 +87,7 @@ const update = async ({ type, data, where, session }) => {
     }
     return updatedData;
   } catch (err){
-    console.log(err);
+    // console.log(err);
   }
 };
 
@@ -137,7 +137,7 @@ export default logic(null, async (data, session) => {
     CUSTOMER.bondInfo = await parseBond({ data: bond, where });
     CUSTOMER.mrtInfo = await parseMortgage({ data: mrtInfo, where });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return ({
       error: {
         code    : err?.code,
@@ -272,7 +272,7 @@ export default logic(null, async (data, session) => {
   }
   if (customer){
 
-    console.log("=====================================================CUSTOMER_EXISTS_ROUTE=====================================================");
+    // console.log("=====================================================CUSTOMER_EXISTS_ROUTE=====================================================");
     if (CUSTOMER?.customerInfo){
       await db.update(customer, { ...CUSTOMER?.customerInfo, id: CUSTOMER?.id }, session);
     }

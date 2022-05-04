@@ -194,29 +194,28 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_guarantee_extcount: Joi.string()
-    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
-      errors.forEach(err => {
-        switch (err.type){
-          case "any.required":
-            err.message = "ME2279";
-            break;
-          case "any.empty":
-            err.message = "ME2279";
-            break;
-          case "string.max":
-            err.message = "ME2281";
-            break;
-          case "number":
-            err.message = "ME2280";
-            break;
+  o_c_guarantee_extcount: Joi.string().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2279";
+          break;
+        case "any.empty":
+          err.message = "ME2279";
+          break;
+        case "string.max":
+          err.message = "ME2281";
+          break;
+        case "number":
+          err.message = "ME2280";
+          break;
 
-          default :
-            break;
-        }
-      });
-      return errors;
-    }),
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
   o_c_guarantee_balance: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
@@ -247,7 +246,7 @@ export default async ({ data, where }) => {
     await schema.validate(data);
   }
   catch (err) {
-    console.log(err);
+    // console.log(err);
     throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
   }
   let id = uuidv4();
@@ -269,7 +268,7 @@ export default async ({ data, where }) => {
       type       : "GUARANTEE",
       mrtno      : data.o_c_guaranteemrtnos.o_c_guaranteemrtno
     });
-  console.log("==========>", mrtnos);
+  // console.log("==========>", mrtnos);
   if (Array.isArray(data.o_c_guaranteerelnos.o_c_guaranteerelno)){
     data.o_c_guaranteerelnos.o_c_guaranteerelno.forEach(item => {
       relnos.push({

@@ -102,15 +102,6 @@ const schemaArray = Joi.array().items(Joi.object({
         case "number.base":
           err.message="ME2487";
           break;
-        // case "any.empty":
-        //   err.message="ME2481";
-        //   break;
-        // case "number.base":
-        //   err.message="ME2483";
-        //   break;
-        // case "number.max":
-        //   err.message="ME2482";
-        //   break;
         default :
           break;
       }
@@ -180,7 +171,6 @@ const schemaArray = Joi.array().items(Joi.object({
         case "number.base":
           err.message="ME2493";
           break;
-
         default :
           break;
       }
@@ -194,7 +184,7 @@ const schemaArray = Joi.array().items(Joi.object({
           err.message = "ME2494";
           break;
         case "any.empty":
-          err.message="ME2489";
+          err.message="ME2494";
           break;
         case "string.regex.base":
           err.message="ME2495";
@@ -884,7 +874,7 @@ export default async ({ data, where }) => {
       await schemaArray.validate(data);
     }
     catch (err) {
-      console.log("================================", err);
+      // console.log("================================", err);
       throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
     }
     data.forEach(item => {
@@ -924,7 +914,7 @@ export default async ({ data, where }) => {
       await schemaObject.validate(data);
     }
     catch (err) {
-      console.log("================================", err);
+      // console.log("================================", err);
       throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
     }
     mortgages.push({

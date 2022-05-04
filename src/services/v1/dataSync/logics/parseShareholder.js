@@ -116,7 +116,7 @@ const customerSchemaArray = Joi.array().items(Joi.object({
         case "any.required":
           err.message="ME3038";
           break;
-        case "any.number":
+        case "string.":
           err.message="ME3039";
           break;
         default:
@@ -152,7 +152,7 @@ const orgSchemaObject = Joi.object({
         case "any.required":
           err.message="ME3024";
           break;
-        case "any.number":
+        case "number.base":
           err.message="ME3025";
           break;
         default:
@@ -161,16 +161,16 @@ const orgSchemaObject = Joi.object({
     });
     return errors;
   }),
-  o_shareholderorg_registerno: Joi.string().max(16).required().error(errors=>{
+  o_shareholderorg_registerno: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required().error(errors=>{
     errors.forEach(err=>{
       switch (err.type){
         case "any.required":
           err.message="ME3027";
           break;
-        case "any.number":
+        case "string.regex.base":
           err.message="ME3028";
           break;
-        case "number.max":
+        case "string.max":
           err.message="ME3029";
           break;
         default:
@@ -206,7 +206,7 @@ const orgSchemaArray = Joi.array().items(Joi.object({
         case "any.required":
           err.message="ME3024";
           break;
-        case "any.number":
+        case "number.base":
           err.message="ME3025";
           break;
         default:
@@ -221,7 +221,7 @@ const orgSchemaArray = Joi.array().items(Joi.object({
         case "any.required":
           err.message="ME3027";
           break;
-        case "any.number":
+        case "number.base":
           err.message="ME3028";
           break;
         case "number.max":
@@ -245,7 +245,7 @@ export default async ({ data, where, type }) => {
         await customerSchemaArray.validate(data);
       }
       catch (err) {
-        console.log("================================", err);
+        // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
       data.forEach(item => {
@@ -262,7 +262,7 @@ export default async ({ data, where, type }) => {
         await customerSchemaObject.validate(data);
       }
       catch (err) {
-        console.log("================================", err);
+        // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
       shareholder.push({
@@ -280,7 +280,7 @@ export default async ({ data, where, type }) => {
         await orgSchemaArray.validate(data);
       }
       catch (err) {
-        console.log("================================", err);
+        // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
       data.forEach(item => {
@@ -297,7 +297,7 @@ export default async ({ data, where, type }) => {
         await orgSchemaObject.validate(data);
       }
       catch (err) {
-        console.log("================================", err);
+        // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
       shareholder.push({
