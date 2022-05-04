@@ -217,12 +217,12 @@ const schema = Joi.object({
 
 export default async ({ data, where }) => {
   if (!data) return null;
-  console.log(data.o_c_leasingtransactions.o_c_leasingdetails);
+  // console.log(data.o_c_leasingtransactions.o_c_leasingdetails);
   try {
     await schema.validate(data);
   }
   catch (err) {
-    console.log(err);
+    // console.log(err);
     throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
   }
   let id = uuidv4();
@@ -244,7 +244,7 @@ export default async ({ data, where }) => {
       type       : "LEASING",
       mrtno      : data?.o_c_leasingmrtno?.o_c_leasingmrtno
     });
-  console.log("==========>", mrtnos);
+  // console.log("==========>", mrtnos);
   if (Array.isArray(data.o_c_leasingrelnos.o_c_leasingrelno)){
     data.o_c_leasingrelnos.o_c_leasingrelno.forEach(item => {
       relnos.push({
@@ -261,7 +261,7 @@ export default async ({ data, where }) => {
       type       : "LEASING",
       relno      : data?.o_c_leasingrelnos?.o_c_leasingrelno
     });
-  console.log("==========>", relnos);
+  // console.log("==========>", relnos);
   let leasingInfo = {
     id                           : id,
     o_c_leasing_advamount        : data?.o_c_leasing_advamount,

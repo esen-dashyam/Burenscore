@@ -22,7 +22,7 @@ export default logic(schema, async (data, session) => {
     relation_id: filter.id,
   };
   let mrtnos = await db.findAll(db.Mrtno, { where: where }, session);
-  console.log("MORT_NOS========>", mrtnos);
+  // console.log("MORT_NOS========>", mrtnos);
   if (mrtnos.length <= 0) return { rows: [], count: 0 };
   const { rows, count } = await db.findAndCountAll(db.OCMortgage, { where: {
     o_c_customercode: mrtnos[0].o_c_customercode,

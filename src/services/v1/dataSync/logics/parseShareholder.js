@@ -245,7 +245,7 @@ export default async ({ data, where, type }) => {
         await customerSchemaArray.validate(data);
       }
       catch (err) {
-        console.log("================================", err);
+        // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
       data.forEach(item => {
@@ -262,7 +262,7 @@ export default async ({ data, where, type }) => {
         await customerSchemaObject.validate(data);
       }
       catch (err) {
-        console.log("================================", err);
+        // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
       shareholder.push({
@@ -280,7 +280,7 @@ export default async ({ data, where, type }) => {
         await orgSchemaArray.validate(data);
       }
       catch (err) {
-        console.log("================================", err);
+        // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
       data.forEach(item => {
@@ -297,7 +297,7 @@ export default async ({ data, where, type }) => {
         await orgSchemaObject.validate(data);
       }
       catch (err) {
-        console.log("================================", err);
+        // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
       shareholder.push({

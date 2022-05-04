@@ -89,7 +89,7 @@ const schema = Joi.object({
   o_c_onus_paymentfinaldate: Joi.string()
     .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
       errors.forEach(err => {
-        console.log("=======================AA===============", err.type);
+        // console.log("=======================AA===============", err.type);
         switch (err.type){
           case "any.required":
             err.message = "ME3460";
@@ -109,7 +109,7 @@ const schema = Joi.object({
   o_c_onus_expdate: Joi.string()
     .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
       errors.forEach(err => {
-        console.log("=============", err.type);
+        // console.log("=============", err.type);
         switch (err.type){
           case "any.required":
             err.message = "ME3462";
@@ -243,7 +243,7 @@ export default async ({ data, where }) => {
     await schema.validate(data);
   }
   catch (err) {
-    console.log("======================", err);
+    // console.log("======================", err);
     throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
   }
   let id = uuidv4();
@@ -265,7 +265,7 @@ export default async ({ data, where }) => {
       type       : "ONUS",
       mrtno      : data.o_c_onusmrtnos.o_c_onusmrtno
     });
-  console.log("==========>", mrtnos);
+  // console.log("==========>", mrtnos);
   if (Array.isArray(data.o_c_onusrelnos.o_c_onusrelno)){
     data.o_c_onusrelnos.o_c_onusrelno.forEach(item => {
       relnos.push({
@@ -282,7 +282,7 @@ export default async ({ data, where }) => {
       type       : "ONUS",
       relno      : data.o_c_onusrelnos.o_c_onusrelno
     });
-  console.log("==========>", relnos);
+  // console.log("==========>", relnos);
 
   let onusInfo = {
     id                        : id,

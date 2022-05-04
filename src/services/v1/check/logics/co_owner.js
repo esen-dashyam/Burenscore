@@ -7,13 +7,13 @@ export default async (data, session) => {
   let relnos = [];
   let filters = {};
   if (where.o_c_registerno.length <= 8){
-    console.log("==============>", where.o_c_registerno.length);
+    // console.log("==============>", where.o_c_registerno.length);
     filters.o_c_relationorg_registerno = where.o_c_registerno;
     filters.o_c_relationorg_orgrelation = "03";
     let relationOrg = await db.findAll(db.OCRelationorg, { where: filters }, session);
     if (relationOrg.length > 0) {
       relnos = await db.findAll(db.Relno, { where: { relno: relationOrg.map(item => item.o_c_relationcustomer_relno) } }, session);
-      console.log("RELNOS=====================================>", relnos);
+      // console.log("RELNOS=====================================>", relnos);
     }
   } else {
     filters.o_c_relationcustomer_registerno = where.o_c_registerno;
@@ -21,7 +21,7 @@ export default async (data, session) => {
     let relationCustomers = await db.findAll(db.OCRelationcustomer, { where: filters }, session);
     if (relationCustomers.length > 0){
       relnos = await db.findAll(db.Relno, { where: { relno: relationCustomers.map(item => item.o_c_relationcustomer_relno) } }, session);
-      console.log("relationCustomers=====================================>", relationCustomers);
+      // console.log("relationCustomers=====================================>", relationCustomers);
     }
   }
 
@@ -29,7 +29,7 @@ export default async (data, session) => {
     return async () => {
       switch (item.type) {
         case "LOAN": {
-          console.log("=====================================>", item.relation_id);
+          // console.log("=====================================>", item.relation_id);
           let value = await db.find(db.OCLoanInformation, { where: { id: item.relation_id } }, session);
           if (value){
             rows.push({
@@ -51,7 +51,7 @@ export default async (data, session) => {
         }
         case "ACCREDIT": {
           let value = await db.find(db.OCAccredit, { where: { id: item.relation_id } }, session);
-          console.log("ACCREDIT=================================>", value);
+          // console.log("ACCREDIT=================================>", value);
           if (value){
             rows.push({
               ...value.dataValues,

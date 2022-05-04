@@ -228,7 +228,7 @@ export default async ({ data, where }) => {
   try {
     await schema.validate(data);
   } catch (err){
-    console.log(err);
+    // console.log(err);
     throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
   }
   let id = uuidv4();

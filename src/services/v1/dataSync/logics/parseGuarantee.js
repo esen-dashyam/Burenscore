@@ -247,7 +247,7 @@ export default async ({ data, where }) => {
     await schema.validate(data);
   }
   catch (err) {
-    console.log(err);
+    // console.log(err);
     throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
   }
   let id = uuidv4();
@@ -269,7 +269,7 @@ export default async ({ data, where }) => {
       type       : "GUARANTEE",
       mrtno      : data.o_c_guaranteemrtnos.o_c_guaranteemrtno
     });
-  console.log("==========>", mrtnos);
+  // console.log("==========>", mrtnos);
   if (Array.isArray(data.o_c_guaranteerelnos.o_c_guaranteerelno)){
     data.o_c_guaranteerelnos.o_c_guaranteerelno.forEach(item => {
       relnos.push({

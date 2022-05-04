@@ -21,42 +21,42 @@ export default logic(schema, async (data, session) => {
   switch (type){
     case "LOAN": {
       value = await db.find(db.OCLoanInformation, { where: where }, session);
-      console.log("LOAN=================================>", value);
+      // console.log("LOAN=================================>", value);
       break;
     }
     case "LEASING": {
       value = await db.find(db.OCLeasing, { where: where }, session);
-      console.log("LEASING=================================>", value);
+      // console.log("LEASING=================================>", value);
       break;
     }
     case "ACCREDIT": {
       value = await db.find(db.OCAccredit, { where: where }, session);
-      console.log("ACCREDIT=================================>", value);
+      // console.log("ACCREDIT=================================>", value);
       break;
     }
     case "ONUS": {
       value = await db.find(db.OCOnusInformation, { where: where }, session);
-      console.log("ONUS=================================>", value);
+      // console.log("ONUS=================================>", value);
       break;
     }
     case "BOND": {
       value = await db.find(db.OBond, { where: where }, session);
-      console.log("BOND=================================>", value);
+      // console.log("BOND=================================>", value);
       break;
     }
     case "GUARANTEE": {
       value = await db.find(db.OCGuarantee, { where: where }, session);
-      console.log("GUARANTEE=================================>", value);
+      // console.log("GUARANTEE=================================>", value);
       break;
     }
     case "LOANLINE": {
       value = await db.find(db.OCLoanline, { where: where }, session);
-      console.log("LOANLINE=================================>", value);
+      // console.log("LOANLINE=================================>", value);
       break;
     }
     case "RECEIVABLE": {
       value = await db.find(db.OCReceivable, { where: where }, session);
-      console.log("RECEIVABLE=================================>", value);
+      // console.log("RECEIVABLE=================================>", value);
       break;
     }
     default: {

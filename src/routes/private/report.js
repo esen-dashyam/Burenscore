@@ -11,9 +11,9 @@ export default method.post("/report", schema, async (req, res, session) => {
     register_no,
     report_rel_types
   } = req.body;
-  console.log("=======================================================================================");
-  console.log(report_rel_types);
-  console.log("=======================================================================================");
+  // console.log("=======================================================================================");
+  // console.log(report_rel_types);
+  // console.log("=======================================================================================");
   let result ={};
   if (report_rel_types === "OWNER"){
     result = await owner(register_no, session);

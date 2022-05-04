@@ -22,7 +22,7 @@ export default async (register_no, session) => {
   };
   let customer = {};
   if (where.o_c_registerno.length <= 8){
-    console.log("==============>", where.o_c_registerno.length);
+    // console.log("==============>", where.o_c_registerno.length);
     filters.o_c_relationorg_registerno = where.o_c_registerno;
     filters.o_c_relationorg_orgrelation = "03";
     let relationOrg = await db.findAll(db.OCRelationorg, { where: filters }, session);
@@ -33,7 +33,7 @@ export default async (register_no, session) => {
         o_c_bank_code   : relationOrg.map(item => item.o_c_bank_code),
         o_c_registerno  : relationOrg.map(item => item.o_c_registerno),
       } }, session);
-      console.log("RELNOS=====================================>", relnos);
+      // console.log("RELNOS=====================================>", relnos);
       customer = relationOrg[0];
     } else {
       throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
@@ -41,9 +41,9 @@ export default async (register_no, session) => {
   } else {
     filters.o_c_relationcustomer_registerno = where.o_c_registerno;
     filters.o_c_relationcustomer_citizenrelation = "04";
-    console.log(filters);
+    // console.log(filters);
     let relationCustomers = await db.findAll(db.OCRelationcustomer, { where: filters }, session);
-    console.log(relationCustomers);
+    // console.log(relationCustomers);
     if (relationCustomers?.length > 0){
       relnos = await db.findAll(db.Relno, { where: {
         relno           : relationCustomers.map(item => item.o_c_relationcustomer_relno),
@@ -51,7 +51,7 @@ export default async (register_no, session) => {
         o_c_bank_code   : relationCustomers.map(item => item.o_c_bank_code),
         o_c_registerno  : relationCustomers.map(item => item.o_c_registerno),
       } }, session);
-      console.log("relationCustomers=====================================>", relnos);
+      // console.log("relationCustomers=====================================>", relnos);
       customer = relationCustomers[0];
     } else {
       throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
@@ -62,7 +62,7 @@ export default async (register_no, session) => {
     return async () => {
       switch (item.type) {
         case "LOAN": {
-          console.log("=====================================>", item.relation_id);
+          // console.log("=====================================>", item.relation_id);
           let value = await db.find(db.OCLoanInformation, { where: { id: item.relation_id } }, session);
           if (value && value.payment_status === "PAID"){
             PAID_LOANS.push({

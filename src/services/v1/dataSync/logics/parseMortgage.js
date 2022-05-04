@@ -69,7 +69,7 @@ export default async ({ data, where }) => {
       await schemaArray.validate(data);
     }
     catch (err) {
-      console.log("================================", err);
+      // console.log("================================", err);
       throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
     }
     data.forEach(item => {
@@ -109,7 +109,7 @@ export default async ({ data, where }) => {
       await schemaObject.validate(data);
     }
     catch (err) {
-      console.log("================================", err);
+      // console.log("================================", err);
       throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
     }
     mortgages.push({

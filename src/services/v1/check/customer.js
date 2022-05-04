@@ -17,7 +17,7 @@ export default logic(schema, async (data, session) => {
     report_purpose
   } = data;
 
-  console.log(register_no, report_purpose, report_rel_types);
+  // console.log(register_no, report_purpose, report_rel_types);
 
   let where = {
     o_c_registerno: register_no,

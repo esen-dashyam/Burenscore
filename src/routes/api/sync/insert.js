@@ -39,7 +39,7 @@ export default method.post("/sync/insert", schema, async (req, res, session) => 
     let falls = data.map(item =>{
       return async () => {
         let result = await dataSync.main(item, session);
-        console.log("========INSERT_API_RESULT============>", result);
+        // console.log("========INSERT_API_RESULT============>", result);
         if (result.error) {
           errors.push({
             register_no: result.error?.customer,
@@ -56,13 +56,13 @@ export default method.post("/sync/insert", schema, async (req, res, session) => 
               date          : new Date(),
             }, session);
           } catch (err){
-            console.log(err);
+            // console.log(err);
           }
         } else {
-          console.log("==================================================");
-          console.log(request);
-          console.log(result.customer.customerInfo.o_c_registerno);
-          console.log("==================================================");
+          // console.log("==================================================");
+          // console.log(request);
+          // console.log(result.customer.customerInfo.o_c_registerno);
+          // console.log("==================================================");
           try {
             await auditService.insert_error({
               request_id    : request._id,
@@ -71,7 +71,7 @@ export default method.post("/sync/insert", schema, async (req, res, session) => 
               date          : new Date()
             });
           } catch (err){
-            console.log("==================>", err.code.details);
+            // console.log("==================>", err.code.details);
           }
 
         }
@@ -80,7 +80,7 @@ export default method.post("/sync/insert", schema, async (req, res, session) => 
     });
     await fall(falls);
   });
-  console.log("BEFORE_RES", errors);
+  // console.log("BEFORE_RES", errors);
   res.json({
     request_id: request._id,
     errors

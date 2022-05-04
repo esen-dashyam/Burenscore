@@ -13,7 +13,7 @@ const getCurrencies = async ({ currencyCode }) => {
   };
   let result = await axios(config)
     .then(function (response) {
-      console.log(JSON.stringify(response.data));
+      // console.log(JSON.stringify(response.data));
       let data = response.data.reduce((acc, iter)=> {
         return {
           ...acc,
@@ -23,7 +23,7 @@ const getCurrencies = async ({ currencyCode }) => {
       return data;
     })
     .catch(function (error) {
-      console.log(error);
+      // console.log(error);
     });
   return result;
 };
@@ -95,7 +95,7 @@ export default async (register_no, session) => {
   let bonds = await db.findAll(db.OBond, { where: where, }, session);
   let accredits = await db.findAll(db.OCAccredit, { where: where }, session);
   loans.forEach(item => {
-    console.log("o_c_loan_loanclasscode:", item.o_c_loan_loanclasscode);
+    // console.log("o_c_loan_loanclasscode:", item.o_c_loan_loanclasscode);
     if (item.payment_status === "PAID"){
       PAID_LOANS.push({
         ...item.dataValues,
@@ -177,7 +177,7 @@ export default async (register_no, session) => {
     };
   });
   leasings.forEach(item => {
-    console.log("o_c_leasing_loanclasscode:", item.o_c_leasing_loanclasscode);
+    // console.log("o_c_leasing_loanclasscode:", item.o_c_leasing_loanclasscode);
     if (item.payment_status === "PAID"){
       PAID_LEASINGS.push({
         ...item.dataValues,
@@ -256,7 +256,7 @@ export default async (register_no, session) => {
   });
 
   onus.forEach(item => {
-    console.log("o_c_onus_loanclasscode:", item.o_c_onus_loanclasscode);
+    // console.log("o_c_onus_loanclasscode:", item.o_c_onus_loanclasscode);
     if (item.payment_status === "PAID"){
       PAID_ONUS.push({
         ...item.dataValues,
@@ -338,7 +338,7 @@ export default async (register_no, session) => {
     };
   });
   receivables.forEach(item => {
-    console.log("o_c_receivable_loanclasscode:", item.o_c_receivable_loanclasscode);
+    // console.log("o_c_receivable_loanclasscode:", item.o_c_receivable_loanclasscode);
     if (item.payment_status === "PAID"){
       PAID_RECEIVABLS.push({
         ...item.dataValues,
@@ -417,7 +417,7 @@ export default async (register_no, session) => {
     };
   });
   loanLines.forEach(item => {
-    console.log("o_c_loanline_loanclasscode:", item.o_c_loanline_loanclasscode);
+    // console.log("o_c_loanline_loanclasscode:", item.o_c_loanline_loanclasscode);
     if (item.payment_status === "PAID"){
       PAID_LOANLINES.push({
         ...item.dataValues,
@@ -530,7 +530,7 @@ export default async (register_no, session) => {
   });
 
   guarantee.forEach(item => {
-    console.log("o_c_guarantee_loanclasscode:", item.o_c_guarantee_loanclasscode);
+    // console.log("o_c_guarantee_loanclasscode:", item.o_c_guarantee_loanclasscode);
     switch (item.o_c_guarantee_loanclasscode) {
       case "01": {
         RISK_COUNT.NORMAL +=1;
