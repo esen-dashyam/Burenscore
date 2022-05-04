@@ -2,6 +2,11 @@ import { v4 as uuidv4 } from "uuid";
 import Joi from "joi";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERROR_DETAILS } from "../../../../constants";
+import APPENDIX_Y from "../../../../constants/APPENDIX_Y";
+import APPENDIX_P_FITCH from "../../../../constants/APPENDIX_P_FITCH";
+import APPENDIX_R from "../../../../constants/APPENDIX_R";
+import APPENDIX_C from "../../../../constants/APPENDIX_C";
+import APPENDIX_J from "../../../../constants/APPENDIX_J";
 
 const schema = Joi.object({
   o_c_customercode: Joi.string().max(16).required().error(errors => {
@@ -126,13 +131,19 @@ const schema = Joi.object({
         }
       }); return errors;
     }),
-  o_c_isforeign: Joi.number().required().error(errors=>{
+  o_c_isforeign: Joi.number().integer().min(0).max(1).required().error(errors=>{
     errors.forEach(err=>{
       switch (err.type){
         case "any.required":
           err.message="ME2023";
           break;
         case "any.number":
+          err.message="ME2024";
+          break;
+          case "number.max":
+          err.message="ME2024";
+          break;
+          case "number.min":
           err.message="ME2024";
           break;
         default:
@@ -355,13 +366,16 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  c_familynumofmembers: Joi.number().optional().allow([null, ""]).error(errors=> {
+  c_familynumofmembers: Joi.number().integer().optional().allow([null, ""]).error(errors=> {
     errors.forEach(err=>{
       switch (err.type){
         case "any.empty":
           err.message = "ME2034";
           break;
-        case "string.max":
+        case "number.base":
+          err.message="ME2035";
+          break;
+        case "number.integer":
           err.message="ME2035";
           break;
         default:
@@ -370,14 +384,14 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  c_occupation: Joi.string().optional().allow([null, ""]).error(errors=> {
+  c_occupation: Joi.string().valid(Object.keys(APPENDIX_Y).map(item=>APPENDIX_Y[item])).optional().allow([null, ""]).error(errors=> {
     errors.forEach(err=>{
       switch (err.type){
         case "any.empty":
           err.message = "ME2039";
           break;
-        case "string.max":
-          err.message="ME2040";
+        case "any.valid":
+          err.message = "ME2041";
           break;
         default:
           break;
@@ -385,11 +399,11 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_fitchrating: Joi.string().optional().allow([null, ""]).error(errors=> {
+  o_fitchrating: Joi.string().valid(Object.keys(APPENDIX_P_FITCH).map(item=>APPENDIX_P_FITCH[item])).optional().allow([null, ""]).error(errors=> {
     errors.forEach(err=>{
       switch (err.type){
-        case "any.empty":
-          err.message = "ME2042";
+        case "any.valid":
+          err.message="ME2042";
           break;
         case "string.max":
           err.message="ME2043";
@@ -400,11 +414,26 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_sandp_rating: Joi.string().optional().allow([null, ""]).error(errors=> {
+  o_sandp_rating: Joi.string().valid(Object.keys(APPENDIX_R).map(item=>APPENDIX_R[item])).optional().allow([null, ""]).error(errors=> {
     errors.forEach(err=>{
       switch (err.type){
-        case "any.empty":
-          err.message = "ME2044";
+        case "any.valid":
+          err.message = "ME2045";
+          break;
+        case "string.max":
+          err.message="ME2044";
+          break;
+        default:
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_moodysrating: Joi.string().valid(Object.keys(APPENDIX_C).map(item=>APPENDIX_C[item])).optional().allow([null, ""]).error(errors=> {
+    errors.forEach(err=>{
+      switch (err.type){
+        case "any.valid":
+          err.message = "ME2046";
           break;
         case "string.max":
           err.message="ME2045";
@@ -413,30 +442,15 @@ const schema = Joi.object({
           break;
       }
     });
-    return errors;
   }),
-  o_moodysrating: Joi.string().optional().allow([null, ""]).error(errors=> {
+  o_companytypecode: Joi.string().valid(Object.keys(APPENDIX_J).map(item=>APPENDIX_J[item])).optional().allow([null, ""]).error(errors=> {
     errors.forEach(err=>{
       switch (err.type){
-        case "any.empty":
-          err.message = "ME2045";
+        case "any.valid":
+          err.message = "ME2047";
           break;
         case "string.max":
           err.message="ME2046";
-          break;
-        default:
-          break;
-      }
-    });
-  }),
-  o_companytypecode: Joi.string().optional().allow([null, ""]).error(errors=> {
-    errors.forEach(err=>{
-      switch (err.type){
-        case "any.empty":
-          err.message = "ME2046";
-          break;
-        case "string.max":
-          err.message="ME2047";
           break;
         default:
           break;
@@ -504,11 +518,11 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_noofshareholders: Joi.number().optional().allow([null, ""]).error(errors=> {
+  o_noofshareholders: Joi.number().integer().optional().allow([null, ""]).error(errors=> {
     errors.forEach(err=>{
       switch (err.type){
-        case "string.max":
-          err.message="ME2060";
+        case "number.integer":
+          err.message="ME2060"
           break;
         default:
           break;
@@ -516,13 +530,13 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  c_familynumofunemployed: Joi.number().optional().allow([null, ""]).error(errors=> {
+  c_familynumofunemployed: Joi.number().integer().optional().allow([null, ""]).error(errors=> {
     errors.forEach(err=>{
       switch (err.type){
-        case "any.empty":
+        case "number.base":
           err.message = "ME2035";
           break;
-        case "string.max":
+        case "number.integer":
           err.message="ME2036";
           break;
         default:
@@ -531,7 +545,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  c_job: Joi.string().optional().allow([null, ""]).error(errors=> {
+  c_job: Joi.string().max(250).optional().allow([null, ""]).error(errors=> {
     errors.forEach(err=>{
       switch (err.type){
         case "string.max":

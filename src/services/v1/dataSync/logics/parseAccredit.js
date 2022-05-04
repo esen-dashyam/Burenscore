@@ -1,12 +1,13 @@
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERRORS, ERROR_DETAILS } from "../../../../constants";
+import { ERRORS, ERROR_DETAILS, VALUE_CODES } from "../../../../constants";
 import Joi from "joi";
 import number from "joi/lib/types/number";
+import APPENDIX_E from "../../../../constants/APPENDIX_E";
 
 const schema = Joi.object({
-  o_c_accredit_advamount: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+  o_c_accredit_advamount: Joi.number().max(999999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -15,10 +16,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME7002";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME7003";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME7004";
           break;
         default :
@@ -65,17 +66,17 @@ const schema = Joi.object({
       });
       return errors;
     }),
-  o_c_accredit_currencycode: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+  o_c_accredit_currencycode: Joi.string().valid(Object.keys(VALUE_CODES).map(item => VALUE_CODES[item])).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
           err.message = "ME7010";
           break;
         case "any.empty":
-          err.message = "ME7012";
+          err.message = "ME7010";
           break;
-        case "string.max":
-          err.message = "ME7011";
+        case "any.valid":
+          err.message = "ME7012";
           break;
         default :
           break;
@@ -83,17 +84,17 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_accredit_type: Joi.string().required().error(errors => {
+  o_c_accredit_type: Joi.string().valid(Object.keys(APPENDIX_E).map(item=>APPENDIX_E[item])).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
           err.message = "ME7013";
           break;
         case "any.empty":
-          err.message = "ME7015";
+          err.message = "ME7013";
           break;
-        case "number.max":
-          err.message = "ME7014";
+        case "any.valid":
+          err.message = "ME7015";
           break;
         default :
           break;
@@ -101,7 +102,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_accredit_interestinperc: Joi.string().regex(/^[0-9]/).max(9).required().error(errors => {
+  o_c_accredit_interestinperc: Joi.number().max(999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -110,10 +111,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME7016";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME7018";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME7017";
           break;
         default :
@@ -122,7 +123,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_accredit_commissionperc: Joi.string().regex(/^[0-9]/).max(9).required().error(errors => {
+  o_c_accredit_commissionperc: Joi.number().max(999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -131,10 +132,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME7020";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME7019";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME7023";
           break;
         default :
@@ -143,7 +144,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_accredit_fee: Joi.string().regex(/^[0-9]/).max(15).required().error(errors => {
+  o_c_accredit_fee: Joi.number().max(999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -152,10 +153,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME7024";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME7026";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME7025";
           break;
         default :
@@ -164,10 +165,11 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_accredit_updatedexpdate: Joi.date().optional().allow([null, ""]).error(errors => {
+  o_c_accredit_updatedexpdate: Joi.string()
+  .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]).error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "date.format":
+        case "string.regex.base":
           err.message = "ME7027";
           break;
         default :
@@ -189,15 +191,12 @@ const schema = Joi.object({
           case "string.regex.base":
             err.message = "ME7030";
             break;
-          case "string.max":
-            err.message = "ME7031";
-            break;
           default :
             break;
         }
       });
     }),
-  o_c_accredit_balance: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+  o_c_accredit_balance: Joi.number().max(999999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -206,8 +205,11 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME2084";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME2085";
+          break;
+          case "number.base":
+           err.message = "ME2086";
           break;
         default:
           break;
