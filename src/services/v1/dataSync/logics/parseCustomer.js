@@ -22,7 +22,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_loandescription: Joi.string().optional().allow([null, ""]).max(250).error(errors=> {
+  o_c_loandescription: Joi.string().optional().allow([null, ""]).error(errors=> {
     errors.forEach(err=> {
       switch (err.type){
         case "string.max":
@@ -38,10 +38,10 @@ const schema = Joi.object({
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
-          err.message = "ME2013";
+          err.message = "ME2014";
           break;
         case "any.empty":
-          err.message = "ME2013";
+          err.message = "ME2014";
           break;
         case "string.max":
           err.message="ME2015";
@@ -76,13 +76,10 @@ const schema = Joi.object({
         case "any.required":
           err.message="ME2018";
           break;
+        case "any.empty":
+          err.message="ME2018";
+          break;
         case "number.base":
-          err.message="ME2019";
-          break;
-        case "number.min":
-          err.message="ME2019";
-          break;
-        case "number.max":
           err.message="ME2019";
           break;
         default :
@@ -108,7 +105,7 @@ const schema = Joi.object({
       }
     }); return errors;
   }),
-  c_lastname: Joi.string().max(50).optional().optional().allow([null, ""])
+  c_lastname: Joi.string().max(50).optional().allow([null, ""])
     .error(errors=>{
       errors.forEach(err=>{
         switch (err.type){
@@ -132,7 +129,7 @@ const schema = Joi.object({
         case "any.required":
           err.message="ME2023";
           break;
-        case "any.number":
+        case "number.base":
           err.message="ME2024";
           break;
         default:

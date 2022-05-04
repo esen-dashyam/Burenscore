@@ -3,63 +3,878 @@ import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERROR_DETAILS } from "../../../../constants";
 import Joi from "joi";
 const schemaArray = Joi.array().items(Joi.object({
-  o_c_mrtno                       : Joi.string().required(),
-  o_c_mrtno_internal              : Joi.number().required(),
-  o_c_mrtcode                     : Joi.string().required(),
-  o_c_mrtdescription              : Joi.string().required(),
-  o_c_is_real_estate              : Joi.number().required(),
-  o_c_dateofvaluation             : Joi.string().optional().allow([null, ""]),
-  o_c_mrtvalue                    : Joi.string().required(),
-  o_c_mrtmaxlimit                 : Joi.string().required(),
-  o_c_customer_firstname          : Joi.string().required(),
-  o_c_customer_lastname           : Joi.string().required(),
-  o_c_customer_isforeign          : Joi.number().required(),
-  o_c_customer_registerno         : Joi.string().required(),
-  o_c_organization_orgname        : Joi.string().required(),
-  o_c_organization_localregistered: Joi.number().required(),
-  o_c_organization_orgregisterno  : Joi.string().required(),
-  o_c_organization_stateregisterno: Joi.string().optional().allow([null, ""]),
-  o_c_registeredtoauthority       : Joi.string().optional().allow([null, ""]),
-  o_c_mrtstateregisterno          : Joi.string().required(),
-  o_c_mrtcertificateno            : Joi.string().required(),
-  o_c_mrtconfirmeddate            : Joi.date().required(),
-  o_c_mrtorgname                  : Joi.string().required(),
-  o_c_mrtregistereddatefim        : Joi.date().required(),
-  o_c_mrtregisterno               : Joi.string().required(),
-  o_c_mrtcertificatenofim         : Joi.string().required(),
-  o_c_causetoshiftto              : Joi.string().optional().allow([null, ""]),
-  o_c_courtorderdate              : Joi.date().optional().allow([null, ""]),
-  o_c_courtorderno                : Joi.string().optional().allow([null, ""]),
-}));
+  o_c_mrtno: Joi.number().precision(2).positive().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2452";
+          break;
+        case "any.empty":
+          err.message="ME2452";
+          break;
+        case "number.max":
+          err.message="ME2453";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtno_internal: Joi.number().required(),
+  o_c_mrtcode       : Joi.number().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2454";
+          break;
+        case "any.empty":
+          err.message="ME2456";
+          break;
+        case "number.max":
+          err.message="ME2455";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtdescription: Joi.string().max(150).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2460";
+          break;
+        case "any.empty":
+          err.message="ME2460";
+          break;
+        case "string.max":
+          err.message="ME2461";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_is_real_estate: Joi.number().required().error(errors => {
+    errors.forEach(err => {
+      console.log("=======================================", err.message);
+      switch (err.type){
+        case "any.required":
+          err.message = "ME4022";
+          break;
+        case "number.base":
+          err.message = "ME4023";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_dateofvaluation: Joi.date().optional().allow([null, ""]).error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2479";
+          break;
+        case "any.empty":
+          err.message="ME2479";
+          break;
+        case "date.base":
+          err.message="ME2480";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtvalue: Joi.number().precision(2).positive().required().error(errors => {
+    errors.forEach(err => {
+      console.log("====================================", err.type);
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2485";
+          break;
+        case "number.base":
+          err.message="ME2487";
+          break;
+        // case "any.empty":
+        //   err.message="ME2481";
+        //   break;
+        // case "number.base":
+        //   err.message="ME2483";
+        //   break;
+        // case "number.max":
+        //   err.message="ME2482";
+        //   break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtmaxlimit: Joi.number().precision(2).positive().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2485";
+          break;
+        case "any.empty":
+          err.message="ME2485";
+          break;
+        case "number.max":
+          err.message="ME2486";
+          break;
+        case "number.base":
+          err.message="ME2487";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_customer_firstname: Joi.string().max(50).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2489";
+          break;
+        case "any.empty":
+          err.message="ME2489";
+          break;
+        case "string.max":
+          err.message="ME2490";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_customer_lastname: Joi.string().max(50).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "string.max":
+          err.message="ME2491";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_customer_isforeign: Joi.number().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message="ME2492";
+          break;
+        case "any.empty":
+          err.message="ME2492";
+          break;
+        case "number.base":
+          err.message="ME2493";
+          break;
+
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_customer_registerno: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2494";
+          break;
+        case "any.empty":
+          err.message="ME2489";
+          break;
+        case "string.regex.base":
+          err.message="ME2495";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_organization_orgname: Joi.string().max(50).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2496";
+          break;
+        case "any.empty":
+          err.message="ME2496";
+          break;
+        case "string.max":
+          err.message="ME2497";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_organization_localregistered: Joi.number().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2498";
+          break;
+        case "any.empty":
+          err.message="ME2498";
+          break;
+        case "number.base":
+          err.message="ME2499";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_organization_orgregisterno: Joi.string().max(16).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2500";
+          break;
+        case "any.empty":
+          err.message="ME2500";
+          break;
+        case "number.base":
+          err.message="ME2501";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_organization_stateregisterno: Joi.string().max(16).optional().allow([null, ""]).error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2502";
+          break;
+        case "any.empty":
+          err.message="ME2502";
+          break;
+        case "number.base":
+          err.message="ME2503";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_registeredtoauthority: Joi.string().optional().allow([null, ""]),
+  o_c_mrtstateregisterno   : Joi.date().max(16).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2464";
+          break;
+        case "any.empty":
+          err.message="ME2464";
+          break;
+        case "date.base":
+          err.message="ME2465";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtcertificateno: Joi.string().max(16).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2466";
+          break;
+        case "any.empty":
+          err.message="ME2466";
+          break;
+        case "string.max":
+          err.message="ME2467";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtconfirmeddate: Joi.date().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2468";
+          break;
+        case "any.empty":
+          err.message="ME2468";
+          break;
+        case "date.base":
+          err.message="ME2469";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtorgname: Joi.string().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2470";
+          break;
+        case "any.empty":
+          err.message="ME2472";
+          break;
+        case "strig.max":
+          err.message="ME2471";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtregistereddatefim: Joi.date().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2473";
+          break;
+        case "any.empty":
+          err.message="ME2473";
+          break;
+        case "date.base":
+          err.message="ME2474";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtregisterno: Joi.string().max(20).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2475";
+          break;
+        case "any.empty":
+          err.message="ME2475";
+          break;
+        case "string.max":
+          err.message="ME2476";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtcertificatenofim: Joi.string().max(20).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2477";
+          break;
+        case "any.empty":
+          err.message="ME2477";
+          break;
+        case "string.max":
+          err.message="ME2478";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_causetoshiftto: Joi.string().optional().allow([null, ""]).error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.empty":
+          err.message="ME2510";
+          break;
+        case "string.max":
+          err.message="ME2509";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_courtorderdate: Joi.date().optional().allow([null, ""]).error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "date.base":
+          err.message="ME2511";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_courtorderno: Joi.string().max(50).optional().allow([null, ""]).error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "string.max":
+          err.message="ME2512";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+})).options({ allowUnknown: true });
 const schemaObject = Joi.object({
-  o_c_mrtno                       : Joi.string().required(),
-  o_c_mrtno_internal              : Joi.number().required(),
-  o_c_mrtcode                     : Joi.string().required(),
-  o_c_mrtdescription              : Joi.string().required(),
-  o_c_is_real_estate              : Joi.number().required(),
-  o_c_dateofvaluation             : Joi.string().optional().allow([null, ""]),
-  o_c_mrtvalue                    : Joi.string().required(),
-  o_c_mrtmaxlimit                 : Joi.string().required(),
-  o_c_customer_firstname          : Joi.string().required(),
-  o_c_customer_lastname           : Joi.string().required(),
-  o_c_customer_isforeign          : Joi.number().required(),
-  o_c_customer_registerno         : Joi.string().required(),
-  o_c_organization_orgname        : Joi.string().required(),
-  o_c_organization_localregistered: Joi.number().required(),
-  o_c_organization_orgregisterno  : Joi.string().required(),
-  o_c_organization_stateregisterno: Joi.string().optional().allow([null, ""]),
-  o_c_registeredtoauthority       : Joi.string().optional().allow([null, ""]),
-  o_c_mrtstateregisterno          : Joi.string().required(),
-  o_c_mrtcertificateno            : Joi.string().required(),
-  o_c_mrtconfirmeddate            : Joi.date().required(),
-  o_c_mrtorgname                  : Joi.string().required(),
-  o_c_mrtregistereddatefim        : Joi.date().required(),
-  o_c_mrtregisterno               : Joi.string().required(),
-  o_c_mrtcertificatenofim         : Joi.string().required(),
-  o_c_causetoshiftto              : Joi.string().optional().allow([null, ""]),
-  o_c_courtorderdate              : Joi.date().optional().allow([null, ""]),
-  o_c_courtorderno                : Joi.string().optional().allow([null, ""]),
-});
+  o_c_mrtno: Joi.string().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2452";
+          break;
+        case "any.empty":
+          err.message="ME2452";
+          break;
+        case "string.max":
+          err.message="ME2453";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtno_internal: Joi.number().required(),
+  o_c_mrtcode       : Joi.string().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2454";
+          break;
+        case "any.empty":
+          err.message="ME2456";
+          break;
+        case "string.max":
+          err.message="ME2455";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtdescription: Joi.string().max(150).required().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2460";
+          break;
+        case "any.empty":
+          err.message="ME2460";
+          break;
+        case "string.max":
+          err.message="ME2461";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_is_real_estate: Joi.number().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME4022";
+          break;
+        case "number.base":
+          err.message = "ME4023";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_dateofvaluation: Joi.date().optional().allow([null, ""]).error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2479";
+          break;
+        case "any.empty":
+          err.message="ME2479";
+          break;
+        case "date.base":
+          err.message="ME2480";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtvalue: Joi.number().precision(2).positive().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2481";
+          break;
+        case "number.base":
+          err.message = "ME2481";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtmaxlimit: Joi.number().precision(2).positive().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2485";
+          break;
+        case "number.base":
+          err.message="ME2487";
+          break;
+        // case "number.base":
+        //   err.message="ME2487";
+        //   break;
+        case "number.max":
+          err.message="ME2486";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_customer_firstname: Joi.string().max(50).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2489";
+          break;
+        case "any.empty":
+          err.message="ME2489";
+          break;
+        case "string.max":
+          err.message="ME2490";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_customer_lastname: Joi.string().max(50).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "string.max":
+          err.message="ME2491";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_customer_isforeign: Joi.number().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message="ME2492";
+          break;
+        case "any.empty":
+          err.message="ME2492";
+          break;
+        case "number.base":
+          err.message="ME2493";
+          break;
+
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_customer_registerno: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).max(16).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2494";
+          break;
+        case "any.empty":
+          err.message="ME2489";
+          break;
+        case "string.regex.base":
+          err.message="ME2495";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_organization_orgname: Joi.string().max(50).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2496";
+          break;
+        case "any.empty":
+          err.message="ME2496";
+          break;
+        case "string.max":
+          err.message="ME2497";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_organization_localregistered: Joi.number().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2498";
+          break;
+        case "any.empty":
+          err.message="ME2498";
+          break;
+        case "number.base":
+          err.message="ME2499";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_organization_orgregisterno: Joi.string().max(16).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2500";
+          break;
+        case "any.empty":
+          err.message="ME2500";
+          break;
+        case "number.base":
+          err.message="ME2501";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_organization_stateregisterno: Joi.string().max(16).optional().allow([null, ""]).error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2502";
+          break;
+        case "any.empty":
+          err.message="ME2502";
+          break;
+        case "number.base":
+          err.message="ME2503";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_registeredtoauthority: Joi.string().optional().allow([null, ""]),
+  o_c_mrtstateregisterno   : Joi.string().max(20).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2464";
+          break;
+        case "any.empty":
+          err.message="ME2464";
+          break;
+        case "string.base":
+          err.message="ME2465";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtcertificateno: Joi.string().max(16).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2466";
+          break;
+        case "any.empty":
+          err.message="ME2466";
+          break;
+        case "string.max":
+          err.message="ME2467";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtconfirmeddate: Joi.date().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2468";
+          break;
+        case "any.empty":
+          err.message="ME2468";
+          break;
+        case "date.base":
+          err.message="ME2469";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtorgname: Joi.string().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2496";
+          break;
+        case "any.empty":
+          err.message="ME2496";
+          break;
+        case "string.max":
+          err.message="ME2497";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtregistereddatefim: Joi.date().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2473";
+          break;
+        case "any.empty":
+          err.message="ME2473";
+          break;
+        case "date.base":
+          err.message="ME2474";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtregisterno: Joi.string().max(16).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2475";
+          break;
+        case "any.empty":
+          err.message="ME2475";
+          break;
+        case "string.max":
+          err.message="ME2476";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_mrtcertificatenofim: Joi.string().max(20).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2477";
+          break;
+        case "any.empty":
+          err.message="ME2477";
+          break;
+        case "string.max":
+          err.message="ME2478";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_causetoshiftto: Joi.string().optional().allow([null, ""]).error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.empty":
+          err.message="ME2510";
+          break;
+        case "string.max":
+          err.message="ME2509";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_courtorderdate: Joi.date().optional().allow([null, ""]).error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "date.base":
+          err.message="ME2511";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+  o_c_courtorderno: Joi.string().max(50).optional().allow([null, ""]).error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "string.max":
+          err.message="ME2512";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
+}).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {
   if (!data) return null;
