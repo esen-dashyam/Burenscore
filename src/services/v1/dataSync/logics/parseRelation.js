@@ -536,6 +536,7 @@ export default async ({ data, where, type, session }) => {
         await customerSchemaObject.validate(data);
       }
       catch (err) {
+        // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
       let relno = await db.find(db.OCRelationcustomer, {
