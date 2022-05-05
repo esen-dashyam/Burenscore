@@ -1,4 +1,5 @@
 import { method } from "@goodtechsoft/micro-service";
+import { request as partnerService } from "../../apis/bs_partner_service";
 import Joi from "joi";
 import co_owner from "./logics";
 import owner from "./logics";
@@ -20,6 +21,11 @@ export default method.post("/sync/get_customer", schema, async (req, res, sessio
   } else {
     result = await co_owner(register_no, session);
   }
+  let count = await partnerService.count({ register_no }, session);
+  console.log(count);
 
-  res.json(result);
+  res.json({
+    ...result,
+    count
+  });
 });

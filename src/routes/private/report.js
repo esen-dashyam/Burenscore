@@ -1,6 +1,7 @@
 import { method } from "@goodtechsoft/micro-service";
 import Joi from "joi";
 import { co_owner, owner } from "./logics";
+import { request as partnerService } from "../../apis/bs_partner_service";
 
 const schema = Joi.object({
   register_no     : Joi.string().max(12).required(),
@@ -20,5 +21,10 @@ export default method.post("/report", schema, async (req, res, session) => {
   } else {
     result = await co_owner(register_no, session);
   }
-  res.json(result);
+  let count = await partnerService.count({ register_no }, session);
+
+  res.json({
+    ...result,
+    count
+  });
 });
