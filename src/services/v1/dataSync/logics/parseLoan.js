@@ -1,12 +1,11 @@
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERRORS, ERROR_DETAILS, VALUE_CODES } from "../../../../constants";
-import Joi from "joi";
-import { max } from "joi/lib/types/array";
+import { APPENDIX, ERROR_DETAILS, VALUE_CODES } from "../../../../constants";
 import APPENDIX_K from "../../../../constants/APPENDIX_K";
 import APPENDIX_EO from "../../../../constants/APPENDIX_EO";
 import APPENDIX_A from "../../../../constants/APPENDIX_A";
+import Joi from "joi";
 
 const schema = Joi.object({
   o_c_loan_provideLoanSize: Joi.number().max(999999999999999.99).precision(2).required().error(errors => {
@@ -247,55 +246,35 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  // o_c_loan_loanintype: Joi.string().required().error(errors => {
-  //   errors.forEach(err => {
-  //     switch (err.type){
-  //       case "any.required":
-  //         err.message = "11111";
-  //         break;
-  //       case "any.empty":
-  //         err.message = "M12310";
-  //         break;
-  //       case "string.min":
-  //         err.message = "7";
-  //         break;
-  //       case "string.max":
-
-  //         err.message = "20";
-  //         break;
-  //       default :
-  //         break;
-  //     }
-  //   });
-  //   return errors;
-  // }),
-  // o_c_loantransactions    : Joi.object({
-  //   o_c_loan_loancharttype: Joi.string().required(),
-  //   o_c_loandetails       : Joi.object({
-  //     o_c_loandetail: Joi.array().items(Joi.object({
-  //       o_c_loandetail_datetopay  : Joi.date().required(),
-  //       o_c_loandetail_amounttopay: Joi.number().required(),
-  //     })),
-  //     o_c_loanperformances: Joi.object({
-  //       o_c_loanperformance: Joi.array().items(Joi.object({
-  //         o_c_loandetail_datetopay       : Joi.date().required(),
-  //         o_c_loanperformance_amounttopay: Joi.number().required(),
-  //       })),
-  //       o_c_loaninterestdetails: Joi.object({
-  //         o_c_loaninterestdetail: Joi.array().items(Joi.object({
-  //           o_c_loaninterestdetail_datetopay  : Joi.date().required(),
-  //           o_c_loaninterestdetail_amounttopay: Joi.number().required(),
-  //         })),
-  //         o_c_loaninterestperformances: Joi.object({
-  //           o_c_loaninterestperformance: Joi.array().items(Joi.object({
-  //             o_c_loaninterestperformance_datetopay  : Joi.date().required(),
-  //             o_c_loaninterestperformance_amounttopay: Joi.date().required(),
-  //           }))
-  //         })
-  //       })
-  //     })
-  //   })
-  // }).required()
+  o_c_loan_loanintype : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_X)).required(),
+  o_c_loantransactions: Joi.object({
+    o_c_loan_loancharttype    : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
+    o_c_loan_interestcharttype: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
+    o_c_loandetails           : Joi.object({
+      o_c_loandetail: Joi.array().items(Joi.object({
+        o_c_loandetail_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_loandetail_amounttopay: Joi.number().precision(2).positive().required()
+      })),
+    }),
+    o_c_loanperformances: Joi.object({
+      o_c_loanperformance: Joi.array().items(Joi.object({
+        o_c_loandetail_datetopay       : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_loanperformance_amounttopay: Joi.number().precision(2).positive().required()
+      })),
+    }),
+    o_c_loaninterestperformances: Joi.object({
+      o_c_loaninterestperformance: Joi.array().items(Joi.object({
+        o_c_loaninterestperformance_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_loaninterestperformance_amounttopay: Joi.number().precision(2).positive().required()
+      }))
+    }),
+    o_c_loaninterestdetails: Joi.object({
+      o_c_loaninterestdetail: Joi.array().items(Joi.object({
+        o_c_loaninterestdetail_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_loaninterestdetail_amounttopay: Joi.number().precision(2).positive().required()
+      })),
+    }),
+  }).optional().allow()
 }).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {

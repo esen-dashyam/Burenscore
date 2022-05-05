@@ -39,7 +39,7 @@ const schema = Joi.object({
       errors.forEach(err => {
         switch (err.type){
           case "any.required":
-            err.message ="ME2067"
+            err.message ="ME2067";
             break;
           case "string.regex.base":
             err.message = "ME2068";
@@ -75,8 +75,8 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME2071";
           break;
-          case "any.valid":
-           err.message = "ME2073";
+        case "any.valid":
+          err.message = "ME2073";
           break;
         default :
           break;
@@ -189,9 +189,9 @@ const schema = Joi.object({
         case "number.max":
           err.message = "ME2085";
           break;
-         case "number.base":
-         err.message = "ME2086";
-            break;
+        case "number.base":
+          err.message = "ME2086";
+          break;
         default:
           break;
       }
@@ -213,10 +213,10 @@ const schema = Joi.object({
         case "number.integer":
           err.message="Формат буруу байна";
           break;
-          default:
-            break;
+        default:
+          break;
       }
-    })
+    });
   })
 });
 

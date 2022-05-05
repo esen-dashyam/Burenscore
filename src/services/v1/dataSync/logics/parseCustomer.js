@@ -137,10 +137,10 @@ const schema = Joi.object({
         case "number.base":
           err.message="ME2024";
           break;
-          case "number.max":
+        case "number.max":
           err.message="ME2024";
           break;
-          case "number.min":
+        case "number.min":
           err.message="ME2024";
           break;
         default:
@@ -519,7 +519,7 @@ const schema = Joi.object({
     errors.forEach(err=>{
       switch (err.type){
         case "number.integer":
-          err.message="ME2060"
+          err.message="ME2060";
           break;
         default:
           break;
@@ -549,7 +549,7 @@ const schema = Joi.object({
           err.message="ME2039";
           break;
         default:
-          break;  
+          break;
       }
     });
     return errors;

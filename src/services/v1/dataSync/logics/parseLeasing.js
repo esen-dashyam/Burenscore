@@ -1,7 +1,7 @@
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERRORS, ERROR_DETAILS, VALUE_CODES } from "../../../../constants";
+import { APPENDIX, ERRORS, ERROR_DETAILS, VALUE_CODES } from "../../../../constants";
 import Joi from "joi";
 import APPENDIX_A from "../../../../constants/APPENDIX_A";
 import APPENDIX_EO from "../../../../constants/APPENDIX_EO";
@@ -115,7 +115,7 @@ const schema = Joi.object({
         default:
           break;
       }
-    })
+    });
   }),
   o_c_leasing_interestinperc: Joi.number().max(999999.99).precision(2).required().error(errors => {
     errors.forEach(err => {
@@ -208,23 +208,34 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  // o_c_leasingtransactions   : Joi.object({
-  //   o_c_leasing_loancharttype    : Joi.string().required(),
-  //   o_c_leasing_interestcharttype: Joi.string().required(),
-  //   o_c_leasingdetails           : Joi.object({
-  //     o_c_leasingdetail: Joi.array().items(Joi.object({
-  //       o_c_leasingdetail_datetopay  : Joi.date().required(),
-  //       o_c_leasingdetail_amounttopay: Joi.number().required(),
-  //     }))
-  //   }),
-  //   o_c_leasingperformances: Joi.object({
-  //     o_c_leasingperformance: Joi.array().items(Joi.object({
-  //       o_c_leasingperformance_datetopay  : Joi.date().required(),
-  //       o_c_leasingperformance_amounttopay: Joi.number().required(),
-  //     }))
-  //   })
-
-  // }),
+  o_c_leasingtransactions: Joi.object({
+    o_c_leasing_loancharttype    : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
+    o_c_leasing_interestcharttype: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
+    o_c_leasingdetails           : Joi.object({
+      o_c_leasingdetail: Joi.array().items(Joi.object({
+        o_c_leasingdetail_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_leasingdetail_amounttopay: Joi.number().precision(2).positive().required()
+      }))
+    }),
+    o_c_leasingperformances: Joi.object({
+      o_c_leasingperformance: Joi.array().items(Joi.object({
+        o_c_leasingperformance_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_leasingperformance_amounttopay: Joi.number().precision(2).positive().required()
+      }))
+    }),
+    o_c_leasinginterestdetails: Joi.object({
+      o_c_leasinginterestdetail: Joi.array().items(Joi.object({
+        o_c_leasinginterestdetail_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_leasinginterestdetail_amounttopay: Joi.number().precision(2).positive().required()
+      }))
+    }),
+    o_c_leasinginterestperformances: Joi.object({
+      o_c_leasinginterestperformance: Joi.array().items(Joi.object({
+        o_c_leasinginterestperformance_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_leasinginterestperformance_amounttopay: Joi.number().precision(2).positive().required()
+      }))
+    })
+  }),
 }).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {

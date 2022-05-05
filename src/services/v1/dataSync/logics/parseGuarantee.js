@@ -75,9 +75,9 @@ const schema = Joi.object({
         case "string.max":
           err.message = "ME2261";
           break;
-          case "any.valid":
-            err.message = "";
-            break;
+        case "any.valid":
+          err.message = "";
+          break;
         default :
           break;
       }
@@ -182,18 +182,18 @@ const schema = Joi.object({
     return errors;
   }),
   o_c_guarantee_updatedexpdate: Joi.string()
-  .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]).error(errors => {
-    errors.forEach(err => {
-      switch (err.type){
-        case "string.regex.base":
-          err.message = "ME2278";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
+    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]).error(errors => {
+      errors.forEach(err => {
+        switch (err.type){
+          case "string.regex.base":
+            err.message = "ME2278";
+            break;
+          default :
+            break;
+        }
+      });
+      return errors;
+    }),
   o_c_guarantee_extcount: Joi.number().integer().max(99).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
@@ -250,9 +250,9 @@ const schema = Joi.object({
           err.message ="";
           break;
       }
-    })
+    });
   }),
-  o_c_guarantee_isapproved: Joi.number().integer().min(0).max(1).optional().allow([null,""])
+  o_c_guarantee_isapproved: Joi.number().integer().min(0).max(1).optional().allow([null, ""])
 }).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {

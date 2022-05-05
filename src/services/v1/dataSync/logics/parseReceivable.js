@@ -1,7 +1,7 @@
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERRORS, ERROR_DETAILS } from "../../../../constants";
+import { APPENDIX, ERRORS, ERROR_DETAILS } from "../../../../constants";
 import Joi from "joi";
 
 const schema =Joi.object({
@@ -163,34 +163,34 @@ const schema =Joi.object({
       });
       return errors;
     }),
-  // o_c_receivabletransactions  : Joi.object({
-  //   o_c_receivable_loancharttype    : Joi.string().required(),
-  //   o_c_receivable_interestcharttype: Joi.string().required(),
-  //   o_c_receivabledetails           : Joi.object({
-  //     o_c_receivabledetail: Joi.array().items(Joi.object({
-  //       o_c_receivabledetail_datetopay  : Joi.date().required(),
-  //       o_c_receivabledetail_amounttopay: Joi.number().required(),
-  //     })),
-  //     o_c_receivableperformances: Joi.object({
-  //       o_c_receivableperformance: Joi.array().items(Joi.object({
-  //         o_c_receivableperformance_datetopay  : Joi.date().required(),
-  //         o_c_receivableperformance_amounttopay: Joi.number().required(),
-  //       })),
-  //       o_c_receivableinterestdetails: Joi.object({
-  //         o_c_receivableinterestdetail: Joi.array().items(Joi.object({
-  //           o_c_receivableinterestdetail_datetopay  : Joi.date().required(),
-  //           o_c_receivableinterestdetail_amounttopay: Joi.number().required(),
-  //         })),
-  //         o_c_receivableinterestperformances: Joi.object({
-  //           o_c_receivableinterestperformance: Joi.array().items(Joi.object({
-  //             o_c_receivableinterestperformance_datetopay  : Joi.date().required(),
-  //             o_c_receivableinterestperformance_amounttopay: Joi.number().required(),
-  //           }))
-  //         })
-  //       })
-  //     })
-  //   })
-  // })
+  o_c_receivabletransactions: Joi.object({
+    o_c_receivable_loancharttype    : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
+    o_c_receivable_interestcharttype: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
+    o_c_receivabledetails           : Joi.object({
+      o_c_receivabledetail: Joi.array().items(Joi.object({
+        o_c_receivabledetail_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_receivabledetail_amounttopay: Joi.number().precision(2).positive().required(),
+      })),
+    }),
+    o_c_receivableperformances: Joi.object({
+      o_c_receivableperformance: Joi.array().items(Joi.object({
+        o_c_receivableperformance_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_receivableperformance_amounttopay: Joi.number().precision(2).positive().required(),
+      })),
+    }),
+    o_c_receivableinterestdetails: Joi.object({
+      o_c_receivableinterestdetail: Joi.array().items(Joi.object({
+        o_c_receivableinterestdetail_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_receivableinterestdetail_amounttopay: Joi.number().precision(2).positive().required(),
+      })),
+    }),
+    o_c_receivableinterestperformances: Joi.object({
+      o_c_receivableinterestperformance: Joi.array().items(Joi.object({
+        o_c_receivableinterestperformance_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_receivableinterestperformance_amounttopay: Joi.number().precision(2).positive().required(),
+      }))
+    })
+  }).optional().allow([null, ""])
 }).options({ allowUnknown: true });
 export default async ({ data, where }) => {
   if (!data) return null;

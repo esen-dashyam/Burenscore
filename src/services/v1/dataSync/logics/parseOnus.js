@@ -1,7 +1,7 @@
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERRORS, ERROR_DETAILS } from "../../../../constants";
+import { APPENDIX, ERRORS, ERROR_DETAILS } from "../../../../constants";
 import Joi from "joi";
 
 const schema = Joi.object({
@@ -208,33 +208,34 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  // o_c_onustransactions     : Joi.object({
-  //   o_c_onus_loancharttype: Joi.string().required(),
-  //   o_c_onusdetails       : Joi.object({
-  //     o_c_onusdetail: Joi.array().items(Joi.object({
-  //       o_c_onusdetail_datetopay  : Joi.date().required(),
-  //       o_c_onusdetail_amounttopay: Joi.number().required(),
-  //     })),
-  //     o_c_onusperformances: Joi.object({
-  //       o_c_onusperformance: Joi.array().items(Joi.object({
-  //         o_c_onusperformance_datetopay  : Joi.date().required(),
-  //         o_c_onusperformance_amounttopay: Joi.number().required(),
-  //       })),
-  //       o_c_onusinterestdetails: Joi.object({
-  //         o_c_onusinterestdetail: Joi.array().items(Joi.object({
-  //           o_c_onusinterestdetail_datetopay  : Joi.date().required(),
-  //           o_c_onusinterestdetail_amounttopay: Joi.number().required(),
-  //         })),
-  //         o_c_onusinterestperformances: Joi.object({
-  //           o_c_onusinterestperformance: Joi.array().items(Joi.object({
-  //             o_c_onusinterestperformance_datetopay  : Joi.date().required(),
-  //             o_c_onusinterestperformance_amounttopay: Joi.number().required(),
-  //           }))
-  //         })
-  //       })
-  //     })
-  //   })
-  // })
+  o_c_onustransactions: Joi.object({
+    o_c_onus_loancharttype    : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
+    o_c_onus_interestcharttype: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
+    o_c_onusdetails           : Joi.object({
+      o_c_onusdetail: Joi.array().items(Joi.object({
+        o_c_onusdetail_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_onusdetail_amounttopay: Joi.number().precision(2).positive().required(),
+      })),
+    }),
+    o_c_onusperformances: Joi.object({
+      o_c_onusperformance: Joi.array().items(Joi.object({
+        o_c_onusperformance_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_onusperformance_amounttopay: Joi.number().precision(2).positive().required(),
+      })),
+    }),
+    o_c_onusinterestdetails: Joi.object({
+      o_c_onusinterestdetail: Joi.array().items(Joi.object({
+        o_c_onusinterestdetail_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_onusinterestdetail_amounttopay: Joi.number().precision(2).positive().required(),
+      })),
+    }),
+    o_c_onusinterestperformances: Joi.object({
+      o_c_onusinterestperformance: Joi.array().items(Joi.object({
+        o_c_onusinterestperformance_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_onusinterestperformance_amounttopay: Joi.number().precision(2).positive().required(),
+      }))
+    })
+  })
 }).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {
