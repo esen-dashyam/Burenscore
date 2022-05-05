@@ -54,7 +54,7 @@ const schema = Joi.object({
     .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
       errors.forEach(err => {
         switch (err.type){
-          case "any.empty":
+          case "any.required":
             err.message = "ME2069";
             break;
           case "string.regex.base":
@@ -75,7 +75,7 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME2071";
           break;
-          case "any.valid":
+          case "any.only":
            err.message = "ME2073";
           break;
         default :
@@ -93,7 +93,7 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME2074";
           break;
-        case "any.valid":
+        case "any.only":
           err.message = "ME2076";
           break;
         default :

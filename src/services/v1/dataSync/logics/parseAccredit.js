@@ -75,7 +75,7 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME7010";
           break;
-        case "any.valid":
+        case "any.only":
           err.message = "ME7012";
           break;
         default :
@@ -93,7 +93,7 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME7013";
           break;
-        case "any.valid":
+        case "any.only":
           err.message = "ME7015";
           break;
         default :

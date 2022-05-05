@@ -176,10 +176,10 @@ const schema = Joi.object({
           err.message = "ME2424";
           break;
         case "number.base":
-          err.message = "ME2425";
+          err.message = "ME2426";
           break;
         case "number.max":
-          err.message = "ME2426";
+          err.message = "ME2425";
           break;
         default :
           break;
