@@ -59,10 +59,10 @@ const customerSchemaObject = Joi.object({
     });
     return errors;
   }),
-  o_c_relationcustomer_registerno: Joi.string().required().error(errors => {
+  o_c_relationcustomer_registerno: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "string.required":
+        case "any.required":
           err.message = "ME3387";
           break;
         case "any.empty":
@@ -80,7 +80,7 @@ const customerSchemaObject = Joi.object({
   o_c_relationcustomer_citizenrelation: Joi.string().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "string.required":
+        case "any.required":
           err.message = "ME3389";
           break;
         case "any.empty":
@@ -98,7 +98,7 @@ const customerSchemaObject = Joi.object({
   o_c_relationcustomer_isfinancialonus: Joi.number().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "string.required":
+        case "any.required":
           err.message = "ME3392";
           break;
         case "any.empty":
@@ -151,7 +151,7 @@ const customerSchemaArray = Joi.array().items(Joi.object({
   o_c_relationcustomer_lastName: Joi.string().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "string.required":
+        case "any.required":
           err.message = "";
           break;
         case "any.empty":
@@ -169,7 +169,7 @@ const customerSchemaArray = Joi.array().items(Joi.object({
   o_c_relationcustomer_isforeign: Joi.number().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "string.required":
+        case "any.required":
           err.message = "ME3385";
           break;
         case "any.empty":
@@ -184,10 +184,10 @@ const customerSchemaArray = Joi.array().items(Joi.object({
     });
     return errors;
   }),
-  o_c_relationcustomer_registerno: Joi.string().required().error(errors => {
+  o_c_relationcustomer_registerno: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "string.required":
+        case "any.required":
           err.message = "ME3387";
           break;
         case "any.empty":
@@ -205,7 +205,7 @@ const customerSchemaArray = Joi.array().items(Joi.object({
   o_c_relationcustomer_citizenrelation: Joi.string().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "string.required":
+        case "any.required":
           err.message = "ME3389";
           break;
         case "any.empty":
@@ -223,7 +223,7 @@ const customerSchemaArray = Joi.array().items(Joi.object({
   o_c_relationcustomer_isfinancialonus: Joi.number().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "string.required":
+        case "any.required":
           err.message = "ME3392";
           break;
         case "any.empty":
@@ -292,7 +292,7 @@ const orgSchemaObject = Joi.object({
     });
     return errors;
   }),
-  o_c_relationorg_stateregisterno: Joi.string().required().error(errors => {
+  o_c_relationorg_stateregisterno: Joi.string().allow([null, ""]).error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "string.base":
@@ -304,7 +304,7 @@ const orgSchemaObject = Joi.object({
     });
     return errors;
   }),
-  o_c_relationorg_registerno: Joi.string().required().error(errors => {
+  o_c_relationorg_registerno: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -411,7 +411,7 @@ const orgSchemaArray = Joi.array().items(Joi.object({
     });
     return errors;
   }),
-  o_c_relationorg_stateregisterno: Joi.string().required().error(errors => {
+  o_c_relationorg_stateregisterno: Joi.string().allow([null, ""]).error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "string.base":
@@ -423,7 +423,7 @@ const orgSchemaArray = Joi.array().items(Joi.object({
     });
     return errors;
   }),
-  o_c_relationorg_registerno: Joi.string().required().error(errors => {
+  o_c_relationorg_registerno: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -462,7 +462,7 @@ const orgSchemaArray = Joi.array().items(Joi.object({
   o_c_relationorg_isfinancialonus: Joi.number().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "any.requiredthrow ne":
+        case "any.required":
           err.message = "ME3372";
           break;
         case "any.empty":
