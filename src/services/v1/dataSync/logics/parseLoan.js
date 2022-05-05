@@ -51,7 +51,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_loan_loanProvenance: Joi.string().valid(Object.keys(APPENDIX_K).map(item=>APPENDIX_K[item])).required().error(errors => {
+  o_c_loan_loanProvenance: Joi.string().valid(Object.keys(APPENDIX_K)).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -204,7 +204,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_loan_fee: Joi.number().max(999999999999.99).precision(2).required().error(errors => {
+  o_c_loan_fee: Joi.number().max(999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
