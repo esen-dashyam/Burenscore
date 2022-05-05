@@ -191,25 +191,28 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_guarantee_extcount: Joi.string()
-    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
-      errors.forEach(err => {
-        switch (err.type){
-          case "any.required":
-            err.message = "ME2279";
-            break;
-          case "any.empty":
-            err.message = "ME2279";
-            break;
-          case "string.regex.base":
-            err.message = "ME2280";
-            break;
-          default :
-            break;
-        }
-      });
-      return errors;
-    }),
+  o_c_guarantee_extcount: Joi.number().integer().max(99).required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME2279";
+          break;
+        case "any.empty":
+          err.message = "ME2279";
+          break;
+        case "number.max":
+          err.message = "ME2281";
+          break;
+        case "number.base":
+          err.message = "ME2280";
+          break;
+
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
   o_c_guarantee_balance: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){

@@ -5,7 +5,7 @@ import { ERRORS, ERROR_DETAILS } from "../../../../constants";
 import Joi from "joi";
 
 const schema =Joi.object({
-  o_c_receivable_balance: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+  o_c_receivable_balance: Joi.number().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -14,10 +14,10 @@ const schema =Joi.object({
         case "any.empty":
           err.message = "ME3661";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME3664";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME3662";
           break;
         default :
@@ -26,7 +26,7 @@ const schema =Joi.object({
     });
     return errors;
   }),
-  o_c_receivable_advamount: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+  o_c_receivable_advamount: Joi.number().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -35,10 +35,10 @@ const schema =Joi.object({
         case "any.empty":
           err.message = "ME3402";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME3405";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME3403";
           break;
         default :

@@ -2,6 +2,7 @@ import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERRORS, ERROR_DETAILS } from "../../../../constants";
 import Joi from "joi";
 import { db } from "@goodtechsoft/sequelize-postgres";
+import { fall } from "../../../../utils";
 
 const customerSchemaObject = Joi.object({
   o_c_relationcustomer_firstName: Joi.string().max(50).required().error(errors => {
@@ -67,7 +68,7 @@ const customerSchemaObject = Joi.object({
         case "any.empty":
           err.message="ME3387";
           break;
-        case "number.base":
+        case "string.base":
           err.message="ME3388";
           break;
         default :
@@ -103,7 +104,7 @@ const customerSchemaObject = Joi.object({
         case "any.empty":
           err.message="ME3392";
           break;
-        case "string.base":
+        case "number.base":
           err.message="ME3393";
           break;
         default :
@@ -192,7 +193,7 @@ const customerSchemaArray = Joi.array().items(Joi.object({
         case "any.empty":
           err.message="ME3387";
           break;
-        case "number.base":
+        case "string.base":
           err.message="ME3388";
           break;
         default :
@@ -228,7 +229,7 @@ const customerSchemaArray = Joi.array().items(Joi.object({
         case "any.empty":
           err.message="ME3392";
           break;
-        case "string.base":
+        case "number.base":
           err.message="ME3393";
           break;
         default :
@@ -294,7 +295,7 @@ const orgSchemaObject = Joi.object({
   o_c_relationorg_stateregisterno: Joi.string().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "number.base":
+        case "string.base":
           err.message="ME3368";
           break;
         default :
@@ -312,7 +313,7 @@ const orgSchemaObject = Joi.object({
         case "any.empty":
           err.message="ME3366";
           break;
-        case "number.base":
+        case "string.base":
           err.message="ME3367";
           break;
         default :
@@ -330,7 +331,7 @@ const orgSchemaObject = Joi.object({
         case "any.empty":
           err.message="ME3371";
           break;
-        case "number.max":
+        case "string.max":
           err.message="ME3370";
           break;
         default :
@@ -360,7 +361,7 @@ const orgSchemaObject = Joi.object({
   o_c_relationorg_relno: Joi.string().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "any.requiredthrow ne":
+        case "any.required":
           err.message = "ME4057";
           break;
         case "any.empty":
@@ -413,7 +414,7 @@ const orgSchemaArray = Joi.array().items(Joi.object({
   o_c_relationorg_stateregisterno: Joi.string().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "number.base":
+        case "string.base":
           err.message="ME3368";
           break;
         default :
@@ -431,7 +432,7 @@ const orgSchemaArray = Joi.array().items(Joi.object({
         case "any.empty":
           err.message="ME3366";
           break;
-        case "number.base":
+        case "string.base":
           err.message="ME3367";
           break;
         default :
@@ -449,7 +450,7 @@ const orgSchemaArray = Joi.array().items(Joi.object({
         case "any.empty":
           err.message="ME3371";
           break;
-        case "number.max":
+        case "string.max":
           err.message="ME3370";
           break;
         default :
@@ -479,11 +480,14 @@ const orgSchemaArray = Joi.array().items(Joi.object({
   o_c_relationorg_relno: Joi.string().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "any.requiredthrow ne":
+        case "any.required":
           err.message = "ME4057";
           break;
         case "any.empty":
           err.message="ME4057";
+          break;
+        case "string.only":
+          err.message="aaaaaaaaaaaaa";
           break;
         default :
           break;
@@ -507,27 +511,26 @@ export default async ({ data, where, type, session }) => {
         // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
-
-
-      let relno = await db.find(db.relno, {
-        ...where, session
+      let falls = data.map(item => {
+        return async () => {
+          let relno = await db.find(db.OCRelationcustomer, {
+            ...where,
+            o_c_relationcustomer_relno: item.o_c_relationcustomer_relno
+          }, session);
+          if (relno) throw new ValidationError(ERROR_DETAILS.ME4055);
+          shareholder.push({
+            ...where,
+            o_c_relationcustomer_firstName      : item?.o_c_relationcustomer_firstName,
+            o_c_relationcustomer_lastName       : item?.o_c_relationcustomer_lastName,
+            o_c_relationcustomer_isforeign      : item?.o_c_relationcustomer_isforeign,
+            o_c_relationcustomer_registerno     : item?.o_c_relationcustomer_registerno,
+            o_c_relationcustomer_citizenrelation: item?.o_c_relationcustomer_citizenrelation,
+            o_c_relationcustomer_isfinancialonus: item?.o_c_relationcustomer_isfinancialonus,
+            o_c_relationcustomer_relno          : item?.o_c_relationcustomer_relno
+          });
+        };
       });
-      if (relno) throw new ValidationError("", relno);
-
-
-
-      data.forEach(item => {
-        shareholder.push({
-          ...where,
-          o_c_relationcustomer_firstName      : item?.o_c_relationcustomer_firstName,
-          o_c_relationcustomer_lastName       : item?.o_c_relationcustomer_lastName,
-          o_c_relationcustomer_isforeign      : item?.o_c_relationcustomer_isforeign,
-          o_c_relationcustomer_registerno     : item?.o_c_relationcustomer_registerno,
-          o_c_relationcustomer_citizenrelation: item?.o_c_relationcustomer_citizenrelation,
-          o_c_relationcustomer_isfinancialonus: item?.o_c_relationcustomer_isfinancialonus,
-          o_c_relationcustomer_relno          : item?.o_c_relationcustomer_relno
-        });
-      });
+      await fall(falls);
     } else {
       try {
         await customerSchemaObject.validate(data);
@@ -536,6 +539,11 @@ export default async ({ data, where, type, session }) => {
         // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
+      let relno = await db.find(db.OCRelationcustomer, {
+        ...where,
+        o_c_relationcustomer_relno: data.o_c_relationcustomer_relno
+      }, session);
+      if (relno) throw new ValidationError(ERROR_DETAILS.ME4055);
       shareholder.push({
         ...where,
         o_c_relationcustomer_firstName      : data?.o_c_relationcustomer_firstName,
@@ -558,18 +566,26 @@ export default async ({ data, where, type, session }) => {
         // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
-      data.forEach(item => {
-        shareholder.push({
-          ...where,
-          o_c_relationorg_orgname        : item?.o_c_relationorg_orgname,
-          o_c_relationorg_isforeign      : item?.o_c_relationorg_isforeign,
-          o_c_relationorg_registerno     : item?.o_c_relationorg_registerno,
-          o_c_relationorg_stateregisterno: item?.o_c_relationorg_stateregisterno,
-          o_c_relationorg_orgrelation    : item?.o_c_relationorg_orgrelation,
-          o_c_relationorg_isfinancialonus: item?.o_c_relationorg_isfinancialonus,
-          o_c_relationorg_relno          : item?.o_c_relationorg_relno
-        });
+      let falls = data.map(item => {
+        return async () => {
+          let relno = await db.find(db.OCRelationorg, {
+            ...where,
+            o_c_relationorg_relno: item.o_c_relationorg_relno
+          }, session);
+          if (relno) throw new ValidationError(ERROR_DETAILS.ME4055);
+          shareholder.push({
+            ...where,
+            o_c_relationorg_orgname        : item?.o_c_relationorg_orgname,
+            o_c_relationorg_isforeign      : item?.o_c_relationorg_isforeign,
+            o_c_relationorg_registerno     : item?.o_c_relationorg_registerno,
+            o_c_relationorg_stateregisterno: item?.o_c_relationorg_stateregisterno,
+            o_c_relationorg_orgrelation    : item?.o_c_relationorg_orgrelation,
+            o_c_relationorg_isfinancialonus: item?.o_c_relationorg_isfinancialonus,
+            o_c_relationorg_relno          : item?.o_c_relationorg_relno
+          });
+        };
       });
+      await fall(falls);
     } else {
       try {
         await orgSchemaObject.validate(data);
@@ -578,6 +594,11 @@ export default async ({ data, where, type, session }) => {
         // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
+      let relno = await db.find(db.OCRelationorg, {
+        ...where,
+        o_c_relationorg_relno: data.o_c_relationorg_relno
+      }, session);
+      if (relno) throw new ValidationError(ERROR_DETAILS.ME4055);
       shareholder.push({
         ...where,
         o_c_relationorg_orgname        : data?.o_c_relationorg_orgname,

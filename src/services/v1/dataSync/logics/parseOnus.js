@@ -5,7 +5,7 @@ import { ERRORS, ERROR_DETAILS } from "../../../../constants";
 import Joi from "joi";
 
 const schema = Joi.object({
-  o_c_onus_advamount: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+  o_c_onus_advamount: Joi.string().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -14,7 +14,7 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME3452";
           break;
-        case "string.regex.base":
+        case "string.base":
           err.message = "ME3454";
           break;
         case "string.max":
@@ -26,7 +26,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_onus_balance: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+  o_c_onus_balance: Joi.number().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -35,10 +35,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME3669";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME3666";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME3667";
           break;
         default :
@@ -126,7 +126,7 @@ const schema = Joi.object({
       });
       return errors;
     }),
-  o_c_onus_interestinperc: Joi.string().regex(/^[0-9]/).max(9).required().error(errors => {
+  o_c_onus_interestinperc: Joi.number().required().error(errors => {
     errors.forEach(err => {
 
       switch (err.type){
@@ -136,10 +136,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME3464";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME3466";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME3465";
           break;
         default :
@@ -148,7 +148,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_onus_commissionperc: Joi.string().regex(/^[0-9]/).max(9).required().error(errors => {
+  o_c_onus_commissionperc: Joi.number().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -157,10 +157,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME3468";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME3470";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME3469";
           break;
         default :
@@ -169,7 +169,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_onus_fee: Joi.string().regex(/^[0-9]/).max(15).required().error(errors => {
+  o_c_onus_fee: Joi.number().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -178,10 +178,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME3472";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME3474";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME3473";
           break;
         default :
