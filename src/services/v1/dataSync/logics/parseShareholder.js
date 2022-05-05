@@ -48,7 +48,7 @@ const customerSchemaObject = Joi.object({
     });
     return errors;
   }),
-  o_shareholdercus_registerno: Joi.string().required().error(errors=>{
+  o_shareholdercus_registerno: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required().error(errors=>{
     errors.forEach(err=>{
       switch (err.type){
         case "any.required":
@@ -110,13 +110,13 @@ const customerSchemaArray = Joi.array().items(Joi.object({
     });
     return errors;
   }),
-  o_shareholdercus_registerno: Joi.string().required().error(errors=>{
+  o_shareholdercus_registerno: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required().error(errors=>{
     errors.forEach(err=>{
       switch (err.type){
         case "any.required":
           err.message="ME3038";
           break;
-        case "string.":
+        case "string.base":
           err.message="ME3039";
           break;
         default:
@@ -165,6 +165,9 @@ const orgSchemaObject = Joi.object({
     errors.forEach(err=>{
       switch (err.type){
         case "any.required":
+          err.message="ME3027";
+          break;
+        case "any.empty":
           err.message="ME3027";
           break;
         case "string.regex.base":

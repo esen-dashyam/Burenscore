@@ -229,7 +229,27 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_loanline_balance: Joi.number().required(),
+  o_c_loanline_balance: Joi.number().required().error(errors => {
+    errors.forEach(err => {
+      switch (err.type){
+        case "any.required":
+          err.message = "ME3653";
+          break;
+        case "any.empty":
+          err.message = "ME3653";
+          break;
+        case "number.base":
+          err.message = "ME3655";
+          break;
+        case "number.max":
+          err.message = "ME3654";
+          break;
+        default :
+          break;
+      }
+    });
+    return errors;
+  }),
 }).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {
