@@ -381,7 +381,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  c_occupation: Joi.string().valid(Object.keys(APPENDIX_Y).map(item=>APPENDIX_Y[item])).optional().allow([null, ""]).error(errors=> {
+  c_occupation: Joi.string().valid(Object.keys(APPENDIX_Y)).optional().allow([null, ""]).error(errors=> {
     errors.forEach(err=>{
       switch (err.type){
         case "any.empty":
@@ -396,7 +396,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_fitchrating: Joi.string().valid(Object.keys(APPENDIX_P_FITCH).map(item=>APPENDIX_P_FITCH[item])).optional().allow([null, ""]).error(errors=> {
+  o_fitchrating: Joi.string().valid(Object.keys(APPENDIX_P_FITCH)).optional().allow([null, ""]).error(errors=> {
     errors.forEach(err=>{
       switch (err.type){
         case "any.valid":
@@ -411,7 +411,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_sandp_rating: Joi.string().valid(Object.keys(APPENDIX_R).map(item=>APPENDIX_R[item])).optional().allow([null, ""]).error(errors=> {
+  o_sandp_rating: Joi.string().valid(Object.keys(APPENDIX_R)).optional().allow([null, ""]).error(errors=> {
     errors.forEach(err=>{
       switch (err.type){
         case "any.valid":
@@ -426,7 +426,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_moodysrating: Joi.string().valid(Object.keys(APPENDIX_C).map(item=>APPENDIX_C[item])).optional().allow([null, ""]).error(errors=> {
+  o_moodysrating: Joi.string().valid(Object.keys(APPENDIX_C)).optional().allow([null, ""]).error(errors=> {
     errors.forEach(err=>{
       switch (err.type){
         case "any.valid":
@@ -549,7 +549,7 @@ const schema = Joi.object({
           err.message="ME2039";
           break;
         default:
-          break;
+          break;  
       }
     });
     return errors;

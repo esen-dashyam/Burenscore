@@ -6,6 +6,7 @@ import Joi from "joi";
 import { max } from "joi/lib/types/array";
 import APPENDIX_K from "../../../../constants/APPENDIX_K";
 import APPENDIX_EO from "../../../../constants/APPENDIX_EO";
+import APPENDIX_A from "../../../../constants/APPENDIX_A";
 
 const schema = Joi.object({
   o_c_loan_provideLoanSize: Joi.number().max(999999999999999.99).precision(2).required().error(errors => {
@@ -147,7 +148,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_loan_sectorcode: Joi.string().valid(Object.keys(VALUE_CODES).map(item=>VALUE_CODES[item])).optional().allow([null, ""]).error(errors => {
+  o_c_loan_sectorcode: Joi.string().valid(Object.keys(APPENDIX_A)).optional().allow([null, ""]).error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -225,7 +226,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_loan_loanclasscode: Joi.string().valid(Object.keys(APPENDIX_EO).map(item=>APPENDIX_EO[item])).required().error(errors => {
+  o_c_loan_loanclasscode: Joi.string().valid(Object.keys(APPENDIX_EO)).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":

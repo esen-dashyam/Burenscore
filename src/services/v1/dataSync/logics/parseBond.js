@@ -66,7 +66,7 @@ const schema = Joi.object({
       });
       return errors;
     }),
-  o_bond_currencycode: Joi.string().valid(Object.keys(VALUE_CODES).map(item => VALUE_CODES[item])).required().error(errors => {
+  o_bond_currencycode: Joi.string().valid(Object.keys(VALUE_CODES)).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -84,7 +84,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_bond_type: Joi.string().valid(Object.keys(APPENDIX_PHI).map(item=>APPENDIX_PHI[item])).required().error(errors => {
+  o_bond_type: Joi.string().valid(Object.keys(APPENDIX_PHI)).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":

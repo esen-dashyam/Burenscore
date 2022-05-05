@@ -66,7 +66,7 @@ const schema = Joi.object({
       });
       return errors;
     }),
-  o_c_accredit_currencycode: Joi.string().valid(Object.keys(VALUE_CODES).map(item => VALUE_CODES[item])).required().error(errors => {
+  o_c_accredit_currencycode: Joi.string().valid(Object.keys(VALUE_CODES)).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -84,7 +84,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_accredit_type: Joi.string().valid(Object.keys(APPENDIX_E).map(item=>APPENDIX_E[item])).required().error(errors => {
+  o_c_accredit_type: Joi.string().valid(Object.keys(APPENDIX_E)).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":

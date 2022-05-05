@@ -88,7 +88,7 @@ const schema = Joi.object({
       });
       return errors;
     }),
-  o_c_leasing_currencycode: Joi.string().valid(Object.keys(VALUE_CODES).map(item=>VALUE_CODES[item])).required().error(errors => {
+  o_c_leasing_currencycode: Joi.string().valid(Object.keys(VALUE_CODES)).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -97,7 +97,7 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME2310";
           break;
-        case "any.valid":
+        case "any.only":
           err.message = "ME2311";
           break;
         default :
@@ -106,7 +106,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_leasing_sectorcode: Joi.string().valid(Object.keys(APPENDIX_A).map(item=>APPENDIX_A[item])).required().error(errors=>{
+  o_c_leasing_sectorcode: Joi.string().valid(Object.keys(APPENDIX_A)).required().error(errors=>{
     errors.forEach(err=>{
       switch (err.type){
         case "any.required":
@@ -193,7 +193,7 @@ const schema = Joi.object({
       });
       return errors;
     }),
-  o_c_leasing_loanclasscode: Joi.string().valid(Object.keys(APPENDIX_EO).map(item=>APPENDIX_EO[item])).required().error(errors => {
+  o_c_leasing_loanclasscode: Joi.string().valid(Object.keys(APPENDIX_EO)).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
