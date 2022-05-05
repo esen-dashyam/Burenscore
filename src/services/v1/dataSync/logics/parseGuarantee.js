@@ -241,13 +241,15 @@ const schema = Joi.object({
     errors.forEach(err=> {
       switch (err.type){
         case "any.required":
-          err.message = "";
+          err.message = "O_C_GUARANTEE_LOANCLASSCODE";
           break;
         case "any.empty":
-          err.message="";
+          err.message="O_C_GUARANTEE_LOANCLASSCODE";
           break;
         case "any.valid":
-          err.message ="";
+          err.message ="O_C_GUARANTEE_LOANCLASSCODE_INVALID";
+          break;
+        default :
           break;
       }
     });
