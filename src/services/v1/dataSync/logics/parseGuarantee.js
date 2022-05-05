@@ -75,6 +75,9 @@ const schema = Joi.object({
         case "string.max":
           err.message = "ME2261";
           break;
+          case "any.valid":
+            err.message = "";
+            break;
         default :
           break;
       }
@@ -213,7 +216,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_guarantee_balance: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+  o_c_guarantee_balance: Joi.number().max(999999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -225,7 +228,7 @@ const schema = Joi.object({
         case "string.max":
           err.message = "ME3658";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME3660";
           break;
         default :
