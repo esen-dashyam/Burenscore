@@ -81,7 +81,7 @@ module.exports = (sequelize, DataTypes) => {
     hooks: {
       afterSave: async (value, { session }) => {
         const { id, o_c_onus_balance } = value.dataValues;
-        console.log("=============>HOOK", id, o_c_onus_balance);
+        // console.log("=============>HOOK", id, o_c_onus_balance);
         if (o_c_onus_balance <= 0){
           await db.updateBy(db.OCOnusInformation, {
             payment_status: "PAID",

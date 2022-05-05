@@ -35,7 +35,7 @@ const dbMigrate = async () => {
     // await db.Currency.sync({ force: true });
     // await db.Client.sync({ force: true });
   } catch (err){
-    console.log(err);
+    // console.log(err);
   }
 };
 
@@ -44,8 +44,8 @@ setup(__dirname)(config.database, async () => {
   const http = Server(app);
 
   http.listen(config.server.port, async () => {
-    console.log(`Server: ${config.server.port} is listening ...`);
-    console.log("Config ...", config);
+    // console.log(`Server: ${config.server.port} is listening ...`);
+    // console.log("Config ...", config);
   });
 
   const req = {
@@ -56,7 +56,7 @@ setup(__dirname)(config.database, async () => {
       const session = ["MICRO", req.DB_SESSION, req.MS_SESSION];
     };
   if (argv("--dbmigrate")){
-    console.log("================>Migrations");
+    // console.log("================>Migrations");
     await dbMigrate();
   }
   db_session(req, res, next);

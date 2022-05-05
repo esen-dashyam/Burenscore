@@ -24,9 +24,9 @@ export default async (req, res, next) => {
     } catch (err) {
       throw new UnauthorizedError(ERRORS.NO_CREDENTIALS);
     }
-    console.log("============================AUTH_API==================================");
-    console.log(decoded);
-    console.log("============================AUTH_API==================================");
+    // console.log("============================AUTH_API==================================");
+    // console.log(decoded);
+    // console.log("============================AUTH_API==================================");
     let client = await db.find(db.Client, {
       where: {
         id: decoded.uid

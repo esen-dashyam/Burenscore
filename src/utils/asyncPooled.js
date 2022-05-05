@@ -6,7 +6,7 @@ export default async (length, array, callback) => {
     try {
       await callback(item);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   });
 };

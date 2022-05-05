@@ -10,7 +10,7 @@ export default async (data, session) => {
   };
   let rows = [];
   let loans = await db.findAll(db.OCLoanInformation, { where: filters }, session);
-  console.log("========>", loans);
+  // console.log("========>", loans);
   loans.forEach(item => { rows.push({ ...item.dataValues, type: "LOAN" });});
   let leasings = await db.findAll(db.OCLeasing, { where: { ...filters, } }, session);
   leasings.forEach(item => { rows.push({ ...item.dataValues, type: "LEASING" });});

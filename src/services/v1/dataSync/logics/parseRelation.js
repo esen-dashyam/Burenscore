@@ -496,15 +496,15 @@ const orgSchemaArray = Joi.array().items(Joi.object({
 export default async ({ data, where, type, session }) => {
   if (!data) return null;
   let shareholder = [];
-  console.log(data);
+  // console.log(data);
   if (type === "CUSTOMER"){
-    console.log("data_IS_ARRAY", Array.isArray(data));
+    // console.log("data_IS_ARRAY", Array.isArray(data));
     if (Array.isArray(data)){
       try {
         await customerSchemaArray.validate(data);
       }
       catch (err) {
-        console.log("================================", err);
+        // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
 
@@ -533,7 +533,7 @@ export default async ({ data, where, type, session }) => {
         await customerSchemaObject.validate(data);
       }
       catch (err) {
-        console.log("================================", err);
+        // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
       shareholder.push({
@@ -549,13 +549,13 @@ export default async ({ data, where, type, session }) => {
     }
   }
   if (type === "ORG"){
-    console.log("data_IS_ARRAY", Array.isArray(data));
+    // console.log("data_IS_ARRAY", Array.isArray(data));
     if (Array.isArray(data)){
       try {
         await orgSchemaArray.validate(data);
       }
       catch (err) {
-        console.log("================================", err);
+        // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
       data.forEach(item => {
@@ -575,7 +575,7 @@ export default async ({ data, where, type, session }) => {
         await orgSchemaObject.validate(data);
       }
       catch (err) {
-        console.log("================================", err);
+        // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
       shareholder.push({

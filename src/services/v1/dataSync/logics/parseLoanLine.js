@@ -155,7 +155,7 @@ const schema = Joi.object({
   o_c_loanline_extdate: Joi.string()
     .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().optional().allow([null, ""]).error(errors => {
       errors.forEach(err => {
-        console.log("================AA===========", err.type);
+        // console.log("================AA===========", err.type);
         switch (err.type){
           case "string.regex.base":
             err.message = "ME2413";
@@ -234,12 +234,12 @@ const schema = Joi.object({
 
 export default async ({ data, where }) => {
   if (!data) return null;
-  console.log("===========>loanLine", data);
+  // console.log("===========>loanLine", data);
   try {
     await schema.validate(data);
   }
   catch (err) {
-    console.log(err);
+    // console.log(err);
     throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
   }
   let loanLine = {

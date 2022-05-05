@@ -8,7 +8,7 @@ import APPENDIX_PHI from "../../../../constants/APPENDIX_PHI";
 const schema = Joi.object({
   o_bond_advamount: Joi.number().max(999999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
-      console.log("=============saaa========", err.type);
+      // console.log("=============saaa========", err.type);
       switch (err.type){
         case "any.required":
           err.message = "ME2061";
@@ -221,7 +221,7 @@ const schema = Joi.object({
 });
 
 export default async ({ data, where }) => {
-  console.log("FUCINGGGDATAA_------================+>", data);
+  // console.log("------================+>", data);
   if (!data) return null;
   try {
     await schema.validate(data);
