@@ -1,24 +1,26 @@
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERRORS, ERROR_DETAILS } from "../../../../constants";
+import { ERRORS, ERROR_DETAILS, VALUE_CODES } from "../../../../constants";
 import Joi from "joi";
+import APPENDIX_A from "../../../../constants/APPENDIX_A";
+import APPENDIX_EO from "../../../../constants/APPENDIX_EO";
 
 
 const schema = Joi.object({
-  o_c_leasing_advamount: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+  o_c_leasing_advamount: Joi.number().max(999999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
-          err.message = "ME2302";
+          err.message = "ME2352";
           break;
         case "any.empty":
           err.message = "ME2304";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME2305";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME2303";
           break;
         default :
@@ -27,20 +29,20 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_leasing_balance: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+  o_c_leasing_balance: Joi.number().max(999999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
           err.message = "ME3645";
           break;
         case "any.empty":
-          err.message = "ME3653";
+          err.message = "ME3645";
           break;
-        case "string.regex.base":
-          err.message = "ME3656";
+        case "number.base":
+          err.message = "ME3647";
           break;
-        case "string.max":
-          err.message = "ME3654";
+        case "number.max":
+          err.message = "ME3646";
           break;
         default :
           break;
@@ -86,16 +88,16 @@ const schema = Joi.object({
       });
       return errors;
     }),
-  o_c_leasing_currencycode: Joi.string().required().error(errors => {
+  o_c_leasing_currencycode: Joi.string().valid(Object.keys(VALUE_CODES).map(item=>VALUE_CODES[item])).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
           err.message = "ME2312";
           break;
         case "any.empty":
-          err.message = "ME2312";
+          err.message = "ME2310";
           break;
-        case "string.max":
+        case "any.valid":
           err.message = "ME2311";
           break;
         default :
@@ -104,8 +106,18 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_leasing_sectorcode    : Joi.string().required(),
-  o_c_leasing_interestinperc: Joi.string().regex(/^[0-9]/).max(9).required().error(errors => {
+  o_c_leasing_sectorcode: Joi.string().valid(Object.keys(APPENDIX_A).map(item=>APPENDIX_A[item])).required().error(errors=>{
+    errors.forEach(err=>{
+      switch (err.type){
+        case "any.required":
+          err.message = "ME4012";
+          break;
+        default:
+          break;
+      }
+    })
+  }),
+  o_c_leasing_interestinperc: Joi.number().max(999999.99).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -114,10 +126,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME2313";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME2314";
           break;
-        case "string.regex.base.format":
+        case "number.base":
           err.message = "ME2316";
           break;
         default :
@@ -126,20 +138,20 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_leasing_commissionperc: Joi.number().required().required().error(errors => {
+  o_c_leasing_commissionperc: Joi.number().max(999999999999.99).precision(2).required().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
           err.message = "ME2317";
           break;
-        case "number":
-          err.message = "ME2319";
+        case "any.empty":
+          err.message = "ME2317";
           break;
         case "number.max":
           err.message = "ME2318";
           break;
-        case "number.format":
-          err.message = "ME2320";
+        case "number.base":
+          err.message = "ME2319";
           break;
         default :
           break;
@@ -147,7 +159,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_leasing_fee: Joi.string().regex(/^[0-9]/).required().error(errors => {
+  o_c_leasing_fee: Joi.number().max(999999999999.99).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -156,10 +168,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME2321";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME2322";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME2324";
           break;
         default :
@@ -181,13 +193,13 @@ const schema = Joi.object({
       });
       return errors;
     }),
-  o_c_leasing_loanclasscode: Joi.string().required().error(errors => {
+  o_c_leasing_loanclasscode: Joi.string().valid(Object.keys(APPENDIX_EO).map(item=>APPENDIX_EO[item])).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
           err.message = "ME2326";
           break;
-        case "any.empty":
+        case "any.valid":
           err.message = "ME2328";
           break;
         default :
