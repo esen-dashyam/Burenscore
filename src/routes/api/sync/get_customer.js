@@ -1,5 +1,5 @@
 import { method } from "@goodtechsoft/micro-service";
-import { request as partnerService } from "../../apis/bs_partner_service";
+import { request as partnerService } from "../../../apis/bs_partner_service";
 import Joi from "joi";
 import co_owner from "./logics";
 import owner from "./logics";
