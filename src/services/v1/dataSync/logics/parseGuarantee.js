@@ -1,22 +1,22 @@
 import moment from "moment";
 import Joi from "joi";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERROR_DETAILS } from "../../../../constants";
+import { ERROR_DETAILS, VALUE_CODES } from "../../../../constants";
 import { v4 as uuidv4 } from "uuid";
+import APPENDIX_T from "../../../../constants/APPENDIX_T";
+import APPENDIX_A from "../../../../constants/APPENDIX_A";
+import APPENDIX_EO from "../../../../constants/APPENDIX_EO";
 const schema = Joi.object({
-  o_c_guarantee_advamount: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+  o_c_guarantee_advamount: Joi.number().max(999999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
           err.message = "ME2252";
           break;
-        case "any.empty":
-          err.message = "ME2252";
-          break;
-        case "string.max":
+        case "number.max":
           err.message = "ME2253";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME2255";
           break;
         default :
@@ -63,7 +63,7 @@ const schema = Joi.object({
       });
       return errors;
     }),
-  o_c_guarantee_currencycode: Joi.string().required().error(errors => {
+  o_c_guarantee_currencycode: Joi.string().valid(Object.keys(VALUE_CODES)).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -75,40 +75,40 @@ const schema = Joi.object({
         case "string.max":
           err.message = "ME2261";
           break;
+          case "any.valid":
+            err.message = "";
+            break;
         default :
           break;
       }
     });
     return errors;
   }),
-  o_c_guarantee_type: Joi.string().required().error(errors => {
+  o_c_guarantee_type: Joi.string().valid(Object.keys(APPENDIX_T)).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
-          err.message = "ME2265";
-          break;
-        case "any.empty":
-          err.message = "ME2265";
+          err.message = "ME2263";
           break;
         case "string.max":
           err.message = "ME2264";
           break;
+        case "any.valid":
+          err.message ="ME2265";
+          break;
         default :
           break;
       }
     });
     return errors;
   }),
-  o_c_guarantee_sectorcode: Joi.string().required().error(errors => {
+  o_c_guarantee_sectorcode: Joi.string().valid(Object.keys(APPENDIX_A)).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
           err.message = "ME3040";
           break;
-        case "any.empty":
-          err.message = "ME3040";
-          break;
-        case "string.max":
+        case "any.only":
           err.message = "ME3041";
           break;
         default :
@@ -117,7 +117,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_guarantee_interestinperc: Joi.string().regex(/^[0-9]/).max(9).required().error(errors => {
+  o_c_guarantee_interestinperc: Joi.number().max(999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -126,10 +126,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME2266";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME2267";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME2269";
           break;
         default :
@@ -138,7 +138,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_guarantee_commissionperc: Joi.string().regex(/^[0-9]/).max(9).required().error(errors => {
+  o_c_guarantee_commissionperc: Joi.number().max(999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -147,10 +147,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME2270";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME2271";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME2273";
           break;
 
@@ -160,7 +160,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_guarantee_fee: Joi.string().regex(/^[0-9]/).max(15).required().error(errors => {
+  o_c_guarantee_fee: Joi.number().max(999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -169,23 +169,23 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME2274";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME2275";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME2276";
           break;
-
         default :
           break;
       }
     });
     return errors;
   }),
-  o_c_guarantee_updatedexpdate: Joi.date().optional().allow([null, ""]).error(errors => {
+  o_c_guarantee_updatedexpdate: Joi.string()
+  .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]).error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "date":
+        case "string.regex.base":
           err.message = "ME2278";
           break;
         default :
@@ -194,7 +194,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_guarantee_extcount: Joi.string().required().error(errors => {
+  o_c_guarantee_extcount: Joi.number().integer().max(99).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -203,10 +203,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME2279";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME2281";
           break;
-        case "number":
+        case "number.base":
           err.message = "ME2280";
           break;
 
@@ -216,7 +216,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_guarantee_balance: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+  o_c_guarantee_balance: Joi.number().max(999999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -228,7 +228,7 @@ const schema = Joi.object({
         case "string.max":
           err.message = "ME3658";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME3660";
           break;
         default :
@@ -237,7 +237,22 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_guarantee_loanclasscode: Joi.string().required(),
+  o_c_guarantee_loanclasscode: Joi.string().valid(Object.keys(APPENDIX_EO)).required().error(errors=>{
+    errors.forEach(err=> {
+      switch (err.type){
+        case "any.required":
+          err.message = "";
+          break;
+        case "any.empty":
+          err.message="";
+          break;
+        case "any.valid":
+          err.message ="";
+          break;
+      }
+    })
+  }),
+  o_c_guarantee_isapproved: Joi.number().integer().min(0).max(1).optional().allow([null,""])
 }).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {

@@ -5,7 +5,7 @@ import { ERRORS, ERROR_DETAILS } from "../../../../constants";
 import Joi from "joi";
 
 const schema = Joi.object({
-  o_c_onus_advamount: Joi.string().required().error(errors => {
+  o_c_onus_advamount: Joi.number().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -14,10 +14,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME3452";
           break;
-        case "string.base":
+        case "number.base":
           err.message = "ME3454";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME3453";
           break;
         default :

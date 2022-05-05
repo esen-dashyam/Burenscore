@@ -60,7 +60,6 @@ const schemaArray = Joi.array().items(Joi.object({
   }),
   o_c_is_real_estate: Joi.number().required().error(errors => {
     errors.forEach(err => {
-      console.log("=======================================", err.message);
       switch (err.type){
         case "any.required":
           err.message = "ME4022";
@@ -74,7 +73,7 @@ const schemaArray = Joi.array().items(Joi.object({
     });
     return errors;
   }),
-  o_c_dateofvaluation: Joi.date().optional().allow([null, ""]).error(errors => {
+  o_c_dateofvaluation: Joi.string().optional().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).allow([null, ""]).error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -83,7 +82,7 @@ const schemaArray = Joi.array().items(Joi.object({
         case "any.empty":
           err.message="ME2479";
           break;
-        case "date.base":
+        case "string.regex.base":
           err.message="ME2480";
           break;
         default :
@@ -94,7 +93,6 @@ const schemaArray = Joi.array().items(Joi.object({
   }),
   o_c_mrtvalue: Joi.number().precision(2).positive().required().error(errors => {
     errors.forEach(err => {
-      console.log("====================================", err.type);
       switch (err.type){
         case "any.required":
           err.message = "ME2485";
@@ -268,7 +266,7 @@ const schemaArray = Joi.array().items(Joi.object({
     return errors;
   }),
   o_c_registeredtoauthority: Joi.string().optional().allow([null, ""]),
-  o_c_mrtstateregisterno   : Joi.date().max(16).required().error(errors => {
+  o_c_mrtstateregisterno   : Joi.string().max(16).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -304,7 +302,7 @@ const schemaArray = Joi.array().items(Joi.object({
     });
     return errors;
   }),
-  o_c_mrtconfirmeddate: Joi.date().required().error(errors => {
+  o_c_mrtconfirmeddate: Joi.string().regex(/(^(((\d\d)(([02468][048])|([13579][26]))-02-29)|(((\d\d)(\d\d)))-((((0\d)|(1[0-2]))-((0\d)|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))\s(([01]\d|2[0-3]):([0-5]\d):([0-5]\d))$)/).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -313,7 +311,7 @@ const schemaArray = Joi.array().items(Joi.object({
         case "any.empty":
           err.message="ME2468";
           break;
-        case "date.base":
+        case "string.regex.base":
           err.message="ME2469";
           break;
         default :
@@ -340,7 +338,7 @@ const schemaArray = Joi.array().items(Joi.object({
     });
     return errors;
   }),
-  o_c_mrtregistereddatefim: Joi.date().required().error(errors => {
+  o_c_mrtregistereddatefim: Joi.string().regex(/(^(((\d\d)(([02468][048])|([13579][26]))-02-29)|(((\d\d)(\d\d)))-((((0\d)|(1[0-2]))-((0\d)|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))\s(([01]\d|2[0-3]):([0-5]\d):([0-5]\d))$)/).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -349,7 +347,7 @@ const schemaArray = Joi.array().items(Joi.object({
         case "any.empty":
           err.message="ME2473";
           break;
-        case "date.base":
+        case "string.regex.base":
           err.message="ME2474";
           break;
         default :
@@ -505,7 +503,7 @@ const schemaObject = Joi.object({
     });
     return errors;
   }),
-  o_c_dateofvaluation: Joi.date().optional().allow([null, ""]).error(errors => {
+  o_c_dateofvaluation: Joi.string().regex(/(^(((\d\d)(([02468][048])|([13579][26]))-02-29)|(((\d\d)(\d\d)))-((((0\d)|(1[0-2]))-((0\d)|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))\s(([01]\d|2[0-3]):([0-5]\d):([0-5]\d))$)/).optional().allow([null, ""]).error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -514,7 +512,7 @@ const schemaObject = Joi.object({
         case "any.empty":
           err.message="ME2479";
           break;
-        case "date.base":
+        case "string.regex.base":
           err.message="ME2480";
           break;
         default :
@@ -717,7 +715,7 @@ const schemaObject = Joi.object({
     });
     return errors;
   }),
-  o_c_mrtcertificateno: Joi.string().max(16).required().error(errors => {
+  o_c_mrtcertificateno: Joi.string().max(20).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -735,7 +733,7 @@ const schemaObject = Joi.object({
     });
     return errors;
   }),
-  o_c_mrtconfirmeddate: Joi.date().required().error(errors => {
+  o_c_mrtconfirmeddate: Joi.string().regex(/(^(((\d\d)(([02468][048])|([13579][26]))-02-29)|(((\d\d)(\d\d)))-((((0\d)|(1[0-2]))-((0\d)|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))\s(([01]\d|2[0-3]):([0-5]\d):([0-5]\d))$)/).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -744,7 +742,7 @@ const schemaObject = Joi.object({
         case "any.empty":
           err.message="ME2468";
           break;
-        case "date.base":
+        case "string.regex.base":
           err.message="ME2469";
           break;
         default :
@@ -789,7 +787,7 @@ const schemaObject = Joi.object({
     });
     return errors;
   }),
-  o_c_mrtregisterno: Joi.string().max(16).required().error(errors => {
+  o_c_mrtregisterno: Joi.string().max(20).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -840,10 +838,10 @@ const schemaObject = Joi.object({
     });
     return errors;
   }),
-  o_c_courtorderdate: Joi.date().optional().allow([null, ""]).error(errors => {
+  o_c_courtorderdate: Joi.string().regex(/(^(((\d\d)(([02468][048])|([13579][26]))-02-29)|(((\d\d)(\d\d)))-((((0\d)|(1[0-2]))-((0\d)|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))\s(([01]\d|2[0-3]):([0-5]\d):([0-5]\d))$)/).optional().allow([null, ""]).error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "date.base":
+        case "string.regex.base":
           err.message="ME2511";
           break;
         default :

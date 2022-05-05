@@ -1,11 +1,12 @@
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERRORS, ERROR_DETAILS } from "../../../../constants";
+import { ERRORS, ERROR_DETAILS, VALUE_CODES } from "../../../../constants";
 import Joi from "joi";
+import APPENDIX_PHI from "../../../../constants/APPENDIX_PHI";
 
 const schema = Joi.object({
-  o_bond_advamount: Joi.string().regex(/^[0-9]/).max(22).required().error(errors => {
+  o_bond_advamount: Joi.number().max(999999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       // console.log("=============saaa========", err.type);
       switch (err.type){
@@ -15,13 +16,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME2063";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME2065";
           break;
-        case "string.base":
-          err.message = "ME2066";
-          break;
-        case "string.max":
+        case "number.max":
           err.message = "ME2064";
           break;
         default :
@@ -40,8 +38,8 @@ const schema = Joi.object({
     .regex(/(^(((\d\d)(([02468][048])|([13579][26]))-02-29)|(((\d\d)(\d\d)))-((((0\d)|(1[0-2]))-((0\d)|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))\s(([01]\d|2[0-3]):([0-5]\d):([0-5]\d))$)/).required().error(errors => {
       errors.forEach(err => {
         switch (err.type){
-          case "any.empty":
-            err.message = "ME2067";
+          case "any.required":
+            err.message ="ME2067"
             break;
           case "string.regex.base":
             err.message = "ME2068";
@@ -68,17 +66,17 @@ const schema = Joi.object({
       });
       return errors;
     }),
-  o_bond_currencycode: Joi.string().required().error(errors => {
+  o_bond_currencycode: Joi.string().valid(Object.keys(VALUE_CODES)).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
           err.message = "ME2071";
           break;
         case "any.empty":
-          err.message = "ME2073";
+          err.message = "ME2071";
           break;
-        case "string.max":
-          err.message = "ME2072";
+          case "any.valid":
+           err.message = "ME2073";
           break;
         default :
           break;
@@ -86,17 +84,17 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_bond_type: Joi.string().required().error(errors => {
+  o_bond_type: Joi.string().valid(Object.keys(APPENDIX_PHI)).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
           err.message = "ME2074";
           break;
         case "any.empty":
-          err.message = "ME2076";
+          err.message = "ME2074";
           break;
-        case "string.max":
-          err.message = "ME2075";
+        case "any.valid":
+          err.message = "ME2076";
           break;
         default :
           break;
@@ -104,11 +102,11 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_bond_bondmarket: Joi.string().optional().allow([null, ""]).error(errors => {
+  o_bond_bondmarket: Joi.string().max(100).optional().allow([null, ""]).error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
-          err.message = "ME2076";
+          err.message = "ME2074";
           break;
         case "string.max":
           err.message = "ME2077";
@@ -119,16 +117,16 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_bond_numberofbonds: Joi.string().regex(/^[0-9]/).max(20).required().error(errors => {
+  o_bond_numberofbonds: Joi.number().integer().max(999999999999999).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.empty":
           err.message = "ME2078";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME2077";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME2079";
           break;
         default :
@@ -137,7 +135,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_bond_bondunitprice: Joi.string().regex(/^[0-9]/).max(22).required().error(errors => {
+  o_bond_bondunitprice: Joi.number().max(999999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -146,10 +144,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME2080";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME2081";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME2083";
           break;
         default :
@@ -158,7 +156,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_bond_interestinperc: Joi.string().regex(/^[0-9]/).max(9).required().error(errors => {
+  o_bond_interestinperc: Joi.number().max(999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -167,10 +165,10 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME2084";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME2085";
           break;
-        case "string.regex.base":
+        case "number.base":
           err.message = "ME2086";
           break;
         default :
@@ -179,7 +177,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_bond_balance: Joi.string().regex(/^[0-9]/).max(23).required().error(errors => {
+  o_bond_balance: Joi.number().max(999999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
@@ -188,16 +186,38 @@ const schema = Joi.object({
         case "any.empty":
           err.message = "ME2084";
           break;
-        case "string.max":
+        case "number.max":
           err.message = "ME2085";
           break;
+         case "number.base":
+         err.message = "ME2086";
+            break;
         default:
           break;
       }
     });
     return errors;
   }),
-  o_bond_isapproved: Joi.number().optional().optional().allow([null, ""])
+  o_bond_isapproved: Joi.number().integer().min(0).max(1).optional().optional().allow([null, ""]).error(errors=> {
+    errors.forEach(err => {
+      switch (err.type){
+        case "number.base":
+          err.message ="Тоо биш байна";
+          break;
+        case "number.max":
+          err.message="Формат буруу байна";
+          break;
+        case "number.min":
+          err.message="Формат буруу байна";
+          break;
+        case "number.integer":
+          err.message="Формат буруу байна";
+          break;
+          default:
+            break;
+      }
+    })
+  })
 });
 
 export default async ({ data, where }) => {
