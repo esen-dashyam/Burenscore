@@ -486,9 +486,6 @@ const orgSchemaArray = Joi.array().items(Joi.object({
         case "any.empty":
           err.message="ME4057";
           break;
-        case "string.only":
-          err.message="aaaaaaaaaaaaa";
-          break;
         default :
           break;
       }

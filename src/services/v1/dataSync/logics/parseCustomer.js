@@ -22,7 +22,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
-  o_c_loandescription: Joi.string().optional().allow([null, ""]).error(errors=> {
+  o_c_loandescription: Joi.string().optional().max(250).allow([null, ""]).error(errors=> {
     errors.forEach(err=> {
       switch (err.type){
         case "string.max":
