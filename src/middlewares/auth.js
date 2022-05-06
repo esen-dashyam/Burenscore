@@ -32,10 +32,10 @@ export default async (req, res, next) => {
         id: decoded.uid
       },
     }, req.DB_SESSION);
+    if (!client) throw new UnauthorizedError(ERRORS.NO_CREDENTIALS);
     req.user = {
       ...client.dataValues
     };
-    if (!client) throw new UnauthorizedError(ERRORS.NO_CREDENTIALS);
     try {
       decoded = jwt.verify(token, config.jwt_api_secret);
     } catch (err) {
