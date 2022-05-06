@@ -166,18 +166,18 @@ const schema = Joi.object({
     return errors;
   }),
   o_c_accredit_updatedexpdate: Joi.string()
-  .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]).error(errors => {
-    errors.forEach(err => {
-      switch (err.type){
-        case "string.regex.base":
-          err.message = "ME7027";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
+    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]).error(errors => {
+      errors.forEach(err => {
+        switch (err.type){
+          case "string.regex.base":
+            err.message = "ME7027";
+            break;
+          default :
+            break;
+        }
+      });
+      return errors;
+    }),
   o_c_accredit_extcount: Joi.string()
     .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
       errors.forEach(err => {
@@ -208,8 +208,8 @@ const schema = Joi.object({
         case "number.max":
           err.message = "ME2085";
           break;
-          case "number.base":
-           err.message = "ME2086";
+        case "number.base":
+          err.message = "ME2086";
           break;
         default:
           break;
