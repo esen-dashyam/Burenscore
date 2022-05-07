@@ -21,6 +21,7 @@ const schema = Joi.object({
     });
     return errors;
   }),
+  o_c_loanline_cardno   : Joi.number().optional().allow([null, ""]),
   o_c_loanline_advamount: Joi.number().required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
@@ -120,16 +121,16 @@ const schema = Joi.object({
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
-          err.message = "ME3040";
+          err.message = "ME2417";
           break;
         case "any.empty":
-          err.message = "ME3044";
+          err.message = "ME2417";
           break;
         case "number.base":
           err.message = "ME2419";
           break;
         case "number.max":
-          err.message = "ME3041";
+          err.message = "ME2418";
           break;
         default :
           break;

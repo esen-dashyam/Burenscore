@@ -181,16 +181,16 @@ const schema = Joi.object({
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
-          err.message = "ME2084";
+          err.message = "ME3669";
           break;
         case "any.empty":
-          err.message = "ME2084";
+          err.message = "ME3669";
           break;
         case "number.max":
-          err.message = "ME2085";
+          err.message = "ME3670";
           break;
         case "number.base":
-          err.message = "ME2086";
+          err.message = "ME3671";
           break;
         default:
           break;

@@ -95,7 +95,7 @@ const schemaArray = Joi.array().items(Joi.object({
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
-          err.message = "ME2485";
+          err.message = "ME2481";
           break;
         case "number.base":
           err.message="ME2487";
@@ -407,10 +407,10 @@ const schemaArray = Joi.array().items(Joi.object({
     });
     return errors;
   }),
-  o_c_courtorderdate: Joi.date().optional().allow([null, ""]).error(errors => {
+  o_c_courtorderdate: Joi.date().optional().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).allow([null, ""]).error(errors => {
     errors.forEach(err => {
       switch (err.type){
-        case "date.base":
+        case "string.regex.base":
           err.message="ME2511";
           break;
         default :

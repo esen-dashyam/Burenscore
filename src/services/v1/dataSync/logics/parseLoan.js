@@ -6,6 +6,19 @@ import APPENDIX_K from "../../../../constants/APPENDIX_K";
 import APPENDIX_EO from "../../../../constants/APPENDIX_EO";
 import APPENDIX_A from "../../../../constants/APPENDIX_A";
 import Joi from "joi";
+import array from "joi/lib/types/array";
+import { required } from "joi/lib/types/lazy";
+const checkDuplicate = (array, key) => {
+  let duplicate = false;
+  array.forEach((item, index) => {
+    if (array.find((element, i) => element[key] === item[key] && index !== i))
+      duplicate = true;
+    console.log("==========================", array);
+  });
+
+  return duplicate;
+};
+
 
 const schema = Joi.object({
   o_c_loan_provideLoanSize: Joi.number().max(999999999999999.99).precision(2).required().error(errors => {
@@ -139,7 +152,7 @@ const schema = Joi.object({
           err.message = "ME2365";
           break;
         case "any.valid":
-          err.message = "ME2365";
+          err.message = "ME2364";
           break;
         default :
           break;
@@ -248,7 +261,24 @@ const schema = Joi.object({
   }),
   o_c_loan_loanintype : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_X)).required(),
   o_c_loantransactions: Joi.object({
-    o_c_loan_loancharttype    : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
+    o_c_loan_loancharttype: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required().error(errors => {
+      errors.forEach(err => {
+        switch (err.type){
+          case "any.required":
+            err.message = "ME4007";
+            break;
+          case "any.empty":
+            err.message = "ME4008";
+            break;
+          case "string.max":
+            err.message = "ME4009";
+            break;
+          default:
+            break;
+        }
+      });
+      return errors;
+    }),
     o_c_loan_interestcharttype: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
     o_c_loandetails           : Joi.object({
       o_c_loandetail: Joi.array().items(Joi.object({
@@ -258,7 +288,7 @@ const schema = Joi.object({
     }),
     o_c_loanperformances: Joi.object({
       o_c_loanperformance: Joi.array().items(Joi.object({
-        o_c_loandetail_datetopay       : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+        o_c_loanperformance_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
         o_c_loanperformance_amounttopay: Joi.number().precision(2).positive().required()
       })),
     }),
@@ -282,7 +312,10 @@ export default async ({ data, where }) => {
 
   // console.log("===========>LEAONINFO", data);
   try {
+    console.log("=========AAAAAAAAAAAaa=============", data.o_c_loantransactions.o_c_loandetails);
     await schema.validate(data);
+    let duplicate = checkDuplicate(data.o_c_loantransactions.o_c_loandetails.o_c_loandetail.o_c_loandetail_datetopay);
+    if (duplicate) throw new ValidationError("true", ERROR_DETAILS.ME3682);
   }
   catch (err) {
     // console.log(err);

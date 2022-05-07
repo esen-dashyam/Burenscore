@@ -54,7 +54,7 @@ const customerSchemaObject = Joi.object({
         case "any.required":
           err.message="ME3038";
           break;
-        case "any.number":
+        case "string.empty":
           err.message="ME3039";
           break;
         default:
@@ -114,6 +114,9 @@ const customerSchemaArray = Joi.array().items(Joi.object({
     errors.forEach(err=>{
       switch (err.type){
         case "any.required":
+          err.message="ME3038";
+          break;
+        case "string.empty":
           err.message="ME3038";
           break;
         case "string.base":
@@ -224,7 +227,7 @@ const orgSchemaArray = Joi.array().items(Joi.object({
         case "any.required":
           err.message="ME3027";
           break;
-        case "number.base":
+        case "string.base":
           err.message="ME3028";
           break;
         case "number.max":

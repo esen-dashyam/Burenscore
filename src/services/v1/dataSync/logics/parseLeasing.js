@@ -6,19 +6,30 @@ import Joi from "joi";
 import APPENDIX_A from "../../../../constants/APPENDIX_A";
 import APPENDIX_EO from "../../../../constants/APPENDIX_EO";
 
+// o_c_leasingperformance_datetopay
+const checkDuplicate = (array, key) => {
+  let duplicate = false;
+
+  array.forEach((item, index) => {
+    if (array.find((el, i) => el[key] === item[key] && index !== i))
+      duplicate = true;
+  });
+
+  return duplicate;
+};
 
 const schema = Joi.object({
   o_c_leasing_advamount: Joi.number().max(999999999999999).precision(2).required().error(errors => {
     errors.forEach(err => {
       switch (err.type){
         case "any.required":
-          err.message = "ME2352";
+          err.message = "ME2302";
           break;
         case "any.empty":
-          err.message = "ME2304";
+          err.message = "ME2302";
           break;
         case "number.base":
-          err.message = "ME2305";
+          err.message = "ME2304";
           break;
         case "number.max":
           err.message = "ME2303";
@@ -208,13 +219,31 @@ const schema = Joi.object({
     });
     return errors;
   }),
+
+
   o_c_leasingtransactions: Joi.object({
-    o_c_leasing_loancharttype    : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
-    o_c_leasing_interestcharttype: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
+    o_c_leasing_loancharttype: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required().error(errors=>{
+      errors.forEach(err=> {
+        switch (err.type){
+          case "any.required":
+            err.message = "ME4013";
+            break;
+          case "any.empty":
+            err.message="ME4015";
+            break;
+          case "string.max":
+            err.message ="ME4014";
+            break;
+          default :
+            break;
+        }
+      });
+    }),
+    o_c_leasing_interestcharttype: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required().required(),
     o_c_leasingdetails           : Joi.object({
       o_c_leasingdetail: Joi.array().items(Joi.object({
         o_c_leasingdetail_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
-        o_c_leasingdetail_amounttopay: Joi.number().precision(2).positive().required()
+        o_c_leasingdetail_amounttopay: Joi.number().precision(2).positive().required(),
       }))
     }),
     o_c_leasingperformances: Joi.object({
@@ -232,7 +261,7 @@ const schema = Joi.object({
     o_c_leasinginterestperformances: Joi.object({
       o_c_leasinginterestperformance: Joi.array().items(Joi.object({
         o_c_leasinginterestperformance_datetopay  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
-        o_c_leasinginterestperformance_amounttopay: Joi.number().precision(2).positive().required()
+        o_c_leasinginterestperformance_amounttopay: Joi.number().precision(2).positive().required(),
       }))
     })
   }),
@@ -240,12 +269,23 @@ const schema = Joi.object({
 
 export default async ({ data, where }) => {
   if (!data) return null;
-  // console.log(data.o_c_leasingtransactions.o_c_leasingdetails);
+
+
+
   try {
     await schema.validate(data);
+    let duplicate = checkDuplicate(data.o_c_leasingtransactions.o_c_leasingdetails.o_c_leasingdetail, "o_c_leasingdetail_datetopay");
+    if (duplicate) throw new ValidationError("ME3686", ERROR_DETAILS.ME3686);
+    duplicate = checkDuplicate(data.o_c_leasingtransactions.o_c_leasingperformances.o_c_leasingperformance, "o_c_leasingperformance_datetopay");
+    if (duplicate) throw new ValidationError("ME3688", ERROR_DETAILS.ME3688);
+    duplicate = checkDuplicate(data.o_c_leasingtransactions.o_c_leasinginterestdetails.o_c_leasinginterestdetail, "o_c_leasinginterestdetail_datetopay");
+    if (duplicate) throw new ValidationError("ME3687", ERROR_DETAILS.ME3687);
+    duplicate = checkDuplicate(data.o_c_leasingtransactions.o_c_leasinginterestperformances.o_c_leasinginterestperformance, "o_c_leasinginterestperformance_datetopay");
+    if (duplicate) throw new ValidationError("ME3689", ERROR_DETAILS.ME3689);
   }
   catch (err) {
     // console.log(err);
+    console.log(data.o_c_leasingtransactions.o_c_leasingdetails.o_c_leasingdetail);
     throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
   }
   let id = uuidv4();
@@ -284,7 +324,7 @@ export default async ({ data, where }) => {
       type       : "LEASING",
       relno      : data?.o_c_leasingrelnos?.o_c_leasingrelno
     });
-  // console.log("==========>", relnos);
+  console.log("==========>", relnos);
   let leasingInfo = {
     id                           : id,
     o_c_leasing_advamount        : data?.o_c_leasing_advamount,
