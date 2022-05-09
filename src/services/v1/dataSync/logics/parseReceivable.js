@@ -11,6 +11,7 @@ const checkDuplicate = (array, key) => {
     if (array.find((element, i) => element[key] === item[key] && index !== i))
       duplicate = true;
   });
+  return duplicate;
 };
 const schema =Joi.object({
   o_c_receivable_balance    : Joi.number().required(),
