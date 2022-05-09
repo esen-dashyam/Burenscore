@@ -851,4 +851,369 @@ export default {
     "string.max"       : " ",
     "string.regex.base": " ",
   },
+  // FINANCIALINFO
+  c_b_totalsale: {
+    "number.max" : "ME2102",
+    "number.base": "ME2103"
+  },
+  c_b_totalcost: {
+    "number.max" : "ME2105",
+    "number.base": "ME2106",
+  },
+  c_b_totalprofit: {
+    "number.max" : "ME2108",
+    "number.base": "ME2109",
+  },
+  c_b_operatingexpense: {
+    "number.max" : "ME2111",
+    "number.base": "ME2112",
+  },
+  c_b_operatingincome: {
+    "number.max" : "ME2114",
+    "number.base": "ME2115",
+  },
+  c_b_otherincome: {
+    "number.max" : "ME2117",
+    "number.base": "ME2118",
+  },
+  c_b_otherexpense: {
+    "number.max" : "ME2120",
+    "number.base": "ME2121",
+  },
+  c_b_profitbeforetax: {
+    "number.max" : "ME2123",
+    "number.base": "ME2124",
+  },
+  c_b_tax: {
+    "number.max" : "ME2126",
+    "number.base": "ME2127",
+  },
+  c_b_netprofit: {
+    "number.max" : "ME2129",
+    "number.base": "ME2130",
+  },
+  // CAPITAL
+  c_p_totalasset: {
+    "number.max" : "ME2152",
+    "number.base": "ME2153",
+  },
+  c_p_assettype: {
+    "number.max": "ME2155",
+  },
+  c_p_assetcost: {
+    "number.max" : "ME2156",
+    "number.base": "ME2157",
+  },
+  c_p_assetdepreciation: {
+    "number.max" : "ME2159",
+    "number.base": "ME2160",
+  },
+  c_p_assetownership: {
+    "number.max": "ME2162",
+  },
+  // FAMILY
+  c_g_salary: {
+    "number.max" : "ME2182",
+    "number.base": "ME2183",
+  },
+  c_g_otherincome: {
+    "number.max" : "ME2185",
+    "number.base": "ME2186",
+  },
+  c_g_totalincome: {
+    "number.max" : "ME2188",
+    "number.base": "ME2189",
+  },
+  c_g_foodexpense: {
+    "number.max" : "ME2191",
+    "number.base": "ME2192",
+  },
+  c_g_expensetolease: {
+    "number.max" : "ME2194",
+    "number.base": "ME2195",
+  },
+  c_g_commexpense: {
+    "number.max" : "ME2197",
+    "number.base": "ME2198",
+  },
+  c_g_otherexpense: {
+    "number.max" : "ME2200",
+    "number.base": "ME2201",
+  },
+  c_g_totalexpense: {
+    "number.max" : "ME2203",
+    "number.base": "ME2204",
+  },
+  c_g_netincome: {
+    "number.max" : "ME2206",
+    "number.base": "ME2207",
+  },
+  c_g_saving: {
+    "number.max" : "ME2209",
+    "number.base": "ME2210",
+  },
+  c_g_totalsaving: {
+    "number.max" : "ME2212",
+    "number.base": "ME2213",
+  },
+  c_g_savinghistory: {
+    "number.max": "ME2215",
+  },
+  // o_t_Report
+  o_t_circulatoryasset: {
+    "number.max" : "ME3052",
+    "number.base": "ME3053",
+  },
+  o_te_cash: {
+    "number.max" : "ME3055",
+    "number.base": "ME3056",
+  },
+  o_te_receivable: {
+    "number.max" : "ME3058",
+    "number.base": "ME3059",
+  },
+  o_te_material: {
+    "number.max" : "ME3061",
+    "number.base": "ME3062",
+  },
+  o_te_shortitmeinvest: {
+    "number.max" : "ME3064",
+    "number.base": "ME3065",
+  },
+  o_te_otherasset: {
+    "number.max" : "ME3067",
+    "number.base": "ME3068",
+  },
+  o_t_noncirculatoryasset: {
+    "number.max" : "ME3070",
+    "number.base": "ME3071",
+  },
+  o_tu_building: {
+    "number.max" : "ME3073",
+    "number.base": "ME3074",
+  },
+  o_tu_equipment: {
+    "number.max" : "ME3076",
+    "number.base": "ME3077",
+  },
+  o_tu_furniture: {
+    "number.max" : "ME3079",
+    "number.base": "ME3080",
+  },
+  o_tu_othertangible: {
+    "number.max" : "ME3082",
+    "number.base": "ME3083",
+  },
+  o_tu_accumdeppression: {
+    "number.max" : "ME3085",
+    "number.base": "ME3086",
+  },
+  o_t_totalasset: {
+    "number.max" : "ME3088",
+    "number.base": "ME3089",
+  },
+  o_t_shorttimeloan: {
+    "number.max" : "ME3091",
+    "number.base": "ME3092",
+  },
+  o_tb_loanonaccount: {
+    "number.max" : "ME3094",
+    "number.base": "ME3095",
+  },
+  o_tb_bankloan: {
+    "number.max" : "ME3097",
+    "number.base": "ME3098",
+  },
+  o_tb_othershorttime: {
+    "number.max" : "ME3100",
+    "number.base": "ME3101",
+  },
+  o_t_longtimeloan: {
+    "number.max" : "ME3103",
+    "number.base": "ME3104",
+  },
+  o_t_ownerproperty: {
+    "number.max" : "ME3106",
+    "number.base": "ME3107",
+  },
+  o_tz_companyfund: {
+    "number.max" : "ME3109",
+    "number.base": "ME3110",
+  },
+  o_tz_other: {
+    "number.max" : "ME3112",
+    "number.base": "ME3113",
+  },
+  o_tz_accumprofit: {
+    "number.max" : "ME3115",
+    "number.base": "ME3116",
+  },
+  o_t_debtownerproperty: {
+    "number.max" : "ME3118",
+    "number.base": "ME3119",
+  },
+  o_m_Report: {
+    "any.empty": "ME3151"
+  },
+  o_m_operatingmoneyflow: {
+    "number.max" : "ME3153",
+    "number.base": "ME3154",
+  },
+  o_mu_profitbeforetaxinterest: {
+    "number.max" : "ME3155",
+    "number.base": "ME3156",
+  },
+  o_mu_deppressionexpense: {
+    "number.max" : "ME3158",
+    "number.base": "ME3159",
+  },
+  o_mu_tax: {
+    "number.max" : "ME3161",
+    "number.base": "ME3162",
+  },
+  o_mu_materialprocurement: {
+    "number.max" : "ME3164",
+    "number.base": "ME3165",
+  },
+  o_m_financemoneyflow: {
+    "number.max" : "ME3167",
+    "number.base": "ME3168",
+  },
+  o_ms_receivablechange: {
+    "number.max" : "ME3170",
+    "number.base": "ME3171",
+  },
+  o_ms_shorttimeinvestchange: {
+    "number.max" : "ME3173",
+    "number.base": "ME3174",
+  },
+  o_ms_loanonaccountchange: {
+    "number.max" : "ME3176",
+    "number.base": "ME3177",
+  },
+  o_ms_bankloanchange: {
+    "number.max" : "ME3179",
+    "number.base": "ME3180",
+  },
+  o_ms_longtermsource: {
+    "number.max" : "ME3182",
+    "number.base": "ME3183",
+  },
+  o_ms_interestexpense: {
+    "number.max" : "ME3185",
+    "number.base": "ME3186",
+  },
+  o_ms_ownerproperty: {
+    "number.max" : "ME3188",
+    "number.base": "ME3189",
+  },
+  o_ms_earningforshare: {
+    "number.max" : "ME3191",
+    "number.base": "ME3192",
+  },
+  o_m_investmoneyflow: {
+    "number.max" : " ",
+    "number.base": " ",
+  },
+  o_mh_building: {
+    "number.max" : "ME3194",
+    "number.base": "ME3195",
+  },
+  o_mh_equipment: {
+    "number.max" : "ME3200",
+    "number.base": "ME3201",
+  },
+  o_mh_furniture: {
+    "number.max" : "ME3203",
+    "number.base": "ME3204",
+  },
+  o_mh_othertangible: {
+    "number.max" : "ME3206",
+    "number.base": "ME3207",
+  },
+  o_mh_otherintangible: {
+    "number.max" : "ME3209",
+    "number.base": "ME3210",
+  },
+  o_mh_accumdepression: {
+    "number.max" : "ME3212",
+    "number.base": "ME3213",
+  },
+  // o_Report
+  o_m_totalmoneyflow: {
+    "number.max" : "ME3215",
+    "number.base": "ME3216",
+  },
+  o_m_cashbalance: {
+    "number.max" : "ME3218",
+    "number.base": "ME3219",
+  },
+  o_sale: {
+    "number.max" : "ME3252",
+    "number.base": "ME3253",
+  },
+  o_saleproductcost: {
+    "number.max" : "ME3255",
+    "number.base": "ME3256",
+  },
+  o_totalincome: {
+    "number.max" : "ME3258",
+    "number.base": "ME3259",
+  },
+  o_operatingexpense: {
+    "number.max" : "ME3261",
+    "number.base": "ME3262",
+  },
+  ou_salary: {
+    "number.max" : "ME3264",
+    "number.base": "ME3265",
+  },
+  ou_leaseexploitexpense: {
+    "number.max" : "ME3267",
+    "number.base": "ME3268",
+  },
+  ou_advertiseexpense: {
+    "number.max" : "ME3270",
+    "number.base": "ME3271",
+  },
+  ou_insuranceexpense: {
+    "number.max" : "ME3273",
+    "number.base": "ME3274",
+  },
+  ou_depreciationexpense: {
+    "number.max" : "ME3276",
+    "number.base": "ME3277",
+  },
+  ou_otherexpense: {
+    "number.max" : "ME3279",
+    "number.base": "ME3280",
+  },
+  o_minoroperincomeexpense: {
+    "number.max" : "ME3282",
+    "number.base": "ME3283",
+  },
+  o_minoroperincome: {
+    "number.max" : "ME3285",
+    "number.base": "ME3286",
+  },
+  o_minoroperexpense: {
+    "number.max" : "ME3288",
+    "number.base": "ME3289",
+  },
+  o_profitbeforetaxinterest: {
+    "number.max" : "ME3291",
+    "number.base": "ME3292",
+  },
+  oh_interestexpense: {
+    "number.max" : "ME3294",
+    "number.base": "ME3295",
+  },
+  oh_tax: {
+    "number.max" : "ME3297",
+    "number.base": "ME3298",
+  },
+  o_netprofit: {
+    "number.max" : "ME3300",
+    "number.base": "ME3301",
+  },
 };
