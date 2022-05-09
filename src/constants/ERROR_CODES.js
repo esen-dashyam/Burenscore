@@ -443,6 +443,8 @@ export default {
     "any.empty"   : "ME4008",
     "string.max"  : "ME4009",
   },
+
+
   // LOANLINE ------------------------------------------------------
   o_c_loanline_type: {
     "any.required": "ME2402",

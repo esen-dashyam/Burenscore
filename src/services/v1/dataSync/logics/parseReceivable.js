@@ -4,6 +4,14 @@ import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { APPENDIX, ERROR_CODES, ERROR_DETAILS } from "../../../../constants";
 import Joi from "joi";
 
+
+const checkDuplicate = (array, key) => {
+  let duplicate = false;
+  array.forEach((item, index) => {
+    if (array.find((element, i) => element[key] === item[key] && index !== i))
+      duplicate = true;
+  });
+};
 const schema =Joi.object({
   o_c_receivable_balance    : Joi.number().required(),
   o_c_receivable_advamount  : Joi.number().required(),
@@ -51,9 +59,22 @@ export default async ({ data, where }) => {
   if (!data) return null;
   try {
     await schema.validate(data);
+    let duplicate = checkDuplicate(data.o_c_receivabletransactions.o_c_receivabledetails.o_c_receivabledetail, "o_c_receivabledetail_datetopay");
+    if (duplicate) throw new ValidationError("ME3690", ERROR_DETAILS.ME3690);
+    checkDuplicate(data.o_c_receivabletransactions.o_c_receivableperformances.o_c_receivableperformance, "o_c_receivableperformance_datetopay");
+    if (duplicate) throw new ValidationError("ME3692", ERROR_DETAILS.ME3692);
+    checkDuplicate(data.o_c_receivabletransactions.o_c_receivableinterestdetails.o_c_receivableinterestdetail, "o_c_receivableinterestdetail_datetopay");
+    if (duplicate) throw new ValidationError("ME3691", ERROR_DETAILS.ME3691);
+    checkDuplicate(data.o_c_receivabletransactions.o_c_receivableinterestperformances.o_c_receivableinterestperformance, "o_c_receivableinterestperformance_datetopay");
+    if (duplicate) throw new ValidationError("ME3693", ERROR_DETAILS.ME3693);
   }
   catch (err) {
-    throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
+    if (err.code){
+      throw new ValidationError(err.code, err.message);
+    }
+    else {
+      throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
+    }
   }
   let receivableInfo = {
     id                              : uuidv4(),

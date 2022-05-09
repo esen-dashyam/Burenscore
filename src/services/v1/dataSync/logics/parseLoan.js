@@ -6,20 +6,14 @@ import APPENDIX_K from "../../../../constants/APPENDIX_K";
 import APPENDIX_EO from "../../../../constants/APPENDIX_EO";
 import APPENDIX_A from "../../../../constants/APPENDIX_A";
 import Joi from "joi";
-import array from "joi/lib/types/array";
-import { required } from "joi/lib/types/lazy";
 const checkDuplicate = (array, key) => {
   let duplicate = false;
   array.forEach((item, index) => {
-    if (array.find((element, i) => element[key] === i[key] && index !== item))
-
+    if (array.find((element, i) => element[key] === item[key] && index !== i))
       duplicate = true;
   });
   return duplicate;
-
 };
-
-
 const schema = Joi.object({
   o_c_loan_provideLoanSize: Joi.number().max(999999999999999.99).precision(2).required(),
   o_c_loan_balance        : Joi.number().max(999999999999999.99).precision(2).required(),
@@ -70,15 +64,23 @@ export default async ({ data, where }) => {
 
   // console.log("===========>LEAONINFO", data);
   try {
-    console.log("=========AAAAAAAAAAAaa=============", data.o_c_loantransactions.o_c_loandetails, "o_c_loandetail_datetopay");
     await schema.validate(data);
     let duplicate = checkDuplicate(data.o_c_loantransactions.o_c_loandetails.o_c_loandetail, "o_c_loandetail_datetopay");
-    console.log("=============ww=========", duplicate);
-    if (duplicate) throw new ValidationError("", ERROR_DETAILS.ME3682);
+    if (duplicate) throw new ValidationError("ME3682", ERROR_DETAILS.ME3682);
+    duplicate = checkDuplicate(data.o_c_loantransactions.o_c_loanperformances.o_c_loanperformance, "o_c_loanperformance_datetopay");
+    if (duplicate) throw new ValidationError("ME3684", ERROR_DETAILS.ME3684);
+    duplicate = checkDuplicate(data.o_c_loantransactions.o_c_loaninterestperformances.o_c_loaninterestperformance, "o_c_loaninterestperformance_datetopay");
+    if (duplicate) throw new ValidationError("ME3685", ERROR_DETAILS.ME3685);
+    duplicate = checkDuplicate(data.o_c_loantransactions.o_c_loaninterestdetails.o_c_loaninterestdetail, "o_c_loaninterestdetail_datetopay");
+    if (duplicate) throw new ValidationError("ME3683", ERROR_DETAILS.ME3683);
   }
   catch (err) {
-    console.log(err);
-    throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
+    // console.log(err);
+    if (err.code){
+      throw new ValidationError(err.code, err.message);
+    } else {
+      throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type] || err.code, ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type] || err.code]);
+    }
   }
   let id = uuidv4();
   let mrtnos = [];

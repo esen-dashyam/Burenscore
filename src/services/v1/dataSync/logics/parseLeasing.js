@@ -74,13 +74,14 @@ export default async ({ data, where }) => {
     duplicate = checkDuplicate(data.o_c_leasingtransactions.o_c_leasinginterestdetails.o_c_leasinginterestdetail, "o_c_leasinginterestdetail_datetopay");
     if (duplicate) throw new ValidationError("ME3687", ERROR_DETAILS.ME3687);
     duplicate = checkDuplicate(data.o_c_leasingtransactions.o_c_leasinginterestperformances.o_c_leasinginterestperformance, "o_c_leasinginterestperformance_datetopay");
-    if (duplicate) throw new ValidationError("ME3689", ERROR_DETAILS.ME3689);
+    if (duplicate) throw new ValidationError("ME3685", ERROR_DETAILS.ME3685);
   }
   catch (err) {
     // console.log(err);
-    console.log(data.o_c_leasingtransactions.o_c_leasingdetails.o_c_leasingdetail);
-
-    throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
+    if (err.code){
+      throw new ValidationError(err.code, err.message);
+    }
+    else {throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);}
   }
   let id = uuidv4();
   let mrtnos = [];
