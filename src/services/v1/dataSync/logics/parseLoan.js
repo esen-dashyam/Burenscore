@@ -1,7 +1,7 @@
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { APPENDIX, ERROR_DETAILS, VALUE_CODES } from "../../../../constants";
+import { APPENDIX, ERROR_DETAILS, VALUE_CODES, ERROR_CODES } from "../../../../constants";
 import APPENDIX_K from "../../../../constants/APPENDIX_K";
 import APPENDIX_EO from "../../../../constants/APPENDIX_EO";
 import APPENDIX_A from "../../../../constants/APPENDIX_A";
@@ -11,274 +11,32 @@ import { required } from "joi/lib/types/lazy";
 const checkDuplicate = (array, key) => {
   let duplicate = false;
   array.forEach((item, index) => {
-    if (array.find((element, i) => element[key] === item[key] && index !== i))
-      duplicate = true;
-    console.log("==========================", array);
-  });
+    if (array.find((element, i) => element[key] === i[key] && index !== item))
 
+      duplicate = true;
+  });
   return duplicate;
+
 };
 
 
 const schema = Joi.object({
-  o_c_loan_provideLoanSize: Joi.number().max(999999999999999.99).precision(2).required().error(errors => {
-    errors.forEach(err => {
-      switch (err.type){
-        case "any.required":
-          err.message = "ME2352";
-          break;
-        case "number.max":
-          err.message = "ME2353";
-          break;
-        case "number.base":
-          err.message = "ME2354";
-          break;
-        case "any.empty":
-          err.message = "ME2352";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
-  o_c_loan_balance: Joi.number().max(999999999999999.99).precision(2).required().error(errors => {
-    errors.forEach(err => {
-      // console.log("===============================================================", err.type);
-      switch (err.type){
-        case "any.required":
-          err.message = "ME3645";
-          break;
-        case "any.empty":
-          err.message = "ME3645";
-          break;
-        case "number.base":
-          err.message = "ME3647";
-          break;
-        case "number.max":
-          err.message = "ME3646";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
-  o_c_loan_loanProvenance: Joi.string().valid(Object.keys(APPENDIX_K)).required().error(errors => {
-    errors.forEach(err => {
-      switch (err.type){
-        case "any.required":
-          err.message = "ME2356";
-          break;
-        case "any.empty":
-          err.message = "ME2356";
-          break;
-        case "any.valid":
-          err.message = "ME2358";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
-  // o_c_loan_starteddate: Joi.string()
-  //   .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
-  //     errors.forEach(err => {
-  //       console.log("==================a=============", err.type);
-  //       switch (err.type){
-  //         case "any.required":
-  //           err.message = "ME2359";
-  //           break;
-  //         case "any.empty":
-  //           err.message = "ME2359";
-  //           break;
-  //         case "string.regex.base":
-  //           err.message = "ME2360";
-  //           break;
-  //         default :
-  //           break;
-  //       }
-  //     });
-  //     return errors;
-  //   }),
-  o_c_loan_starteddate: Joi.string()
-    .regex(/(^(((\d\d)(([02468][048])|([13579][26]))-02-29)|(((\d\d)(\d\d)))-((((0\d)|(1[0-2]))-((0\d)|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))\s(([01]\d|2[0-3]):([0-5]\d):([0-5]\d))$)/).required().error(errors => {
-      errors.forEach(err => {
-        // console.log("==================a=============", err.type);
-        switch (err.type){
-          case "any.required":
-            err.message = "ME2359";
-            break;
-          case "any.empty":
-            err.message = "ME2359";
-            break;
-          case "string.regex.base":
-            err.message = "ME2360";
-            break;
-          default :
-            break;
-        }
-      });
-      return errors;
-    }),
+  o_c_loan_provideLoanSize: Joi.number().max(999999999999999.99).precision(2).required(),
+  o_c_loan_balance        : Joi.number().max(999999999999999.99).precision(2).required(),
+  o_c_loan_loanProvenance : Joi.string().valid(Object.keys(APPENDIX_K)).required(),
+  o_c_loan_starteddate    : Joi.string()
+    .regex(/(^(((\d\d)(([02468][048])|([13579][26]))-02-29)|(((\d\d)(\d\d)))-((((0\d)|(1[0-2]))-((0\d)|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))\s(([01]\d|2[0-3]):([0-5]\d):([0-5]\d))$)/).required(),
   o_c_loan_expdate: Joi.string()
-    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
-      errors.forEach(err => {
-        // console.log("==========================", err.type);
-        switch (err.type){
-          case "any.required":
-            err.message = "ME2361";
-            break;
-          case "any.empty":
-            err.message = "ME2361";
-            break;
-          case "string.regex.base":
-            err.message = "ME2362";
-            break;
-          default :
-            break;
-        }
-      });
-      return errors;
-    }),
-  o_c_loan_currencycode: Joi.string().valid(Object.keys(VALUE_CODES).map(item=>VALUE_CODES[item])).required().error(errors => {
-    errors.forEach(err => {
-      switch (err.type){
-        case "any.required":
-          err.message = "ME2363";
-          break;
-        case "any.empty":
-          err.message = "ME2365";
-          break;
-        case "any.valid":
-          err.message = "ME2364";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
-  o_c_loan_sectorcode: Joi.string().valid(Object.keys(APPENDIX_A)).optional().allow([null, ""]).error(errors => {
-    errors.forEach(err => {
-      switch (err.type){
-        case "any.required":
-          err.message = "ME3040";
-          break;
-        case "any.valid":
-          err.message = "ME3043";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
-  o_c_loan_interestinperc: Joi.number().max(999999.99).precision(2).required().error(errors => {
-    errors.forEach(err => {
-      switch (err.type){
-        case "any.required":
-          err.message = "ME2366";
-          break;
-        case "any.empty":
-          err.message = "ME2366";
-          break;
-        case "number.max":
-          err.message = "ME2367";
-          break;
-        case "number.base":
-          err.message = "ME2368";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
-  o_c_loan_commissionperc: Joi.number().max(999999999999.99).precision(2).required().error(errors => {
-    errors.forEach(err => {
-      switch (err.type){
-        case "any.required":
-          err.message = "ME2370";
-          break;
-        case "any.empty":
-          err.message = "ME2370";
-          break;
-        case "number.base":
-          err.message = "ME2372";
-          break;
-        case "number.max":
-          err.message = "ME2371";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
-  o_c_loan_fee: Joi.number().max(999999999999).precision(2).required().error(errors => {
-    errors.forEach(err => {
-      switch (err.type){
-        case "any.required":
-          err.message = "ME2374";
-          break;
-        case "any.empty":
-          err.message = "ME2374";
-          break;
-        case "number.base":
-          err.message = "ME2376";
-          break;
-        case "number.max":
-          err.message = "ME2375";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
-  o_c_loan_loanclasscode: Joi.string().valid(Object.keys(APPENDIX_EO)).required().error(errors => {
-    errors.forEach(err => {
-      switch (err.type){
-        case "any.required":
-          err.message = "ME2380";
-          break;
-        case "any.empty":
-          err.message = "ME2382";
-          break;
-        case "any.valid":
-          err.message = "ME2382";
-          break;
-        case "string.max":
-          err.message = "ME2381";
-          break;
-        default:
-          break;
-      }
-    });
-    return errors;
-  }),
-  o_c_loan_loanintype : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_X)).required(),
-  o_c_loantransactions: Joi.object({
-    o_c_loan_loancharttype: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required().error(errors => {
-      errors.forEach(err => {
-        switch (err.type){
-          case "any.required":
-            err.message = "ME4007";
-            break;
-          case "any.empty":
-            err.message = "ME4008";
-            break;
-          case "string.max":
-            err.message = "ME4009";
-            break;
-          default:
-            break;
-        }
-      });
-      return errors;
-    }),
+    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+  o_c_loan_currencycode  : Joi.string().valid(Object.keys(VALUE_CODES).map(item=>VALUE_CODES[item])).required(),
+  o_c_loan_sectorcode    : Joi.string().valid(Object.keys(APPENDIX_A)).optional().allow([null, ""]),
+  o_c_loan_interestinperc: Joi.number().max(999999.99).precision(2).required(),
+  o_c_loan_commissionperc: Joi.number().max(999999999999.99).precision(2).required(),
+  o_c_loan_fee           : Joi.number().max(999999999999).precision(2).required(),
+  o_c_loan_loanclasscode : Joi.string().valid(Object.keys(APPENDIX_EO)).required(),
+  o_c_loan_loanintype    : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_X)).required(),
+  o_c_loantransactions   : Joi.object({
+    o_c_loan_loancharttype    : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
     o_c_loan_interestcharttype: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
     o_c_loandetails           : Joi.object({
       o_c_loandetail: Joi.array().items(Joi.object({
@@ -312,14 +70,15 @@ export default async ({ data, where }) => {
 
   // console.log("===========>LEAONINFO", data);
   try {
-    console.log("=========AAAAAAAAAAAaa=============", data.o_c_loantransactions.o_c_loandetails);
+    console.log("=========AAAAAAAAAAAaa=============", data.o_c_loantransactions.o_c_loandetails, "o_c_loandetail_datetopay");
     await schema.validate(data);
-    let duplicate = checkDuplicate(data.o_c_loantransactions.o_c_loandetails.o_c_loandetail.o_c_loandetail_datetopay);
-    if (duplicate) throw new ValidationError("true", ERROR_DETAILS.ME3682);
+    let duplicate = checkDuplicate(data.o_c_loantransactions.o_c_loandetails.o_c_loandetail, "o_c_loandetail_datetopay");
+    console.log("=============ww=========", duplicate);
+    if (duplicate) throw new ValidationError("", ERROR_DETAILS.ME3682);
   }
   catch (err) {
-    // console.log(err);
-    throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
+    console.log(err);
+    throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
   }
   let id = uuidv4();
   let mrtnos = [];

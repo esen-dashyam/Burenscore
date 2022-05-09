@@ -1,214 +1,26 @@
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { APPENDIX, ERRORS, ERROR_DETAILS } from "../../../../constants";
+import { APPENDIX, ERROR_DETAILS, ERROR_CODES } from "../../../../constants";
 import Joi from "joi";
 
 const schema = Joi.object({
-  o_c_onus_advamount: Joi.number().required().error(errors => {
-    errors.forEach(err => {
-      switch (err.type){
-        case "any.required":
-          err.message = "ME3452";
-          break;
-        case "any.empty":
-          err.message = "ME3452";
-          break;
-        case "number.base":
-          err.message = "ME3454";
-          break;
-        case "number.max":
-          err.message = "ME3453";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
-  o_c_onus_balance: Joi.number().required().error(errors => {
-    errors.forEach(err => {
-      switch (err.type){
-        case "any.required":
-          err.message = "ME3665";
-          break;
-        case "any.empty":
-          err.message = "ME3669";
-          break;
-        case "number.max":
-          err.message = "ME3666";
-          break;
-        case "number.base":
-          err.message = "ME3667";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
+  o_c_onus_advamount      : Joi.number().required(),
+  o_c_onus_balance        : Joi.number().required(),
   o_c_onus_rightopeneddate: Joi.string()
-    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
-      errors.forEach(err => {
-        switch (err.type){
-          case "any.required":
-            err.message = "ME3456";
-            break;
-          case "any.empty":
-            err.message = "ME3456";
-            break;
-          case "string.regex.base":
-            err.message = "ME3457";
-            break;
-          default :
-            break;
-        }
-      });
-      return errors;
-    }),
+    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
   o_c_onus_starteddate: Joi.string()
     .regex(/(^(((\d\d)(([02468][048])|([13579][26]))-02-29)|(((\d\d)(\d\d)))-((((0\d)|(1[0-2]))-((0\d)|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))\s(([01]\d|2[0-3]):([0-5]\d):([0-5]\d))$)/
-    ).required().error(errors => {
-      errors.forEach(err => {
-        switch (err.type){
-          case "any.required":
-            err.message = "ME3458";
-            break;
-          case "any.empty":
-            err.message = "ME3458";
-            break;
-          case "string.regex.base":
-            err.message = "ME3459";
-            break;
-          default :
-            break;
-        }
-      });
-      return errors;
-    }),
+    ).required(),
   o_c_onus_paymentfinaldate: Joi.string()
-    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
-      errors.forEach(err => {
-        // console.log("=======================AA===============", err.type);
-        switch (err.type){
-          case "any.required":
-            err.message = "ME3460";
-            break;
-          case "any.empty":
-            err.message = "ME3460";
-            break;
-          case "string.regex.base":
-            err.message = "ME3461";
-            break;
-          default :
-            break;
-        }
-      });
-      return errors;
-    }),
+    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
   o_c_onus_expdate: Joi.string()
-    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required().error(errors => {
-      errors.forEach(err => {
-        // console.log("=============", err.type);
-        switch (err.type){
-          case "any.required":
-            err.message = "ME3462";
-            break;
-          case "any.empty":
-            err.message = "ME3462";
-            break;
-          case "string.regex.base":
-            err.message = "ME3463";
-            break;
-          default :
-            break;
-        }
-      });
-      return errors;
-    }),
-  o_c_onus_interestinperc: Joi.number().required().error(errors => {
-    errors.forEach(err => {
-
-      switch (err.type){
-        case "any.required":
-          err.message = "ME3464";
-          break;
-        case "any.empty":
-          err.message = "ME3464";
-          break;
-        case "number.base":
-          err.message = "ME3466";
-          break;
-        case "number.max":
-          err.message = "ME3465";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
-  o_c_onus_commissionperc: Joi.number().required().error(errors => {
-    errors.forEach(err => {
-      switch (err.type){
-        case "any.required":
-          err.message = "ME3468";
-          break;
-        case "any.empty":
-          err.message = "ME3468";
-          break;
-        case "number.base":
-          err.message = "ME3470";
-          break;
-        case "number.max":
-          err.message = "ME3469";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
-  o_c_onus_fee: Joi.number().required().error(errors => {
-    errors.forEach(err => {
-      switch (err.type){
-        case "any.required":
-          err.message = "ME3472";
-          break;
-        case "any.empty":
-          err.message = "ME3472";
-          break;
-        case "number.base":
-          err.message = "ME3474";
-          break;
-        case "number.max":
-          err.message = "ME3473";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
-  o_c_onus_loanclasscode: Joi.string().max(16).required().error(errors => {
-    errors.forEach(err => {
-      switch (err.type){
-        case "any.required":
-          err.message = "ME3476";
-          break;
-        case "any.empty":
-          err.message = "ME3478";
-          break;
-        case "string.max":
-          err.message = "ME3477";
-          break;
-        default :
-          break;
-      }
-    });
-    return errors;
-  }),
-  o_c_onustransactions: Joi.object({
+    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+  o_c_onus_interestinperc: Joi.number().required(),
+  o_c_onus_commissionperc: Joi.number().required(),
+  o_c_onus_fee           : Joi.number().required(),
+  o_c_onus_loanclasscode : Joi.string().max(16).required(),
+  o_c_onustransactions   : Joi.object({
     o_c_onus_loancharttype    : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
     o_c_onus_interestcharttype: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
     o_c_onusdetails           : Joi.object({
@@ -244,8 +56,7 @@ export default async ({ data, where }) => {
     await schema.validate(data);
   }
   catch (err) {
-    // console.log("======================", err);
-    throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
+    throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
   }
   let id = uuidv4();
   let mrtnos = [];
