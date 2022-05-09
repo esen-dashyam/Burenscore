@@ -65,17 +65,26 @@ export default async ({ data, where }) => {
   // console.log("===========>LEAONINFO", data);
   try {
     await schema.validate(data);
-    let duplicate = checkDuplicate(data.o_c_loantransactions.o_c_loandetails.o_c_loandetail, "o_c_loandetail_datetopay");
-    if (duplicate) throw new ValidationError("ME3682", ERROR_DETAILS.ME3682);
-    duplicate = checkDuplicate(data.o_c_loantransactions.o_c_loanperformances.o_c_loanperformance, "o_c_loanperformance_datetopay");
-    if (duplicate) throw new ValidationError("ME3684", ERROR_DETAILS.ME3684);
-    duplicate = checkDuplicate(data.o_c_loantransactions.o_c_loaninterestperformances.o_c_loaninterestperformance, "o_c_loaninterestperformance_datetopay");
-    if (duplicate) throw new ValidationError("ME3685", ERROR_DETAILS.ME3685);
-    duplicate = checkDuplicate(data.o_c_loantransactions.o_c_loaninterestdetails.o_c_loaninterestdetail, "o_c_loaninterestdetail_datetopay");
-    if (duplicate) throw new ValidationError("ME3683", ERROR_DETAILS.ME3683);
+    if (data?.o_c_loantransactions?.o_c_loandetails.o_c_loandetail){
+      let duplicate = checkDuplicate(data?.o_c_loantransactions?.o_c_loandetails.o_c_loandetail, "o_c_loandetail_datetopay");
+      if (duplicate) throw new ValidationError("ME3682", ERROR_DETAILS.ME3682);
+    }
+    if (data?.o_c_loantransactions?.o_c_loanperformances?.o_c_loanperformance){
+      let duplicate = checkDuplicate(data?.o_c_loantransactions?.o_c_loanperformances?.o_c_loanperformance, "o_c_loanperformance_datetopay");
+      if (duplicate) throw new ValidationError("ME3684", ERROR_DETAILS.ME3684);
+    }
+    if (data?.o_c_loantransactions?.o_c_loaninterestperformances?.o_c_loaninterestperformance){
+      let duplicate = checkDuplicate(data?.o_c_loantransactions?.o_c_loaninterestperformances?.o_c_loaninterestperformance, "o_c_loaninterestperformance_datetopay");
+      if (duplicate) throw new ValidationError("ME3685", ERROR_DETAILS.ME3685);
+    }
+    if (data?.o_c_loantransactions?.o_c_loaninterestdetails?.o_c_loaninterestdetail){
+      let duplicate = checkDuplicate(data?.o_c_loantransactions?.o_c_loaninterestdetails?.o_c_loaninterestdetail, "o_c_loaninterestdetail_datetopay");
+      if (duplicate) throw new ValidationError("ME3683", ERROR_DETAILS.ME3683);
+    }
+
   }
   catch (err) {
-    // console.log(err);
+    console.log(err);
     if (err.code){
       throw new ValidationError(err.code, err.message);
     } else {

@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERRORS, ERROR_DETAILS, VALUE_CODES, ERROR_CODES } from "../../../../constants";
 import Joi from "joi";
-import number from "joi/lib/types/number";
 import APPENDIX_E from "../../../../constants/APPENDIX_E";
 
 const schema = Joi.object({

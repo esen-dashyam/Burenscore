@@ -9,12 +9,12 @@ import APPENDIX_EO from "../../../../constants/APPENDIX_EO";
 // o_c_leasingperformance_datetopay
 const checkDuplicate = (array, key) => {
   let duplicate = false;
-
-  array.forEach((item, index) => {
-    if (array.find((el, i) => el[key] === item[key] && index !== i))
-      duplicate = true;
-  });
-
+  if (array.length > 2){
+    array.forEach((item, index) => {
+      if (array.find((el, i) => el[key] === item[key] && index !== i))
+        duplicate = true;
+    });
+  }
   return duplicate;
 };
 
@@ -67,13 +67,13 @@ export default async ({ data, where }) => {
   if (!data) return null;
   try {
     await schema.validate(data);
-    let duplicate = checkDuplicate(data.o_c_leasingtransactions.o_c_leasingdetails.o_c_leasingdetail, "o_c_leasingdetail_datetopay");
+    let duplicate = checkDuplicate(data?.o_c_leasingtransactions?.o_c_leasingdetails?.o_c_leasingdetail, "o_c_leasingdetail_datetopay");
     if (duplicate) throw new ValidationError("ME3686", ERROR_DETAILS.ME3686);
-    duplicate = checkDuplicate(data.o_c_leasingtransactions.o_c_leasingperformances.o_c_leasingperformance, "o_c_leasingperformance_datetopay");
+    duplicate = checkDuplicate(data?.o_c_leasingtransactions?.o_c_leasingperformances?.o_c_leasingperformance, "o_c_leasingperformance_datetopay");
     if (duplicate) throw new ValidationError("ME3688", ERROR_DETAILS.ME3688);
-    duplicate = checkDuplicate(data.o_c_leasingtransactions.o_c_leasinginterestdetails.o_c_leasinginterestdetail, "o_c_leasinginterestdetail_datetopay");
+    duplicate = checkDuplicate(data?.o_c_leasingtransactions?.o_c_leasinginterestdetails?.o_c_leasinginterestdetail, "o_c_leasinginterestdetail_datetopay");
     if (duplicate) throw new ValidationError("ME3687", ERROR_DETAILS.ME3687);
-    duplicate = checkDuplicate(data.o_c_leasingtransactions.o_c_leasinginterestperformances.o_c_leasinginterestperformance, "o_c_leasinginterestperformance_datetopay");
+    duplicate = checkDuplicate(data?.o_c_leasingtransactions?.o_c_leasinginterestperformances?.o_c_leasinginterestperformance, "o_c_leasinginterestperformance_datetopay");
     if (duplicate) throw new ValidationError("ME3685", ERROR_DETAILS.ME3685);
   }
   catch (err) {

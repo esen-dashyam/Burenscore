@@ -6,10 +6,12 @@ import Joi from "joi";
 
 const checkDuplicate = (array, key) =>{
   let duplicate = false;
-  array.forEach((item, index) =>{
-    if (array.find((element, i) => element[key] === item[key] && index !== i))
-      duplicate = true;
-  });
+  if (array.length > 2){
+    array.forEach((item, index) =>{
+      if (array.find((element, i) => element[key] === item[key] && index !== i))
+        duplicate = true;
+    });
+  }
   return duplicate;
 };
 const schema = Joi.object({
@@ -62,13 +64,13 @@ export default async ({ data, where }) => {
   if (!data) return null;
   try {
     await schema.validate(data);
-    let duplicate = checkDuplicate(data.o_c_onustransactions.o_c_onusdetails.o_c_onusdetail, "o_c_onusdetail_datetopay");
+    let duplicate = checkDuplicate(data?.o_c_onustransactions?.o_c_onusdetails?.o_c_onusdetail, "o_c_onusdetail_datetopay");
     if (duplicate) throw new ValidationError("ME3694", ERROR_DETAILS.ME3694);
-    duplicate = checkDuplicate(data.o_c_onustransactions.o_c_onusperformances.o_c_onusperformance, "o_c_onusperformance_datetopay");
+    duplicate = checkDuplicate(data?.o_c_onustransactions?.o_c_onusperformances?.o_c_onusperformance, "o_c_onusperformance_datetopay");
     if (duplicate) throw new ValidationError("ME3696", ERROR_DETAILS.ME3696);
-    duplicate = checkDuplicate(data.o_c_onustransactions.o_c_onusinterestdetails.o_c_onusinterestdetail, "o_c_onusinterestdetail_datetopay");
+    duplicate = checkDuplicate(data?.o_c_onustransactions?.o_c_onusinterestdetails?.o_c_onusinterestdetail, "o_c_onusinterestdetail_datetopay");
     if (duplicate) throw new ValidationError("ME3695", ERROR_DETAILS.ME3695);
-    duplicate = checkDuplicate(data.o_c_onustransactions.o_c_onusinterestperformances.o_c_onusinterestperformance, "o_c_onusinterestperformance_datetopay");
+    duplicate = checkDuplicate(data?.o_c_onustransactions?.o_c_onusinterestperformances?.o_c_onusinterestperformance, "o_c_onusinterestperformance_datetopay");
     if (duplicate) throw new ValidationError("ME3697", ERROR_DETAILS.ME3697);
   }
   catch (err) {
