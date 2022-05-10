@@ -49,21 +49,38 @@ const schema = Joi.object({
       is  : 1,
       then: Joi.string().optional().allow([null, ""])
     }).required(),
-  o_c_stateregister_passportorno : Joi.string().optional().allow([null, ""]),
-  o_c_numofemployee              : Joi.number().integer().max(99999).optional().allow([null, ""]),
-  c_familynumofmembers           : Joi.number().integer().optional().allow([null, ""]),
-  c_occupation                   : Joi.string().valid(Object.keys(APPENDIX_Y)).optional().allow([null, ""]),
-  o_fitchrating                  : Joi.string().valid(Object.keys(APPENDIX_P_FITCH)).optional().allow([null, ""]),
-  o_sandp_rating                 : Joi.string().valid(Object.keys(APPENDIX_R)).optional().allow([null, ""]),
-  o_moodysrating                 : Joi.string().valid(Object.keys(APPENDIX_C)).optional().allow([null, ""]),
-  o_companytypecode              : Joi.string().valid(Object.keys(APPENDIX_J).map(item=>APPENDIX_J[item])).optional().allow([null, ""]),
-  o_c_president_family_firstname : Joi.string().optional().allow([null, ""]),
-  o_c_president_family_lastname  : Joi.string().optional().allow([null, ""]),
-  o_c_president_family_isforeign : Joi.number().optional().allow([null, ""]),
-  o_c_president_family_registerno: Joi.string().optional().allow([null, ""]),
-  o_noofshareholders             : Joi.number().integer().optional().allow([null, ""]),
-  c_familynumofunemployed        : Joi.number().integer().optional().allow([null, ""]),
-  c_job                          : Joi.string().max(250).optional().allow([null, ""]),
+  o_c_stateregister_passportorno: Joi.string().optional().allow([null, ""]),
+  o_c_numofemployee             : Joi.number().integer().max(99999).optional().allow([null, ""]),
+  c_familynumofmembers          : Joi.number().integer().optional().allow([null, ""]),
+  c_occupation                  : Joi.string().valid(Object.keys(APPENDIX_Y)).optional().allow([null, ""]),
+  o_fitchrating                 : Joi.string().valid(Object.keys(APPENDIX_P_FITCH)).optional().allow([null, ""]),
+  o_sandp_rating                : Joi.string().valid(Object.keys(APPENDIX_R)).optional().allow([null, ""]),
+  o_moodysrating                : Joi.string().valid(Object.keys(APPENDIX_C)).optional().allow([null, ""]),
+  o_companytypecode             : Joi.string().valid(Object.keys(APPENDIX_J).map(item=>APPENDIX_J[item])).optional().allow([null, ""]),
+  o_c_president_family_firstname: Joi.string().required().when("o_c_isorganization", {
+    is  : 0,
+    then: Joi.string().optional().allow([null, ""])
+  }),
+  o_c_president_family_lastname: Joi.string().required().when("o_c_isorganization", {
+    is  : 0,
+    then: Joi.string().optional().allow([null, ""])
+  }),
+  o_c_president_family_isforeign: Joi.number().required().when("o_c_isorganization", {
+    is  : 0,
+    then: Joi.string().optional().allow([null, ""])
+  }),
+  o_c_president_family_registerno: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required()
+    .when("o_c_isorganization", {
+      is  : 0,
+      then: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).optional().allow([null, ""])
+    })
+    .when("o_c_president_family_isforeign", {
+      is  : 1,
+      then: Joi.string().required()
+    }),
+  o_noofshareholders     : Joi.number().integer().optional().allow([null, ""]),
+  c_familynumofunemployed: Joi.number().integer().optional().allow([null, ""]),
+  c_job                  : Joi.string().max(250).optional().allow([null, ""]),
 }).options({ allowUnknown: true });
 
 export default async (customerInfo) => {
