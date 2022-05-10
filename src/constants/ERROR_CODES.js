@@ -36,7 +36,7 @@ export default {
   o_c_isforeign: {
     "any.empty"   : "ME2023",
     "any.required": "ME2023",
-    "string.max"  : "ME2024",
+    "number.max"  : "ME2024",
     "number.base" : "ME2025",
   },
   o_c_birthdate: {
@@ -102,8 +102,8 @@ export default {
     "number.max": "ME2055",
   },
   o_c_president_family_registerno: {
-    "any.empty" : "ME2058",
-    "string.max": "ME2059",
+    "any.empty"        : "ME2058",
+    "string.regex.base": "ME2059"
   },
   o_noofshareholders: {
     "number.integer": "ME2060",
@@ -745,6 +745,11 @@ export default {
     "any.required"     : "ME3418",
     "any.empty"        : "ME3418",
     "string.regex.base": "ME3419",
+  },
+  o_c_receivable_loancharttype: {
+    "any.required": "ME3000",
+    "any.empty"   : "ME3002",
+    "string.base" : "ME3001",
   },
   // RELATION ------------------------------------------------------------
   o_c_relationcustomer_firstName: {

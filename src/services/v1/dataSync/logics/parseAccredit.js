@@ -9,19 +9,16 @@ const schema = Joi.object({
   o_c_accredit_advamount  : Joi.number().max(999999999999999).precision(2).required(),
   o_c_accredit_starteddate: Joi.string()
     .regex(/(^(((\d\d)(([02468][048])|([13579][26]))-02-29)|(((\d\d)(\d\d)))-((((0\d)|(1[0-2]))-((0\d)|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))\s(([01]\d|2[0-3]):([0-5]\d):([0-5]\d))$)/).required(),
-  o_c_accredit_expdate: Joi.string()
-    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+  o_c_accredit_expdate       : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
   o_c_accredit_currencycode  : Joi.string().valid(Object.keys(VALUE_CODES).map(item => VALUE_CODES[item])).required(),
   o_c_accredit_type          : Joi.string().valid(Object.keys(APPENDIX_E)).required(),
   o_c_accredit_interestinperc: Joi.number().max(999999).precision(2).required(),
   o_c_accredit_commissionperc: Joi.number().max(999999999999).precision(2).required(),
   o_c_accredit_fee           : Joi.number().max(999999999999).precision(2).required(),
-  o_c_accredit_updatedexpdate: Joi.string()
-    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
-  o_c_accredit_extcount: Joi.string()
-    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
-  o_c_accredit_balance: Joi.number().max(999999999999999).precision(2).required(),
-  o_c_accreditmrtnos  : Joi.object({
+  o_c_accredit_updatedexpdate: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  o_c_accredit_extcount      : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+  o_c_accredit_balance       : Joi.number().max(999999999999999).precision(2).required(),
+  o_c_accreditmrtnos         : Joi.object({
     o_c_accreditmrtno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string())),
   }).optional().optional().allow([null, ""]),
   o_c_accreditrelnos: Joi.object({
