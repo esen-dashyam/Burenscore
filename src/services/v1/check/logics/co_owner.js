@@ -6,6 +6,7 @@ export default async (data, session) => {
   let rows = [];
   let relnos = [];
   let filters = {};
+  let customer;
   if (where.o_c_registerno.length <= 8){
     filters.o_c_relationorg_registerno = where.o_c_registerno;
     filters.o_c_relationorg_orgrelation = "03";
@@ -18,7 +19,7 @@ export default async (data, session) => {
         o_c_registerno  : relationOrg.map(item => item.o_c_registerno),
       } }, session);
       customer = relationOrg[0];
-  } else {
+    } } else {
     filters.o_c_relationcustomer_registerno = where.o_c_registerno;
     filters.o_c_relationcustomer_citizenrelation = "04";
     let relationCustomers = await db.findAll(db.OCRelationcustomer, { where: filters }, session);
@@ -30,8 +31,8 @@ export default async (data, session) => {
         o_c_registerno  : relationCustomers.map(item => item.o_c_registerno),
       } }, session);
       customer = relationCustomers[0];
+    }
   }
-
   let falls = relnos.map(item => {
     return async () => {
       switch (item.type) {
