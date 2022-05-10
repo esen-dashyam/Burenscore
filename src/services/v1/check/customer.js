@@ -17,21 +17,10 @@ export default logic(schema, async (data, session) => {
     report_purpose
   } = data;
 
-  // console.log(register_no, report_purpose, report_rel_types);
-
   let where = {
     o_c_registerno: register_no,
   };
 
-
-  // if (!customer){
-  //   if (register_no.length > 7){
-  //     customer = await db.find(db.OCRelationcustomer, { o_c_relationcustomer_registerno: register_no }, session);
-  //   } else {
-  //     customer = await db.find(db.OCRelationorg, { o_c_relationorg_registerno: register_no }, session);
-  //   }
-  // }
-  if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
   let result;
   let customer;
   if (report_rel_types === "OWNER"){
