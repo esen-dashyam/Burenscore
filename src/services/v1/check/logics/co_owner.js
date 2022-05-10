@@ -1,12 +1,13 @@
 import { db } from "@goodtechsoft/sequelize-postgres";
 import { fall } from "../../../../utils";
+import { NotfoundError } from "@goodtechsoft/micro-service/lib/errors";
+import { ERRORS } from "../../../../constants";
 
 export default async (data, session) => {
   const { where } = data;
   let rows = [];
   let relnos = [];
   let filters = {};
-  let customer;
   if (where.o_c_registerno.length <= 8){
     filters.o_c_relationorg_registerno = where.o_c_registerno;
     filters.o_c_relationorg_orgrelation = "03";
@@ -18,7 +19,6 @@ export default async (data, session) => {
         o_c_bank_code   : relationOrg.map(item => item.o_c_bank_code),
         o_c_registerno  : relationOrg.map(item => item.o_c_registerno),
       } }, session);
-      customer = relationOrg[0];
     } } else {
     filters.o_c_relationcustomer_registerno = where.o_c_registerno;
     filters.o_c_relationcustomer_citizenrelation = "04";
@@ -30,7 +30,6 @@ export default async (data, session) => {
         o_c_bank_code   : relationCustomers.map(item => item.o_c_bank_code),
         o_c_registerno  : relationCustomers.map(item => item.o_c_registerno),
       } }, session);
-      customer = relationCustomers[0];
     }
   }
   let falls = relnos.map(item => {
@@ -39,9 +38,16 @@ export default async (data, session) => {
         case "LOAN": {
           let value = await db.find(db.OCLoanInformation, { where: { id: item.relation_id } }, session);
           if (value){
+            let customer = await db.find(db.Customer, { where: {
+              o_c_customercode: value.o_c_customercode,
+              o_c_bank_code   : value.o_c_bank_code,
+              o_c_registerno  : value.o_c_registerno,
+            } }, session);
+            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             rows.push({
               ...value.dataValues,
-              type: item.type
+              type: item.type,
+              customer
             });
           }
           break;
@@ -49,9 +55,16 @@ export default async (data, session) => {
         case "LEASING": {
           let value = await db.find(db.OCLeasing, { where: { id: item.relation_id } }, session);
           if (value){
+            let customer = await db.find(db.Customer, { where: {
+              o_c_customercode: value.o_c_customercode,
+              o_c_bank_code   : value.o_c_bank_code,
+              o_c_registerno  : value.o_c_registerno,
+            } }, session);
+            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             rows.push({
               ...value.dataValues,
-              type: item.type
+              type: item.type,
+              customer,
             });
           }
           break;
@@ -60,9 +73,16 @@ export default async (data, session) => {
           let value = await db.find(db.OCAccredit, { where: { id: item.relation_id } }, session);
           // console.log("ACCREDIT=================================>", value);
           if (value){
+            let customer = await db.find(db.Customer, { where: {
+              o_c_customercode: value.o_c_customercode,
+              o_c_bank_code   : value.o_c_bank_code,
+              o_c_registerno  : value.o_c_registerno,
+            } }, session);
+            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             rows.push({
               ...value.dataValues,
-              type: item.type
+              type: item.type,
+              customer,
             });
           }
           break;
@@ -70,9 +90,16 @@ export default async (data, session) => {
         case "ONUS": {
           let value = await db.find(db.OCOnusInformation, { where: { id: item.relation_id } }, session);
           if (value){
+            let customer = await db.find(db.Customer, { where: {
+              o_c_customercode: value.o_c_customercode,
+              o_c_bank_code   : value.o_c_bank_code,
+              o_c_registerno  : value.o_c_registerno,
+            } }, session);
+            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             rows.push({
               ...value.dataValues,
-              type: item.type
+              type: item.type,
+              customer,
             });
           }
           break;
@@ -80,9 +107,16 @@ export default async (data, session) => {
         case "BOND": {
           let value = await db.find(db.OBond, { where: { id: item.relation_id } }, session);
           if (value){
+            let customer = await db.find(db.Customer, { where: {
+              o_c_customercode: value.o_c_customercode,
+              o_c_bank_code   : value.o_c_bank_code,
+              o_c_registerno  : value.o_c_registerno,
+            } }, session);
+            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             rows.push({
               ...value.dataValues,
-              type: item.type
+              type: item.type,
+              customer,
             });
           }
           break;
@@ -90,9 +124,16 @@ export default async (data, session) => {
         case "GUARANTEE": {
           let value = await db.find(db.OCGuarantee, { where: { id: item.relation_id } }, session);
           if (value){
+            let customer = await db.find(db.Customer, { where: {
+              o_c_customercode: value.o_c_customercode,
+              o_c_bank_code   : value.o_c_bank_code,
+              o_c_registerno  : value.o_c_registerno,
+            } }, session);
+            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             rows.push({
               ...value.dataValues,
-              type: item.type
+              type: item.type,
+              customer,
             });
           }
           break;

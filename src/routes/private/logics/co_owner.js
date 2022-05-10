@@ -230,9 +230,16 @@ export default async (register_no, session) => {
         case "GUARANTEE": {
           let value = await db.find(db.OCGuarantee, { where: { id: item.relation_id } }, session);
           if (value){
+            let customer = await db.find(db.Customer, { where: {
+              o_c_customercode: value.o_c_customercode,
+              o_c_bank_code   : value.o_c_bank_code,
+              o_c_registerno  : value.o_c_registerno,
+            } }, session);
+            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             GUARANTEES.push({
               ...value.dataValues,
-              o_c_guarantee_loanclasscode: APPENDIX.APPENDIX_EO[item?.o_c_guarantee_loanclasscode]
+              o_c_guarantee_loanclasscode: APPENDIX.APPENDIX_EO[item?.o_c_guarantee_loanclasscode],
+              customer
             });
           }
           break;
