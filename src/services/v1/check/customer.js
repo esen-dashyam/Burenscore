@@ -23,23 +23,31 @@ export default logic(schema, async (data, session) => {
     o_c_registerno: register_no,
   };
 
-  let customer = await db.find(db.Customer, {
-    where: where,
-    order: [["created_at", "DESC"]]
-  }, session);
-  if (!customer){
+
+  // if (!customer){
+  //   if (register_no.length > 7){
+  //     customer = await db.find(db.OCRelationcustomer, { o_c_relationcustomer_registerno: register_no }, session);
+  //   } else {
+  //     customer = await db.find(db.OCRelationorg, { o_c_relationorg_registerno: register_no }, session);
+  //   }
+  // }
+  if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
+  let result;
+  let customer;
+  if (report_rel_types === "OWNER"){
+    customer = await db.find(db.Customer, {
+      where: where,
+      order: [["created_at", "DESC"]]
+    }, session);
+    if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
+    result = await owner({ where: { ...where } }, session);
+  } else {
     if (register_no.length > 7){
       customer = await db.find(db.OCRelationcustomer, { o_c_relationcustomer_registerno: register_no }, session);
     } else {
       customer = await db.find(db.OCRelationorg, { o_c_relationorg_registerno: register_no }, session);
     }
-  }
-  if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
-  let result;
-
-  if (report_rel_types === "OWNER"){
-    result = await owner({ where: { ...where } }, session);
-  } else {
+    if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
     result = await co_owner({ where: { ...where } }, session);
   }
 
