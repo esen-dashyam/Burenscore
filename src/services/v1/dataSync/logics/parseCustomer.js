@@ -67,12 +67,12 @@ const schema = Joi.object({
   }),
   o_c_president_family_isforeign: Joi.number().required().when("o_c_isorganization", {
     is  : 0,
-    then: Joi.string().optional().allow([null, ""])
+    then: Joi.number().optional().allow([null, ""])
   }),
   o_c_president_family_registerno: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required()
     .when("o_c_isorganization", {
       is  : 0,
-      then: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).optional().allow([null, ""])
+      then: Joi.string().optional().allow([null, ""])
     })
     .when("o_c_president_family_isforeign", {
       is  : 1,
