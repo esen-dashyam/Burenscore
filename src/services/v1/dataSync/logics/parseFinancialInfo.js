@@ -1,7 +1,7 @@
 import moment from "moment";
 import Joi from "joi";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERROR_DETAILS } from "../../../../constants";
+import { ERROR_DETAILS, ERROR_CODES } from "../../../../constants";
 const schema = Joi.object({
   c_business: Joi.object({
     c_b_totalsale       : Joi.number().precision(2).positive().optional().allow([null, ""]),
@@ -138,7 +138,7 @@ export default async ({ data, where }) => {
     await schema.validate(data);
   } catch (err){
     // console.log(err);
-    throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
+    throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
   }
   let financialInfo = {
     business: {
