@@ -19,21 +19,18 @@ const checkDuplicate = (array, key) => {
 };
 
 const schema = Joi.object({
-  o_c_leasing_advamount  : Joi.number().max(999999999999999).precision(2).required(),
-  o_c_leasing_balance    : Joi.number().max(999999999999999).precision(2).required(),
-  o_c_leasing_starteddate: Joi.string()
-    .regex(/(^(((\d\d)(([02468][048])|([13579][26]))-02-29)|(((\d\d)(\d\d)))-((((0\d)|(1[0-2]))-((0\d)|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))\s(([01]\d|2[0-3]):([0-5]\d):([0-5]\d))$)/).required(),
-  o_c_leasing_expdate: Joi.string()
-    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+  o_c_leasing_advamount     : Joi.number().max(999999999999999).precision(2).required(),
+  o_c_leasing_balance       : Joi.number().max(999999999999999).precision(2).required(),
+  o_c_leasing_starteddate   : Joi.string().regex(/(^(((\d\d)(([02468][048])|([13579][26]))-02-29)|(((\d\d)(\d\d)))-((((0\d)|(1[0-2]))-((0\d)|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))\s(([01]\d|2[0-3]):([0-5]\d):([0-5]\d))$)/).required(),
+  o_c_leasing_expdate       : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
   o_c_leasing_currencycode  : Joi.string().valid(Object.keys(VALUE_CODES).map(item => VALUE_CODES[item])).required(),
   o_c_leasing_sectorcode    : Joi.string().valid(Object.keys(APPENDIX_A)).required(),
   o_c_leasing_interestinperc: Joi.number().max(999999.99).precision(2).required(),
   o_c_leasing_commissionperc: Joi.number().max(999999999999.99).precision(2).required().required(),
   o_c_leasing_fee           : Joi.number().max(999999999999.99).precision(2).required(),
-  o_c_leasing_updatedexpdate: Joi.string()
-    .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
-  o_c_leasing_loanclasscode: Joi.string().valid(Object.keys(APPENDIX_EO)).required(),
-  o_c_leasingtransactions  : Joi.object({
+  o_c_leasing_updatedexpdate: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+  o_c_leasing_loanclasscode : Joi.string().valid(Object.keys(APPENDIX_EO)).required(),
+  o_c_leasingtransactions   : Joi.object({
     o_c_leasing_loancharttype    : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
     o_c_leasing_interestcharttype: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required().required(),
     o_c_leasingdetails           : Joi.object({
