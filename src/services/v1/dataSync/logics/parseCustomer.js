@@ -88,7 +88,10 @@ export default async (customerInfo) => {
   try {
     await schema.validate(customerInfo);
   } catch (err){
-    console.log(err);
+    console.log(err.details[0].context);
+    console.log(err.details[0].path);
+    console.log(err.details[0].type);
+    console.log(ERROR_CODES);
     throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
   }
   let customer = {
