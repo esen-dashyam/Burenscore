@@ -90,19 +90,23 @@ export default {
     "string.max": "ME2046",
   },
   o_c_president_family_firstname: {
-    "any.empty" : "ME2048",
-    "string.max": "ME2049",
+    "any.empty"   : "ME2051",
+    "any.required": "ME2051",
+    "string.max"  : "ME2052",
   },
   o_c_president_family_lastname: {
-    "any.empty" : "ME2050",
-    "string.max": "ME2051",
+    "any.empty"   : "ME2053",
+    "any.required": "ME2053",
+    "string.max"  : "ME2054",
   },
   o_c_president_family_isforeign: {
-    "any.empty" : "ME2054",
-    "number.max": "ME2055",
+    "any.required": "ME2055",
+    "any.empty"   : "ME2055",
+    "number.max"  : "ME2056",
   },
   o_c_president_family_registerno: {
     "any.empty"        : "ME2058",
+    "any.required"     : "ME2058",
     "string.regex.base": "ME2059"
   },
   o_noofshareholders: {

@@ -85,10 +85,13 @@ export default async ({ data, where }) => {
   }
   catch (err) {
     console.log(err);
+    console.log(err.details[0].context);
+    console.log(err.details[0].path);
+    console.log(err.details[0].type);
     if (err.code){
       throw new ValidationError(err.code, err.message);
     } else {
-      throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type] || err.code, ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type] || err.code]);
+      throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
     }
   }
   let id = uuidv4();
