@@ -34,7 +34,10 @@ export default async (register_no, session) => {
         o_c_registerno  : relationOrg.map(item => item.o_c_registerno),
       } }, session);
       // console.log("RELNOS=====================================>", relnos);
-      customer = relationOrg[0];
+      customer = {
+        ...relationOrg[0].dataValues,
+        o_c_relationorg_orgrelation: APPENDIX.APPENDIX_G[relationOrg[0]?.o_c_relationorg_orgrelation]
+      };
     } else {
       throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
     }
@@ -52,7 +55,10 @@ export default async (register_no, session) => {
         o_c_registerno  : relationCustomers.map(item => item.o_c_registerno),
       } }, session);
       // console.log("relationCustomers=====================================>", relnos);
-      customer = relationCustomers[0];
+      customer = {
+        ...relationCustomers[0].dataValues,
+        o_c_relationcustomer_citizenrelation: APPENDIX.APPENDIX_D[relationCustomers[0]?.o_c_relationcustomer_citizenrelation]
+      };
     } else {
       throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
     }
