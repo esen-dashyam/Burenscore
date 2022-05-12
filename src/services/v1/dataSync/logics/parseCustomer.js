@@ -104,6 +104,7 @@ export default async (customerInfo) => {
     c_lastname                     : customerInfo?.c_lastname,
     o_c_isforeign                  : customerInfo?.o_c_isforeign,
     o_c_birthdate                  : customerInfo?.o_c_birthdate,
+    o_c_isorganization             : customerInfo.o_c_isorganization,
     o_c_zipcode                    : customerInfo?.o_c_zipcode,
     o_c_address                    : customerInfo?.o_c_address,
     o_c_registerno                 : customerInfo?.o_c_registerno,

@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_isorganization: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     o_c_customername: {
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_isforeign: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     o_c_birthdate: {

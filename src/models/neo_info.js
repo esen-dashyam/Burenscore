@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     registertopolice: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     registertopolicedate: {
@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     registertoprocuror: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     registertoprocurordate: {
@@ -86,7 +86,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     shiftocourt2: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     shifttocourt2date: {
@@ -98,7 +98,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     shiftocourtdecision: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     shifttocourtdecisiondate: {
@@ -106,7 +106,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     ignoredcrime: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     ignoreddate: {

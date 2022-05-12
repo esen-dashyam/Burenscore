@@ -3,6 +3,16 @@ import { ERROR_CODES, ERROR_DETAILS } from "../../../../constants";
 import Joi from "joi";
 import { db } from "@goodtechsoft/sequelize-postgres";
 import { fall } from "../../../../utils";
+const checkDuplicate = (array, key) => {
+  let duplicate = false;
+  if (array.length > 2){
+    array.forEach((item, index) => {
+      if (array.find((el, i) => el[key] === item[key] && index !== i))
+        duplicate = true;
+    });
+  }
+  return duplicate;
+};
 
 const customerSchemaObject = Joi.object({
   o_c_relationcustomer_firstName      : Joi.string().max(50).required(),
@@ -50,17 +60,22 @@ export default async ({ data, where, type, session }) => {
     if (Array.isArray(data)){
       try {
         await customerSchemaArray.validate(data);
+        let duplicate = checkDuplicate(data, "o_c_relationcustomer_relno");
+        if (duplicate) throw new ValidationError(ERROR_DETAILS.ME4055);
       }
       catch (err) {
+        if (err.code){
+          throw new ValidationError(err.code, ERROR_DETAILS[err.code]);
+        }
         throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
       }
       let falls = data.map(item => {
         return async () => {
-          let relno = await db.find(db.OCRelationcustomer, {
-            ...where,
-            o_c_relationcustomer_relno: item.o_c_relationcustomer_relno
-          }, session);
-          if (relno) throw new ValidationError(ERROR_DETAILS.ME4055);
+          // let relno = await db.find(db.OCRelationcustomer, {
+          //   ...where,
+          //   o_c_relationcustomer_relno: item.o_c_relationcustomer_relno
+          // }, session);
+          // if (relno) throw new ValidationError(ERROR_DETAILS.ME4055);
           shareholder.push({
             ...where,
             o_c_relationcustomer_firstName      : item?.o_c_relationcustomer_firstName,
@@ -82,11 +97,11 @@ export default async ({ data, where, type, session }) => {
         console.log("================================", err);
         throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
       }
-      let relno = await db.find(db.OCRelationcustomer, {
-        ...where,
-        o_c_relationcustomer_relno: data.o_c_relationcustomer_relno
-      }, session);
-      if (relno) throw new ValidationError(ERROR_DETAILS.ME4055);
+      // let relno = await db.find(db.OCRelationcustomer, {
+      //   ...where,
+      //   o_c_relationcustomer_relno: data.o_c_relationcustomer_relno
+      // }, session);
+      // if (relno) throw new ValidationError(ERROR_DETAILS.ME4055);
       shareholder.push({
         ...where,
         o_c_relationcustomer_firstName      : data?.o_c_relationcustomer_firstName,
@@ -104,9 +119,14 @@ export default async ({ data, where, type, session }) => {
     if (Array.isArray(data)){
       try {
         await orgSchemaArray.validate(data);
+        let duplicate = checkDuplicate(data, "o_c_relationorg_relno");
+        if (duplicate) throw new ValidationError(ERROR_DETAILS.ME4055);
       }
       catch (err) {
         // console.log("================================", err);
+        if (err.code){
+          throw new ValidationError(err.code, ERROR_DETAILS[err.code]);
+        }
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
       let falls = data.map(item => {
@@ -137,11 +157,11 @@ export default async ({ data, where, type, session }) => {
         // console.log("================================", err);
         throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
       }
-      let relno = await db.find(db.OCRelationorg, {
-        ...where,
-        o_c_relationorg_relno: data.o_c_relationorg_relno
-      }, session);
-      if (relno) throw new ValidationError(ERROR_DETAILS.ME4055);
+      // let relno = await db.find(db.OCRelationorg, {
+      //   ...where,
+      //   o_c_relationorg_relno: data.o_c_relationorg_relno
+      // }, session);
+      // if (relno) throw new ValidationError(ERROR_DETAILS.ME4055);
       shareholder.push({
         ...where,
         o_c_relationorg_orgname        : data?.o_c_relationorg_orgname,

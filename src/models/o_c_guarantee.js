@@ -74,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_guarantee_isapproved: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     ...fields(DataTypes)

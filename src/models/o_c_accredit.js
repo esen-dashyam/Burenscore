@@ -66,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_accredit_isapproved: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     ...fields(DataTypes)

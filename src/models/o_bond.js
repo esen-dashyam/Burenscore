@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     o_bond_isapproved: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     payment_status: {

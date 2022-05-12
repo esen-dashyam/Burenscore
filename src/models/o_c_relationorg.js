@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_relationorg_isforeign: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     o_c_relationorg_registerno: {
@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_relationorg_isfinancialonus: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     o_c_relationorg_relno: {

@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_is_real_estate: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     o_c_dateofvaluation: {
@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_customer_isforeign: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     o_c_customer_registerno: {
@@ -74,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_organization_localregistered: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     o_c_organization_orgregisterno: {

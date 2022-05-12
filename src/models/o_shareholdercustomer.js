@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_shareholdercus_isforeign: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     o_shareholdercus_registerno: {

@@ -68,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_leasing_isapproved: {
-      type     : DataTypes.BOOLEAN,
+      type     : DataTypes.INTEGER,
       allowNull: true,
     },
     payment_status: {

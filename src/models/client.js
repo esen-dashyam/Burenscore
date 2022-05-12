@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: false,
     },
     is_active: {
-      type      : DataTypes.BOOLEAN,
+      type      : DataTypes.INTEGER,
       allowNull : false,
       primaryKey: false,
     },
