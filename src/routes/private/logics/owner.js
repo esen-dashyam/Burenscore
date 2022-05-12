@@ -602,8 +602,9 @@ export default async (register_no, session) => {
     get_date: moment(new Date).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD HH:mm"),
     customer: {
       ...customer.dataValues,
-      c_occupation : APPENDIX.APPENDIX_Y[customer.c_occupation],
-      o_c_birthdate: moment(customer.o_c_birthdate).format("YYYY-MM-DD")
+      c_occupation     : APPENDIX.APPENDIX_Y[customer.c_occupation],
+      o_c_birthdate    : moment(customer.o_c_birthdate).format("YYYY-MM-DD"),
+      o_companytypecode: APPENDIX.APPENDIX_J[customer?.o_companytypecode]
     },
     PAID_LOANS,
     PAID_LEASINGS,

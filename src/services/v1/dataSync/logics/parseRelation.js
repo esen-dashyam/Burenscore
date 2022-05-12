@@ -90,7 +90,7 @@ export default async ({ data, where, type, session }) => {
       shareholder.push({
         ...where,
         o_c_relationcustomer_firstName      : data?.o_c_relationcustomer_firstName,
-        o_c_relationcustomer_lastName       : data?.o_c_relationcustomer_firstName,
+        o_c_relationcustomer_lastName       : data?.o_c_relationcustomer_lastName,
         o_c_relationcustomer_isforeign      : data?.o_c_relationcustomer_isforeign,
         o_c_relationcustomer_registerno     : data?.o_c_relationcustomer_registerno,
         o_c_relationcustomer_citizenrelation: data?.o_c_relationcustomer_citizenrelation,
