@@ -23,18 +23,18 @@ const schema = Joi.object({
       then: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
     })
     .when("o_c_isorganization", {
-      is  : 1,
+      is  : 0,
       then: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""])
     }).required(),
   o_c_zipcode   : Joi.number().optional().allow([null, ""]),
   o_c_address   : Joi.string().max(300).required(),
   o_c_registerno: Joi.string().required()
     .when("o_c_isorganization", {
-      is  : 0,
+      is  : 1,
       then: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required()
     })
     .when("o_c_isorganization", {
-      is  : 1,
+      is  : 0,
       then: Joi.string().regex(/[0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required()
     })
     .when("is_foreign", {
@@ -46,7 +46,7 @@ const schema = Joi.object({
       then: Joi.string().optional().allow([null, ""])
     })
     .when("o_c_isorganization", {
-      is  : 1,
+      is  : 0,
       then: Joi.string().optional().allow([null, ""])
     }).required(),
   o_c_stateregister_passportorno: Joi.string().optional().allow([null, ""]),
@@ -58,20 +58,20 @@ const schema = Joi.object({
   o_moodysrating                : Joi.string().valid(Object.keys(APPENDIX_C)).optional().allow([null, ""]),
   o_companytypecode             : Joi.string().valid(Object.keys(APPENDIX_J)).optional().allow([null, ""]),
   o_c_president_family_firstname: Joi.string().required().when("o_c_isorganization", {
-    is  : 0,
+    is  : 1,
     then: Joi.string().optional().allow([null, ""])
   }),
   o_c_president_family_lastname: Joi.string().required().when("o_c_isorganization", {
-    is  : 0,
+    is  : 1,
     then: Joi.string().optional().allow([null, ""])
   }),
   o_c_president_family_isforeign: Joi.number().required().when("o_c_isorganization", {
-    is  : 0,
+    is  : 1,
     then: Joi.number().optional().allow([null, ""])
   }),
   o_c_president_family_registerno: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required()
     .when("o_c_isorganization", {
-      is  : 0,
+      is  : 1,
       then: Joi.string().optional().allow([null, ""])
     })
     .when("o_c_president_family_isforeign", {
