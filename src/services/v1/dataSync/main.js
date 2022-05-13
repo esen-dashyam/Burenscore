@@ -279,14 +279,14 @@ export default logic(null, async (data, session) => {
     if (CUSTOMER?.shareholderCustomer){
       await bulkUpdate({ type: "shareholderCustomer", data: CUSTOMER?.shareholderCustomer, attribute: "o_shareholdercus_registerno", where, session });
     }
-    if (CUSTOMER?.shareholderCustomer){
-      await bulkUpdate({ type: "shareholderOrg", data: CUSTOMER?.shareholderCustomer, attribute: "o_shareholderorg_registerno", where, session });
-    }
     if (CUSTOMER?.shareholderOrg){
-      await bulkUpdate({ type: "relationOrg", data: CUSTOMER?.shareholderOrg, attribute: "o_c_relationorg_registerno", where, session });
+      await bulkUpdate({ type: "shareholderOrg", data: CUSTOMER?.shareholderOrg, attribute: "o_shareholderorg_registerno", where, session });
     }
-    if (CUSTOMER?.shareholderCustomer){
-      await bulkUpdate({ type: "relationCustomer", data: CUSTOMER?.shareholderCustomer, attribute: "o_c_relationcustomer_registerno", where, session });
+    if (CUSTOMER?.relationOrg){
+      await bulkUpdate({ type: "relationOrg", data: CUSTOMER?.relationOrg, attribute: "o_c_relationorg_registerno", where, session });
+    }
+    if (CUSTOMER?.relationCustomer){
+      await bulkUpdate({ type: "relationCustomer", data: CUSTOMER?.relationCustomer, attribute: "o_c_relationcustomer_registerno", where, session });
     }
     if (CUSTOMER?.financialInfo){
       if (CUSTOMER?.financialInfo?.business){
