@@ -74,6 +74,7 @@ export default async ({ data, where }) => {
     if (duplicate) throw new ValidationError("ME3697", ERROR_DETAILS.ME3697);
   }
   catch (err) {
+    console.log(err);
     if (err.code){
       throw new ValidationError(err.code, err.message);
     }

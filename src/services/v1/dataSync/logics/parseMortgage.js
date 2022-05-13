@@ -3,62 +3,82 @@ import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERROR_DETAILS, ERROR_CODES } from "../../../../constants";
 import Joi from "joi";
 const schemaArray = Joi.array().items(Joi.object({
-  o_c_mrtno                       : Joi.number().precision(2).positive().required(),
-  o_c_mrtno_internal              : Joi.number().required(),
-  o_c_mrtcode                     : Joi.number().required(),
-  o_c_mrtdescription              : Joi.string().max(150).required(),
-  o_c_is_real_estate              : Joi.number().required(),
-  o_c_dateofvaluation             : Joi.string().optional().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).allow([null, ""]),
-  o_c_mrtvalue                    : Joi.number().precision(2).positive().required(),
-  o_c_mrtmaxlimit                 : Joi.number().precision(2).positive().required(),
-  o_c_customer_firstname          : Joi.string().max(50).required(),
-  o_c_customer_lastname           : Joi.string().max(50).required(),
-  o_c_customer_isforeign          : Joi.number().required(),
-  o_c_customer_registerno         : Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required(),
-  o_c_organization_orgname        : Joi.string().max(50).required(),
-  o_c_organization_localregistered: Joi.number().required(),
-  o_c_organization_orgregisterno  : Joi.string().max(16).required(),
-  o_c_organization_stateregisterno: Joi.string().max(16).optional().allow([null, ""]),
-  o_c_registeredtoauthority       : Joi.string().optional().allow([null, ""]),
-  o_c_mrtstateregisterno          : Joi.string().max(16).required(),
-  o_c_mrtcertificateno            : Joi.string().max(16).required(),
-  o_c_mrtconfirmeddate            : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
-  o_c_mrtorgname                  : Joi.string().required(),
-  o_c_mrtregistereddatefim        : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
-  o_c_mrtregisterno               : Joi.string().max(20).required(),
-  o_c_mrtcertificatenofim         : Joi.string().max(20).required(),
-  o_c_causetoshiftto              : Joi.string().optional().allow([null, ""]),
-  o_c_courtorderdate              : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).allow([null, ""]),
-  o_c_courtorderno                : Joi.string().max(50).optional().allow([null, ""]),
+  o_c_mrtno          : Joi.number().precision(2).positive().required(),
+  o_c_mrtno_internal : Joi.number().required(),
+  o_c_mrtcode        : Joi.number().required(),
+  o_c_mrtdescription : Joi.string().max(150).required(),
+  o_c_is_real_estate : Joi.number().required(),
+  o_c_dateofvaluation: Joi.string().optional().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).allow([null, ""]),
+  o_c_mrtvalue       : Joi.number().precision(2).positive().required(),
+  o_c_mrtmaxlimit    : Joi.number().precision(2).positive().required(),
+  o_c_customer       : Joi.object({
+    o_c_customer_firstname : Joi.string().max(50).required(),
+    o_c_customer_lastname  : Joi.string().max(50).required(),
+    o_c_customer_isforeign : Joi.number().required(),
+    o_c_customer_registerno: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required(),
+  }).optional().allow([null, ""]),
+  o_c_organization: Joi.object({
+    o_c_organization_orgname        : Joi.string().max(50).required(),
+    o_c_organization_localregistered: Joi.number().required(),
+    o_c_organization_orgregisterno  : Joi.string().max(16).required(),
+    o_c_organization_stateregisterno: Joi.string().max(16).optional().allow([null, ""]),
+  }).optional().allow([null, ""]),
+  o_c_registeredtoauthority: Joi.object({
+    o_c_registeredtoauthority: Joi.string().optional().allow([null, ""]),
+    o_c_mrtstateregisterno   : Joi.string().max(16).required(),
+    o_c_mrtcertificateno     : Joi.string().max(16).required(),
+    o_c_mrtconfirmeddate     : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+  }).optional().allow([null, ""]),
+  o_c_authorityofimmovable: Joi.object({
+    o_c_mrtorgname          : Joi.string().required(),
+    o_c_mrtregistereddatefim: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+    o_c_mrtregisterno       : Joi.string().max(20).required(),
+    o_c_mrtcertificatenofim : Joi.string().max(20).required(),
+  }).optional().allow([null, ""]),
+  o_c_causetoshifttos: Joi.object({
+    o_c_causetoshiftto: Joi.string().optional().allow([null, ""]),
+    o_c_courtorderdate: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).allow([null, ""]),
+    o_c_courtorderno  : Joi.string().max(50).optional().allow([null, ""]),
+  }).optional().allow([null, ""])
 })).options({ allowUnknown: true });
 const schemaObject = Joi.object({
-  o_c_mrtno                       : Joi.string().required(),
-  o_c_mrtno_internal              : Joi.number().required(),
-  o_c_mrtcode                     : Joi.string().required(),
-  o_c_mrtdescription              : Joi.string().max(150).required(),
-  o_c_is_real_estate              : Joi.number().required(),
-  o_c_dateofvaluation             : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
-  o_c_mrtvalue                    : Joi.number().precision(2).positive().required(),
-  o_c_mrtmaxlimit                 : Joi.number().precision(2).positive().required(),
-  o_c_customer_firstname          : Joi.string().max(50).required(),
-  o_c_customer_lastname           : Joi.string().max(50).required(),
-  o_c_customer_isforeign          : Joi.number().required(),
-  o_c_customer_registerno         : Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).max(16).required(),
-  o_c_organization_orgname        : Joi.string().max(50).required(),
-  o_c_organization_localregistered: Joi.number().required(),
-  o_c_organization_orgregisterno  : Joi.string().max(16).required(),
-  o_c_organization_stateregisterno: Joi.string().max(16).optional().allow([null, ""]),
-  o_c_registeredtoauthority       : Joi.string().optional().allow([null, ""]),
-  o_c_mrtstateregisterno          : Joi.string().max(20).required(),
-  o_c_mrtcertificateno            : Joi.string().max(20).required(),
-  o_c_mrtconfirmeddate            : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
-  o_c_mrtorgname                  : Joi.string().required(),
-  o_c_mrtregistereddatefim        : Joi.date().required(),
-  o_c_mrtregisterno               : Joi.string().max(20).required(),
-  o_c_mrtcertificatenofim         : Joi.string().max(20).required(),
-  o_c_causetoshiftto              : Joi.string().optional().allow([null, ""]),
-  o_c_courtorderdate              : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
-  o_c_courtorderno                : Joi.string().max(50).optional().allow([null, ""]),
+  o_c_mrtno          : Joi.number().precision(2).positive().required(),
+  o_c_mrtno_internal : Joi.number().required(),
+  o_c_mrtcode        : Joi.number().required(),
+  o_c_mrtdescription : Joi.string().max(150).required(),
+  o_c_is_real_estate : Joi.number().required(),
+  o_c_dateofvaluation: Joi.string().optional().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).allow([null, ""]),
+  o_c_mrtvalue       : Joi.number().precision(2).positive().required(),
+  o_c_mrtmaxlimit    : Joi.number().precision(2).positive().required(),
+  o_c_customer       : Joi.object({
+    o_c_customer_firstname : Joi.string().max(50).required(),
+    o_c_customer_lastname  : Joi.string().max(50).required(),
+    o_c_customer_isforeign : Joi.number().required(),
+    o_c_customer_registerno: Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required(),
+  }).optional().allow([null, ""]),
+  o_c_organization: Joi.object({
+    o_c_organization_orgname        : Joi.string().max(50).required(),
+    o_c_organization_localregistered: Joi.number().required(),
+    o_c_organization_orgregisterno  : Joi.string().max(16).required(),
+    o_c_organization_stateregisterno: Joi.string().max(16).optional().allow([null, ""]),
+  }).optional().allow([null, ""]),
+  o_c_registeredtoauthority: Joi.object({
+    o_c_registeredtoauthority: Joi.string().optional().allow([null, ""]),
+    o_c_mrtstateregisterno   : Joi.string().max(16).required(),
+    o_c_mrtcertificateno     : Joi.string().max(16).required(),
+    o_c_mrtconfirmeddate     : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+  }).optional().allow([null, ""]),
+  o_c_authorityofimmovable: Joi.object({
+    o_c_mrtorgname          : Joi.string().required(),
+    o_c_mrtregistereddatefim: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+    o_c_mrtregisterno       : Joi.string().max(20).required(),
+    o_c_mrtcertificatenofim : Joi.string().max(20).required(),
+  }).optional().allow([null, ""]),
+  o_c_causetoshifttos: Joi.object({
+    o_c_causetoshiftto: Joi.string().optional().allow([null, ""]),
+    o_c_courtorderdate: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).allow([null, ""]),
+    o_c_courtorderno  : Joi.string().max(50).optional().allow([null, ""]),
+  }).optional().allow([null, ""])
 }).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {
@@ -69,6 +89,7 @@ export default async ({ data, where }) => {
       await schemaArray.validate(data);
     }
     catch (err) {
+      console.log(err);
       throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
     }
     data.forEach(item => {
@@ -108,7 +129,7 @@ export default async ({ data, where }) => {
       await schemaObject.validate(data);
     }
     catch (err) {
-      // console.log("================================", err);
+      console.log("================================", err);
       throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
     }
     mortgages.push({

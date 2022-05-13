@@ -37,6 +37,7 @@ export default async ({ data, where, type }) => {
         await customerSchemaArray.validate(data);
       }
       catch (err) {
+        console.log(err);
         // console.log("================================", err);
         throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
       }
@@ -54,6 +55,7 @@ export default async ({ data, where, type }) => {
         await customerSchemaObject.validate(data);
       }
       catch (err) {
+        console.log(err);
         // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
@@ -72,6 +74,7 @@ export default async ({ data, where, type }) => {
         await orgSchemaArray.validate(data);
       }
       catch (err) {
+        console.log(err);
         // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }
@@ -89,6 +92,7 @@ export default async ({ data, where, type }) => {
         await orgSchemaObject.validate(data);
       }
       catch (err) {
+        console.log(err);
         // console.log("================================", err);
         throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
       }

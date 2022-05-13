@@ -64,6 +64,7 @@ export default async ({ data, where, type, session }) => {
         if (duplicate) throw new ValidationError(ERROR_DETAILS.ME4055);
       }
       catch (err) {
+        console.log(err);
         if (err.code){
           throw new ValidationError(err.code, ERROR_DETAILS[err.code]);
         }
@@ -124,6 +125,7 @@ export default async ({ data, where, type, session }) => {
       }
       catch (err) {
         // console.log("================================", err);
+        console.log(err);
         if (err.code){
           throw new ValidationError(err.code, ERROR_DETAILS[err.code]);
         }
@@ -154,6 +156,7 @@ export default async ({ data, where, type, session }) => {
         await orgSchemaObject.validate(data);
       }
       catch (err) {
+        console.log(err);
         // console.log("================================", err);
         throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
       }
