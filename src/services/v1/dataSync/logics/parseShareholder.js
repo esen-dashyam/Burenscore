@@ -18,13 +18,13 @@ const customerSchemaArray = Joi.array().items(Joi.object({
 const orgSchemaObject = Joi.object({
   o_shareholder_orgname        : Joi.string().max(50).required(),
   o_shareholderorg_isforeign   : Joi.number().required(),
-  o_shareholderorg_registerno  : Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required(),
+  o_shareholderorg_registerno  : Joi.string().regex(/[0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required(),
   o_shareholder_stateregisterno: Joi.string().required(), // Код байхгүй
 }).options({ allowUnknown: true });
 const orgSchemaArray = Joi.array().items(Joi.object({
   o_shareholder_orgname        : Joi.string().max(50).required(),
   o_shareholderorg_isforeign   : Joi.number().required(),
-  o_shareholderorg_registerno  : Joi.string().max(16).required(),
+  o_shareholderorg_registerno  : Joi.string().regex(/[0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required(),
   o_shareholder_stateregisterno: Joi.string().required(), // Код байхгүй
 })).options({ allowUnknown: true });
 
