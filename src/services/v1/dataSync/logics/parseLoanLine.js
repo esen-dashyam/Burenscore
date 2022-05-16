@@ -37,7 +37,7 @@ export default async ({ data, where }) => {
     o_c_loanline_type          : data?.o_c_loanline_type,
 	  o_c_loanline_cardno        : data?.o_c_loanline_cardno,
 	  o_c_loanline_advamount     : data?.o_c_loanline_advamount,
-	  o_c_loanline_starteddate   : moment(data?.o_c_loanline_starteddate),
+	  o_c_loanline_starteddate   : data?.o_c_loanline_starteddate,
 	  o_c_loanline_expdate       : data?.o_c_loanline_expdate,
 	  o_c_loanline_currencycode  : data?.o_c_loanline_currencycode,
 	  o_c_loanline_sectorcode    : data?.o_c_loanline_sectorcode,

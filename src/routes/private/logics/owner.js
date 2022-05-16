@@ -28,6 +28,35 @@ const getCurrencies = async ({ currencyCode }) => {
   return result;
 };
 
+const formatter = (value = {}, model) => {
+
+  const attributes = model.rawAttributes;
+
+  const mapped = Object.keys(attributes).reduce((acc, key) => {
+    return {
+      ...acc,
+      [key]: attributes[key].type.constructor.name
+    };
+  }, {});
+
+  return {
+    ...Object.keys(value).reduce((acc, key) => {
+      let attributeType = mapped[key];
+
+      if (attributeType && value[key] && attributeType === "DATE") {
+        return {
+          ...acc,
+          [key]: moment(value[key]).format("YYYY-MM-DD")
+        };
+      }
+      return {
+        ...acc,
+        [key]: value[key]
+      };
+    }, {})
+  };
+};
+
 export default async (register_no, session) => {
   let TOTAL_COUNT = { NORMAL: 0, OVERDUE: 0, ABNORMAL: 0, UNCERTAIN: 0, BAD: 0, };
   let TOTAL_VALUE = { NORMAL: 0, OVERDUE: 0, ABNORMAL: 0, UNCERTAIN: 0, BAD: 0, };
@@ -82,36 +111,40 @@ export default async (register_no, session) => {
   };
   let customer = await db.find(db.Customer, {
     where: where
-  });
+  }).then(data => formatter(data.dataValues, db.Customer));
   if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
   // let loansWithBalance = await db.findAll(db.OCLoanInformation, { where: { ...where, o_c_loan_balance: { [Op.gt]: 0 } } }, session);
   // let loansWithOutBalance = await db.findAll(db.OCLoanInformation, { where: { ...where, o_c_loan_balance: { [Op.eq]: 0 } } }, session);
-  let loans = await db.findAll(db.OCLoanInformation, { where: where }, session);
-  let leasings = await db.findAll(db.OCLeasing, { where: { ...where, } }, session);
-  let onus = await db.findAll(db.OCOnusInformation, { where: where }, session);
-  let receivables = await db.findAll(db.OCReceivable, { where: where }, session);
-  let loanLines = await db.findAll(db.OCLoanline, { where: where }, session);
-  let guarantee = await db.findAll(db.OCGuarantee, { where: where }, session);
-  let bonds = await db.findAll(db.OBond, { where: where, }, session);
-  let accredits = await db.findAll(db.OCAccredit, { where: where }, session);
+
+  let loans = await db.findAll(db.OCLoanInformation, { where: where }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCLoanInformation)));
+  let leasings = await db.findAll(db.OCLeasing, { where: { ...where, } }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCLeasing)));
+  let onus = await db.findAll(db.OCOnusInformation, { where: where }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCOnusInformation)));
+  let receivables = await db.findAll(db.OCReceivable, { where: where }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCReceivable)));
+  let loanLines = await db.findAll(db.OCLoanline, { where: where }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCLoanline)));
+  let guarantee = await db.findAll(db.OCGuarantee, { where: where }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCGuarantee)));
+  let bonds = await db.findAll(db.OBond, { where: where, }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OBond)));
+  let accredits = await db.findAll(db.OCAccredit, { where: where }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCAccredit)));
+  // console.log("############################################################################");
+  // console.log(loans);
+  // console.log("############################################################################");
   loans.forEach(item => {
     // console.log("o_c_loan_loanclasscode:", item.o_c_loan_loanclasscode);
     if (item.payment_status === "PAID"){
       PAID_LOANS.push({
-        ...item.dataValues,
-        o_c_loan_starteddate  : moment(item.o_c_loan_starteddate).format("YYYY-MM-DD"),
-        o_c_loan_expdate      : moment(item.o_c_loan_expdate).format("YYYY-MM-DD"),
-        o_c_loan_extdate      : moment(item.o_c_loan_extdate).format("YYYY-MM-DD"),
-        o_c_updatedexpdate    : moment(item.o_c_updatedexpdate).format("YYYY-MM-DD"),
+        ...item,
+        // o_c_loan_starteddate  : moment(item.o_c_loan_starteddate).format("YYYY-MM-DD"),
+        // o_c_loan_expdate      : moment(item.o_c_loan_expdate).format("YYYY-MM-DD"),
+        // o_c_loan_extdate      : moment(item.o_c_loan_extdate).format("YYYY-MM-DD"),
+        // o_c_updatedexpdate    : moment(item.o_c_updatedexpdate).format("YYYY-MM-DD"),
         o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_loan_loanclasscode]
       });
     } else {
       UNPAID_LOANS.push({
-        ...item.dataValues,
-        o_c_loan_starteddate  : moment(item.o_c_loan_starteddate).format("YYYY-MM-DD"),
-        o_c_loan_expdate      : moment(item.o_c_loan_expdate).format("YYYY-MM-DD"),
-        o_c_loan_extdate      : moment(item.o_c_loan_extdate).format("YYYY-MM-DD"),
-        o_c_updatedexpdate    : moment(item.o_c_updatedexpdate).format("YYYY-MM-DD"),
+        ...item,
+        // o_c_loan_starteddate  : moment(item.o_c_loan_starteddate).format("YYYY-MM-DD"),
+        // o_c_loan_expdate      : moment(item.o_c_loan_expdate).format("YYYY-MM-DD"),
+        // o_c_loan_extdate      : moment(item.o_c_loan_extdate).format("YYYY-MM-DD"),
+        // o_c_updatedexpdate    : moment(item.o_c_updatedexpdate).format("YYYY-MM-DD"),
         o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_loan_loanclasscode]
       });
     }
@@ -180,16 +213,16 @@ export default async (register_no, session) => {
     // console.log("o_c_leasing_loanclasscode:", item.o_c_leasing_loanclasscode);
     if (item.payment_status === "PAID"){
       PAID_LEASINGS.push({
-        ...item.dataValues,
-        o_c_leasing_starteddate  : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
-        o_c_leasing_expdate      : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
+        ...item,
+        // o_c_leasing_starteddate  : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
+        // o_c_leasing_expdate      : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
         o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_leasing_loanclasscode]
       });
     } else {
       UNPAID_LEASINGS.push({
-        ...item.dataValues,
-        o_c_leasing_starteddate  : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
-        o_c_leasing_expdate      : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
+        ...item,
+        // o_c_leasing_starteddate  : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
+        // o_c_leasing_expdate      : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
         o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_leasing_loanclasscode]
       });
     }
@@ -259,21 +292,21 @@ export default async (register_no, session) => {
     // console.log("o_c_onus_loanclasscode:", item.o_c_onus_loanclasscode);
     if (item.payment_status === "PAID"){
       PAID_ONUS.push({
-        ...item.dataValues,
-        o_c_onus_rightopeneddate : moment(item.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
-        o_c_onus_starteddate     : moment(item.o_c_onus_starteddate).format("YYYY-MM-DD"),
-        o_c_onus_paymentfinaldate: moment(item.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
-        o_c_onus_expdate         : moment(item.o_c_onus_expdate).format("YYYY-MM-DD"),
-        o_c_onus_loanclasscode   : APPENDIX.APPENDIX_EO[item.o_c_onus_loanclasscode]
+        ...item,
+        // o_c_onus_rightopeneddate : moment(item.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
+        // o_c_onus_starteddate     : moment(item.o_c_onus_starteddate).format("YYYY-MM-DD"),
+        // o_c_onus_paymentfinaldate: moment(item.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
+        // o_c_onus_expdate         : moment(item.o_c_onus_expdate).format("YYYY-MM-DD"),
+        o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_onus_loanclasscode]
       });
     } else {
       UNPAID_ONUS.push({
-        ...item.dataValues,
-        o_c_onus_rightopeneddate : moment(item.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
-        o_c_onus_starteddate     : moment(item.o_c_onus_starteddate).format("YYYY-MM-DD"),
-        o_c_onus_paymentfinaldate: moment(item.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
-        o_c_onus_expdate         : moment(item.o_c_onus_expdate).format("YYYY-MM-DD"),
-        o_c_onus_loanclasscode   : APPENDIX.APPENDIX_EO[item.o_c_onus_loanclasscode]
+        ...item,
+        // o_c_onus_rightopeneddate : moment(item.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
+        // o_c_onus_starteddate     : moment(item.o_c_onus_starteddate).format("YYYY-MM-DD"),
+        // o_c_onus_paymentfinaldate: moment(item.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
+        // o_c_onus_expdate         : moment(item.o_c_onus_expdate).format("YYYY-MM-DD"),
+        o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_onus_loanclasscode]
       });
     }
     switch (item.o_c_onus_loanclasscode) {
@@ -341,17 +374,17 @@ export default async (register_no, session) => {
     // console.log("o_c_receivable_loanclasscode:", item.o_c_receivable_loanclasscode);
     if (item.payment_status === "PAID"){
       PAID_RECEIVABLS.push({
-        ...item.dataValues,
-        o_c_receivable_starteddate  : moment(item.o_c_receivable_starteddate).format("YYYY-MM-DD"),
-        o_c_receivable_expdate      : moment(item.o_c_receivable_expdate).format("YYYY-MM-DD"),
+        ...item,
+        // o_c_receivable_starteddate  : moment(item.o_c_receivable_starteddate).format("YYYY-MM-DD"),
+        // o_c_receivable_expdate      : moment(item.o_c_receivable_expdate).format("YYYY-MM-DD"),
         o_c_receivable_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_receivable_loanclasscode]
       });
     } else {
       UNPAID_RECEIVABLS.push({
-        ...item.dataValues,
-        o_c_receivable_starteddate  : moment(item.o_c_receivable_starteddate).format("YYYY-MM-DD"),
-        o_c_receivable_expdate      : moment(item.o_c_receivable_expdate).format("YYYY-MM-DD"),
-        o_c_receivable_extdate      : moment(item.o_c_receivable_extdate).format("YYYY-MM-DD"),
+        ...item,
+        // o_c_receivable_starteddate  : moment(item.o_c_receivable_starteddate).format("YYYY-MM-DD"),
+        // o_c_receivable_expdate      : moment(item.o_c_receivable_expdate).format("YYYY-MM-DD"),
+        // o_c_receivable_extdate      : moment(item.o_c_receivable_extdate).format("YYYY-MM-DD"),
         o_c_receivable_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_receivable_loanclasscode]
       });
     }
@@ -420,18 +453,18 @@ export default async (register_no, session) => {
     // console.log("o_c_loanline_loanclasscode:", item.o_c_loanline_loanclasscode);
     if (item.payment_status === "PAID"){
       PAID_LOANLINES.push({
-        ...item.dataValues,
-        o_c_loanline_starteddate  : moment(item.o_c_loanline_starteddate).format("YYYY-MM-DD"),
-        o_c_loanline_expdate      : moment(item.o_c_loanline_expdate).format("YYYY-MM-DD"),
-        o_c_loanline_timestoloan  : moment(item.o_c_loanline_timestoloan).format("YYYY-MM-DD"),
+        ...item,
+        // o_c_loanline_starteddate  : moment(item.o_c_loanline_starteddate).format("YYYY-MM-DD"),
+        // o_c_loanline_expdate      : moment(item.o_c_loanline_expdate).format("YYYY-MM-DD"),
+        // o_c_loanline_timestoloan  : moment(item.o_c_loanline_timestoloan).format("YYYY-MM-DD"),
         o_c_loanline_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_loanline_loanclasscode]
       });
     } else {
       UNPAID_LOANLINES.push({
-        ...item.dataValues,
-        o_c_loanline_starteddate  : moment(item.o_c_loanline_starteddate).format("YYYY-MM-DD"),
-        o_c_loanline_expdate      : moment(item.o_c_loanline_expdate).format("YYYY-MM-DD"),
-        o_c_loanline_timestoloan  : moment(item.o_c_loanline_timestoloan).format("YYYY-MM-DD"),
+        ...item,
+        // o_c_loanline_starteddate  : moment(item.o_c_loanline_starteddate).format("YYYY-MM-DD"),
+        // o_c_loanline_expdate      : moment(item.o_c_loanline_expdate).format("YYYY-MM-DD"),
+        // o_c_loanline_timestoloan  : moment(item.o_c_loanline_timestoloan).format("YYYY-MM-DD"),
         o_c_loanline_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_loanline_loanclasscode]
       });
     }
@@ -502,16 +535,16 @@ export default async (register_no, session) => {
     TOTAL_NORMAL[item.o_bond_currencycode] += item.o_bond_balance;
     if (item.payment_status === "PAID"){
       PAID_BONDS.push({
-        ...item.dataValues,
-        o_bond_starteddate: moment(item.o_bond_starteddate).format("YYYY-MM-DD"),
-        o_bond_expdate    : moment(item.o_bond_expdate).format("YYYY-MM-DD")
+        ...item,
+        // o_bond_starteddate: moment(item.o_bond_starteddate).format("YYYY-MM-DD"),
+        // o_bond_expdate    : moment(item.o_bond_expdate).format("YYYY-MM-DD")
       });
       PAID_COUNT.NORMAL +=1;
     } else {
       UNPAID_BONDS.push({
-        ...item.dataValues,
-        o_bond_starteddate: moment(item.o_bond_starteddate).format("YYYY-MM-DD"),
-        o_bond_expdate    : moment(item.o_bond_expdate).format("YYYY-MM-DD")
+        ...item,
+        // o_bond_starteddate: moment(item.o_bond_starteddate).format("YYYY-MM-DD"),
+        // o_bond_expdate    : moment(item.o_bond_expdate).format("YYYY-MM-DD")
       });
       UNPAID_COUNT.NORMAL +=1;
       UNPAID_NORMAL[item.o_c_loanline_currencycode] =+ item.o_c_loanline_balance;
@@ -603,7 +636,7 @@ export default async (register_no, session) => {
     customer: {
       ...customer.dataValues,
       c_occupation     : APPENDIX.APPENDIX_Y[customer.c_occupation],
-      o_c_birthdate    : moment(customer.o_c_birthdate).format("YYYY-MM-DD"),
+      // o_c_birthdate    : moment(customer.o_c_birthdate).format("YYYY-MM-DD"),
       o_companytypecode: APPENDIX.APPENDIX_J[customer?.o_companytypecode]
     },
     PAID_LOANS,
@@ -620,7 +653,7 @@ export default async (register_no, session) => {
     UNPAID_BONDS,
     GUARANTEES: guarantee.map(item => {
       return {
-        ...item.dataValues,
+        ...item,
         o_c_guarantee_loanclasscode: APPENDIX.APPENDIX_EO[item?.o_c_guarantee_loanclasscode]
       };
     }),

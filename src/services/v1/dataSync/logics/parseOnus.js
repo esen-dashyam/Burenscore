@@ -125,7 +125,7 @@ export default async ({ data, where }) => {
     o_c_onus_advamount        : data?.o_c_onus_advamount,
     o_c_onus_balance          : data?.o_c_onus_balance,
     o_c_onus_rightopeneddate  : data?.o_c_onus_rightopeneddate,
-    o_c_onus_starteddate      : moment(data?.o_c_onus_starteddate),
+    o_c_onus_starteddate      : data?.o_c_onus_starteddate,
     o_c_onusmrtnos            : mrtnos,
     o_c_onusrelnos            : relnos,
     o_c_onus_paymentfinaldate : data?.o_c_onus_paymentfinaldate,
@@ -147,7 +147,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "DETAIL",
       relation_type: "ONUS",
-      datetopay    : moment(item?.o_c_onusdetail_datetopay),
+      datetopay    : item?.o_c_onusdetail_datetopay,
       amounttopay  : item?.o_c_onusdetail_amounttopay,
       relation_id  : onusInfo?.id,
     });
@@ -157,7 +157,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "PERFORMANCE",
       relation_type: "ONUS",
-      datetopay    : moment(item?.o_c_onusperformance_datetopay),
+      datetopay    : item?.o_c_onusperformance_datetopay,
       amounttopay  : item?.o_c_onusperformance_amounttopay,
       relation_id  : onusInfo?.id,
     });
@@ -167,7 +167,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "INTEREST_DETAIL",
       relation_type: "ONUS",
-      datetopay    : moment(item?.o_c_onusinterestdetail_datetopay),
+      datetopay    : item?.o_c_onusinterestdetail_datetopay,
       amounttopay  : item?.o_c_onusinterestdetail_amounttopay,
       relation_id  : onusInfo?.id,
     });
@@ -177,7 +177,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "INTEREST_PERFORMANCE",
       relation_type: "ONUS",
-      datetopay    : moment(item?.o_c_onusinterestperformance_datetopay),
+      datetopay    : item?.o_c_onusinterestperformance_datetopay,
       amounttopay  : item?.o_c_onusinterestperformance_amounttopay,
       relation_id  : onusInfo?.id,
     });
@@ -191,7 +191,7 @@ export default async ({ data, where }) => {
     causetostartcase        : data?.onus_neoinfo?.c_onus_causetostartcase,
     datetstartcase          : data?.onus_neoinfo?.c_onus_datetstartcase,
     registertopolice        : data?.onus_neoinfo?.c_onus_registertopolice,
-    registertopolicedate    : moment(data?.onus_neoinfo?.c_onus_registertopolicedate),
+    registertopolicedate    : data?.onus_neoinfo?.c_onus_registertopolicedate,
     timesinpolice           : data?.onus_neoinfo?.c_onus_timesinpolice,
     registertoprocuror      : data?.onus_neoinfo?.c_onus_registertoprocuror,
     registertoprocurordate  : data?.onus_neoinfo?.c_onus_registertoprocurordate,

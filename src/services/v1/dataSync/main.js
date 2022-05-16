@@ -36,7 +36,38 @@ const insert = async (callback) => {
     // console.log(err);
   }
 };
+const formatter = (value = {}, model) => {
 
+  const attributes = model.rawAttributes;
+
+  const mapped = Object.keys(attributes).reduce((acc, key) => {
+    return {
+      ...acc,
+      [key]: attributes[key].type.constructor.name
+    };
+  }, {});
+
+  return {
+    ...Object.keys(value).reduce((acc, key) => {
+      let attributeType = mapped[key];
+
+      if (attributeType && value[key] && attributeType === "DATE") {
+        // console.log({
+        //   [key]: moment(value[key]).format("YYYY-MM-DD"),
+        //   key
+        // });
+        return {
+          ...acc,
+          [key]: moment(value[key])
+        };
+      }
+      return {
+        ...acc,
+        [key]: value[key]
+      };
+    }, {})
+  };
+};
 const bulkUpdate = async ({ type, data, attribute, where, session }) => {
   // console.log("=============CHECKKEY===============");
   let oldData;
@@ -155,64 +186,64 @@ export default logic(null, async (data, session) => {
       ...CUSTOMER?.customerInfo
     }, session);
     if (CUSTOMER?.shareholderCustomer){
-      await insert(() => db.bulkCreate(db.OShareholdercustomer, CUSTOMER?.shareholderCustomer, session));
+      await insert(() => db.bulkCreate(db.OShareholdercustomer, CUSTOMER?.shareholderCustomer.map(entry => formatter(entry, db.OShareholdercustomer)), session));
     }
     if (CUSTOMER?.shareholderOrg){
-      await insert(() => db.bulkCreate(db.OShareholderorg, CUSTOMER?.shareholderOrg, session));
+      await insert(() => db.bulkCreate(db.OShareholderorg, CUSTOMER?.shareholderOrg.map(entry => formatter(entry, db.OShareholderorg)), session));
     }
     if (CUSTOMER?.relationOrg){
-      await insert(() => db.bulkCreate(db.OCRelationorg, CUSTOMER?.relationOrg, session));
+      await insert(() => db.bulkCreate(db.OCRelationorg, CUSTOMER?.relationOrg.map(entry => formatter(entry, db.OCRelationorg)), session));
     }
     if (CUSTOMER?.relationCustomer){
-      await insert(() => db.bulkCreate(db.OCRelationcustomer, CUSTOMER?.relationCustomer, session));
+      await insert(() => db.bulkCreate(db.OCRelationcustomer, CUSTOMER?.relationCustomer.map(entry => formatter(entry, db.OCRelationcustomer)), session));
     }
     if (CUSTOMER?.financialInfo?.business){
-      await insert(() => db.create(db.CBusiness, { ...CUSTOMER?.financialInfo?.business }, session));
+      await insert(() => db.create(db.CBusiness, formatter(CUSTOMER?.financialInfo?.business, db.CBusiness), session));
     }
     if (CUSTOMER?.financialInfo?.family){
-      await insert(() => db.create(db.CFamily, { ...CUSTOMER?.financialInfo?.family }, session));
+      await insert(() => db.create(db.CFamily, { ...formatter(CUSTOMER?.financialInfo?.family, db.CFamily) }, session));
     }
     if (CUSTOMER?.financialInfo?.capital){
-      await insert(() => db.create(db.CCapital, { ...CUSTOMER?.financialInfo?.capital }, session));
+      await insert(() => db.create(db.CCapital, { ...formatter(CUSTOMER?.financialInfo?.capital, db.CCapital), }, session));
     }
     if (CUSTOMER?.financialInfo?.o_m_report){
-      await insert(() => db.create(db.OMReport, { ...CUSTOMER?.financialInfo?.o_m_report }, session));
+      await insert(() => db.create(db.OMReport, { ...formatter(CUSTOMER?.financialInfo?.o_m_report, db.OMReport) }, session));
     }
     if (CUSTOMER?.financialInfo?.o_report){
-      await insert(() => db.create(db.OReport, { ...CUSTOMER?.financialInfo?.o_report }, session));
+      await insert(() => db.create(db.OReport, { ...formatter(CUSTOMER?.financialInfo?.o_report, db.OReport) }, session));
     }
     if (CUSTOMER?.financialInfo?.o_t_report){
-      await insert(() => db.create(db.OTReport, { ...CUSTOMER?.financialInfo?.o_t_report }, session));
+      await insert(() => db.create(db.OTReport, { ...formatter(CUSTOMER?.financialInfo?.o_t_report, db.OTReport) }, session));
     }
     // LOAN START
     if (CUSTOMER?.loanInfo){
-      await insert(() => db.create(db.OCLoanInformation, { ...CUSTOMER?.loanInfo }, session));
+      await insert(() => db.create(db.OCLoanInformation, { ...formatter(CUSTOMER?.loanInfo, db.OCLoanInformation) }, session));
       if (CUSTOMER?.loanInfo?.o_c_loanmrtnos && CUSTOMER?.loanInfo?.o_c_loanmrtnos.length >0)
         await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.loanInfo?.o_c_loanmrtnos, session));
       if (CUSTOMER?.loanInfo?.o_c_loanrelnos && CUSTOMER?.loanInfo?.o_c_loanrelnos.length > 0)
         await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.loanInfo?.o_c_loanrelnos, session));
       if (CUSTOMER?.loanInfo?.neoInfo)
-        await insert(() => db.create(db.NeoInfo, { ...CUSTOMER?.loanInfo?.neoInfo }, session));
+        await insert(() => db.create(db.NeoInfo, { ...formatter(CUSTOMER?.loanInfo?.neoInfo, db.NeoInfo) }, session));
       if (CUSTOMER?.loanInfo?.transactions && CUSTOMER?.loanInfo?.transactions.length > 0)
-        await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.loanInfo?.transactions, session));
+        await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.loanInfo?.transactions.map(entry => formatter(entry, db.Transaction)), session));
     }
     // LOAN END
     // LEASING START
     if (CUSTOMER?.leasingInfo){
-      await insert(() => db.create(db.OCLeasing, { ...CUSTOMER?.leasingInfo }, session));
+      await insert(() => db.create(db.OCLeasing, { ...formatter(CUSTOMER?.leasingInfo, db.OCLeasing) }, session));
       if (CUSTOMER?.leasingInfo?.neoInfo)
-        await insert(() => db.create(db.NeoInfo, { ...CUSTOMER?.leasingInfo?.neoInfo }, session));
+        await insert(() => db.create(db.NeoInfo, { ...formatter(CUSTOMER?.leasingInfo?.neoInfo, db.NeoInfo) }, session));
       if (CUSTOMER?.leasingInfo?.o_c_leasingmrtno && CUSTOMER?.leasingInfo?.o_c_leasingmrtno.length > 0)
         await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.leasingInfo?.o_c_leasingmrtnos, session));
       if (CUSTOMER?.leasingInfo?.o_c_leasingrelnos && CUSTOMER?.leasingInfo?.o_c_leasingrelnos.length > 0)
         await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.leasingInfo?.o_c_leasingrelnos, session));
       if (CUSTOMER?.leasingInfo?.transactions && CUSTOMER?.leasingInfo?.transactions.length >0)
-        await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.leasingInfo?.transactions, session));
+        await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.leasingInfo?.transactions.map(entry => formatter(entry, db.Transaction)), session));
     }
     // LEASING END
     // ACCREDIT START
     if (CUSTOMER?.accreditInfo){
-      await insert(() => db.create(db.OCAccredit, { ...CUSTOMER?.accreditInfo }, session));
+      await insert(() => db.create(db.OCAccredit, { ...formatter(CUSTOMER?.accreditInfo, db.OCAccredit) }, session));
       if (CUSTOMER?.accreditInfo?.o_c_accreditmrtnos && CUSTOMER?.accreditInfo?.o_c_accreditmrtnos.length > 0)
         await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.accreditInfo?.o_c_accreditmrtnos, session));
       if (CUSTOMER?.accreditInfo?.o_c_accreditrelnos && CUSTOMER?.accreditInfo?.o_c_accreditrelnos.length)
@@ -221,7 +252,7 @@ export default logic(null, async (data, session) => {
     // ACCREDIT END
     // GUARENTEE START
     if (CUSTOMER?.guarenteeInfo){
-      await insert(() => db.create(db.OCGuarantee, { ...CUSTOMER?.guarenteeInfo }, session));
+      await insert(() => db.create(db.OCGuarantee, { ...formatter(CUSTOMER?.guarenteeInfo, db.OCGuarantee) }, session));
       if (CUSTOMER?.guarenteeInfo?.o_c_guaranteemrtnos && CUSTOMER?.guarenteeInfo?.o_c_guaranteemrtnos.length > 0)
         await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.guarenteeInfo?.o_c_guaranteemrtnos, session));
       if (CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos && CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos.length > 0)
@@ -229,39 +260,39 @@ export default logic(null, async (data, session) => {
     }
     // GUARENTEE END
     if (CUSTOMER?.loanLineInfo){
-      await insert(() => db.create(db.OCLoanline, { ...CUSTOMER?.loanLineInfo }, session));
+      await insert(() => db.create(db.OCLoanline, { ...formatter(CUSTOMER?.loanLineInfo, db.OCLoanline) }, session));
     }
     // RECEIVABLE START
     if (CUSTOMER?.receivableInfo){
-      await insert(() => db.create(db.OCReceivable, { ...CUSTOMER?.receivableInfo }, session));
+      await insert(() => db.create(db.OCReceivable, { ...formatter(CUSTOMER?.receivableInfo, db.OCReceivable) }, session));
       if (CUSTOMER?.receivableInfo?.transactions && CUSTOMER?.receivableInfo?.transactions.length > 0)
-        await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.receivableInfo?.transactions, session));
+        await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.receivableInfo?.transactions.map(entry => formatter(entry, db.Transaction)), session));
       if (CUSTOMER?.receivableInfo?.neoInfo)
-        await insert(() => db.create(db.NeoInfo, { ...CUSTOMER?.receivableInfo?.neoInfo }, session));
+        await insert(() => db.create(db.NeoInfo, { ...formatter(CUSTOMER?.receivableInfo?.neoInfo, db.NeoInfo) }, session));
     }
     // RECEIVABLE END
     // ONUS INFO START
     if (CUSTOMER?.onusInfo){
-      await insert(() => db.create(db.OCOnusInformation, { ...CUSTOMER?.onusInfo }, session));
+      await insert(() => db.create(db.OCOnusInformation, { ...formatter(CUSTOMER?.onusInfo, db.OCOnusInformation) }, session));
       if (CUSTOMER?.onusInfo?.o_c_onusmrtnos && CUSTOMER?.onusInfo?.o_c_onusmrtnos > 0)
         await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.onusInfo?.o_c_onusmrtnos, session));
       if (CUSTOMER?.onusInfo?.o_c_onusrelnos && CUSTOMER?.onusInfo?.o_c_onusrelnos.length > 0)
         await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.onusInfo?.o_c_onusrelnos, session));
       if (CUSTOMER?.onusInfo?.transactions && CUSTOMER?.onusInfo?.transactions.length > 0)
-        await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.onusInfo?.transactions, session));
+        await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.onusInfo?.transactions.map(entry => formatter(entry, db.Transaction)), session));
       if (CUSTOMER?.onusInfo?.neoInfo)
-        await insert(() => db.create(db.NeoInfo, { ...CUSTOMER?.onusInfo?.neoInfo }, session));
+        await insert(() => db.create(db.NeoInfo, { ...formatter(CUSTOMER?.onusInfo?.neoInfo, db.NeoInfo) }, session));
     }
     // ONUS INFO END
     if (CUSTOMER?.bondInfo){
-      await insert(() => db.create(db.OBond, { ...CUSTOMER?.bondInfo }, session));
+      await insert(() => db.create(db.OBond, { ...formatter(CUSTOMER?.bondInfo, db.OBond) }, session));
       if (CUSTOMER?.bondInfo?.o_c_bondmrtnos && CUSTOMER?.bondInfo?.o_c_bondmrtnos.length > 0)
         await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.bondInfo?.o_c_bondmrtnos, session));
       if (CUSTOMER?.bondInfo?.o_c_bondrelnos && CUSTOMER?.bondInfo?.o_c_bondrelnos.length > 0)
         await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.bondInfo?.o_c_bondrelnos, session));
     }
     if (CUSTOMER?.mrtInfo?.length > 0){
-      await insert(() => db.bulkCreate(db.OCMortgage, CUSTOMER?.mrtInfo, session));
+      await insert(() => db.bulkCreate(db.OCMortgage, CUSTOMER?.mrtInfo.map(entry => formatter(entry, db.OCMortgage)), session));
     }
     // await Promise.all([insert(() => db.create(db.OBond, { ...CUSTOMER?.bondInfo }, session)),
     //   insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.bondInfo?.o_c_bondmrtnos, session)),
@@ -274,42 +305,42 @@ export default logic(null, async (data, session) => {
 
     // console.log("=====================================================CUSTOMER_EXISTS_ROUTE=====================================================");
     if (CUSTOMER?.customerInfo){
-      await db.update(customer, { ...CUSTOMER?.customerInfo, id: CUSTOMER?.id }, session);
+      await db.update(customer, { ...formatter(CUSTOMER?.customerInfo, db.Customer), id: CUSTOMER?.id }, session);
     }
     if (CUSTOMER?.shareholderCustomer){
-      await bulkUpdate({ type: "shareholderCustomer", data: CUSTOMER?.shareholderCustomer, attribute: "o_shareholdercus_registerno", where, session });
+      await bulkUpdate({ type: "shareholderCustomer", data: CUSTOMER?.shareholderCustomer.map(entry => formatter(entry, db.OShareholdercustomer)), attribute: "o_shareholdercus_registerno", where, session });
     }
     if (CUSTOMER?.shareholderOrg){
-      await bulkUpdate({ type: "shareholderOrg", data: CUSTOMER?.shareholderOrg, attribute: "o_shareholderorg_registerno", where, session });
+      await bulkUpdate({ type: "shareholderOrg", data: CUSTOMER?.shareholderOrg.map(entry => formatter(entry, db.OShareholderorg)), attribute: "o_shareholderorg_registerno", where, session });
     }
     if (CUSTOMER?.relationOrg){
-      await bulkUpdate({ type: "relationOrg", data: CUSTOMER?.relationOrg, attribute: "o_c_relationorg_registerno", where, session });
+      await bulkUpdate({ type: "relationOrg", data: CUSTOMER?.relationOrg.map(entry => formatter(entry, db.OCRelationorg)), attribute: "o_c_relationorg_registerno", where, session });
     }
     if (CUSTOMER?.relationCustomer){
-      await bulkUpdate({ type: "relationCustomer", data: CUSTOMER?.relationCustomer, attribute: "o_c_relationcustomer_registerno", where, session });
+      await bulkUpdate({ type: "relationCustomer", data: CUSTOMER?.relationCustomer.map(entry => formatter(entry, db.OCRelationcustomer)), attribute: "o_c_relationcustomer_registerno", where, session });
     }
     if (CUSTOMER?.financialInfo){
       if (CUSTOMER?.financialInfo?.business){
-        await update({ type: "business", data: CUSTOMER?.financialInfo?.business, where, session });
+        await update({ type: "business", data: formatter(CUSTOMER?.financialInfo?.business, db.CBusiness), where, session });
       }
       if (CUSTOMER?.financialInfo?.family){
-        await update({ type: "family", data: CUSTOMER?.financialInfo?.family, where, session });
+        await update({ type: "family", data: { ...formatter(CUSTOMER?.financialInfo?.family, db.CFamily) }, where, session });
       }
       if (CUSTOMER?.financialInfo?.capital){
-        await update({ type: "capital", data: CUSTOMER?.financialInfo?.capital, where, session });
+        await update({ type: "capital", data: { ...formatter(CUSTOMER?.financialInfo?.capital, db.CCapital), }, where, session });
       }
       if (CUSTOMER?.financialInfo?.o_m_report){
-        await update({ type: "omReport", data: CUSTOMER?.financialInfo?.o_m_report, where, session });
+        await update({ type: "omReport", data: { ...formatter(CUSTOMER?.financialInfo?.o_m_report, db.OMReport) }, where, session });
       }
       if (CUSTOMER?.financialInfo?.o_report){
-        await update({ type: "oReport", data: CUSTOMER?.financialInfo?.o_report, where, session });
+        await update({ type: "oReport", data: { ...formatter(CUSTOMER?.financialInfo?.o_report, db.OReport) }, where, session });
       }
       if (CUSTOMER?.financialInfo?.o_t_report){
-        await update({ type: "otReport", data: CUSTOMER?.financialInfo?.o_t_report, where, session });
+        await update({ type: "otReport", data: { ...formatter(CUSTOMER?.financialInfo?.o_t_report, db.OTReport) }, where, session });
       }
     }
     if (CUSTOMER?.loanInfo){
-      let loan = await update({ type : "loanInfo", data : { ...CUSTOMER?.loanInfo }, where: {
+      let loan = await update({ type : "loanInfo", data : { ...formatter(CUSTOMER?.loanInfo, db.OCLoanInformation) }, where: {
         ...where,
         o_c_loan_starteddate: CUSTOMER.loanInfo?.o_c_loan_starteddate
       }, session });
@@ -319,29 +350,29 @@ export default logic(null, async (data, session) => {
         if (CUSTOMER?.loanInfo?.o_c_loanrelnos && CUSTOMER?.loanInfo?.o_c_loanrelnos.length > 0)
           await bulkUpdate({ type: "relno", data: CUSTOMER?.loanInfo?.o_c_loanrelnos, attribute: "relno", where: { ...where, type: "LOAN", relation_id: loan.id }, session });
         if (CUSTOMER?.loanInfo?.neoInfo)
-          await update({ type: "neoInfo", data: { ...CUSTOMER?.loanInfo?.neoInfo }, where: { ...where, registertopolicedate: CUSTOMER?.loanInfo?.neoInfo?.registertopolicedate, relation_id: loan.id, relation_type: "LOAN" }, session });
+          await update({ type: "neoInfo", data: { ...formatter(CUSTOMER?.loanInfo?.neoInfo, db.NeoInfo) }, where: { ...where, registertopolicedate: CUSTOMER?.loanInfo?.neoInfo?.registertopolicedate, relation_id: loan.id, relation_type: "LOAN" }, session });
         if (CUSTOMER?.loanInfo?.transactions && CUSTOMER?.loanInfo?.transactions.length > 0)
-          await bulkUpdate({ type: "transaction", data: CUSTOMER?.loanInfo?.transactions, attribute: "datetopay", where: { ...where, relation_type: "LOAN", relation_id: loan.id }, session });
+          await bulkUpdate({ type: "transaction", data: CUSTOMER?.loanInfo?.transactions.map(entry => formatter(entry, db.Transaction)), attribute: "datetopay", where: { ...where, relation_type: "LOAN", relation_id: loan.id }, session });
       }
     }
     if (CUSTOMER?.leasingInfo){
-      let leasing = await update({ type : "leasingInfo", data : { ...CUSTOMER?.leasingInfo }, where: {
+      let leasing = await update({ type : "leasingInfo", data : { ...formatter(CUSTOMER?.leasingInfo, db.OCLeasing) }, where: {
         ...where,
         o_c_leasing_starteddate: CUSTOMER?.leasingInfo?.o_c_leasing_starteddate
       }, session });
       if (leasing){
         if (CUSTOMER?.leasingInfo?.neoInfo)
-          await update({ type: "neoInfo", data: CUSTOMER?.leasingInfo?.neoInfo, where: { ...where, registertopolicedate: moment(CUSTOMER?.loanInfo?.neoInfo?.registertopolicedate), relation_type: "LEASING", relation_id: leasing.id }, session });
+          await update({ type: "neoInfo", data: formatter(CUSTOMER?.leasingInfo?.neoInfo, db.NeoInfo), where: { ...where, registertopolicedate: moment(CUSTOMER?.loanInfo?.neoInfo?.registertopolicedate), relation_type: "LEASING", relation_id: leasing.id }, session });
         if (CUSTOMER?.leasingInfo?.o_c_leasingmrtno && CUSTOMER?.leasingInfo?.o_c_leasingmrtno.length > 0)
           await bulkUpdate({ type: "mrtno", data: CUSTOMER?.leasingInfo?.o_c_leasingmrtnos, attribute: "mrtno", where: { ...where, type: "LEASING", relation_id: leasing.id }, session });
         if (CUSTOMER?.leasingInfo?.o_c_leasingrelnos && CUSTOMER?.leasingInfo?.o_c_leasingrelnos.length > 0)
           await bulkUpdate({ type: "relno", data: CUSTOMER?.leasingInfo?.o_c_leasingrelnos, attribute: "relno", where: { ...where, type: "LEASING", relation_id: leasing.id }, session });
         if (CUSTOMER?.leasingInfo?.transactions && CUSTOMER?.leasingInfo?.transactions.length >0)
-          await bulkUpdate({ type: "transaction", data: CUSTOMER?.leasingInfo?.transactions, attribute: "datetopay", where: { ...where, relation_type: "LEASING", relation_id: leasing.id }, session });
+          await bulkUpdate({ type: "transaction", data: CUSTOMER?.leasingInfo?.transactions.map(entry => formatter(entry, db.Transaction)), attribute: "datetopay", where: { ...where, relation_type: "LEASING", relation_id: leasing.id }, session });
       }
     }
     if (CUSTOMER?.accreditInfo){
-      let accredit = await update({ type : "accreditInfo", data : { ...CUSTOMER?.accreditInfo }, where: {
+      let accredit = await update({ type : "accreditInfo", data : formatter(CUSTOMER?.accreditInfo, db.OCAccredit), where: {
         ...where,
         o_c_accredit_starteddate: CUSTOMER?.accreditInfo?.o_c_accredit_starteddate
       }, session });
@@ -353,7 +384,7 @@ export default logic(null, async (data, session) => {
       }
     }
     if (CUSTOMER?.guarenteeInfo){
-      let gurantee = await update({ type : "guarantee", data : CUSTOMER?.guarenteeInfo, where: {
+      let gurantee = await update({ type : "guarantee", data : formatter(CUSTOMER?.guarenteeInfo, db.OCGuarantee), where: {
         ...where,
         o_c_guarantee_starteddate: CUSTOMER?.guarenteeInfo?.o_c_guarantee_starteddate
       }, session });
@@ -365,13 +396,13 @@ export default logic(null, async (data, session) => {
       }
     }
     if (CUSTOMER?.loanLineInfo){
-      await update({ type : "loanLine", data : CUSTOMER?.loanLineInfo, where: {
+      await update({ type : "loanLine", data : formatter(CUSTOMER?.loanLineInfo, db.OCLoanline), where: {
         ...where,
         o_c_loanline_starteddate: CUSTOMER?.loanLineInfo?.o_c_loanline_starteddate
       }, session });
     }
     if (CUSTOMER?.receivableInfo){
-      let receivable = await update({ type : "receivable", data : { ...CUSTOMER?.receivableInfo }, where: {
+      let receivable = await update({ type : "receivable", data : formatter(CUSTOMER?.receivableInfo, db.OCReceivable), where: {
         ...where,
         o_c_receivable_starteddate: CUSTOMER?.receivableInfo?.o_c_receivable_starteddate
       }, session });
@@ -379,11 +410,11 @@ export default logic(null, async (data, session) => {
         if (CUSTOMER?.receivableInfo?.transactions && CUSTOMER?.receivableInfo?.transactions.length > 0)
           await bulkUpdate({ type: "transaction", data: CUSTOMER?.receivableInfo?.transactions, attribute: "datetopay", where: { ...where, relation_type: "RECEIVABLE", relation_id: receivable.id }, session });
         if (CUSTOMER?.receivableInfo?.neoInfo)
-          await update({ type: "neoInfo", data: CUSTOMER?.receivableInfo?.neoInfo, where: { ...where, registertopolicedate: moment(CUSTOMER?.loanInfo?.neoInfo?.registertopolicedate), relation_type: "RECEIVABLE", relation_id: receivable.id }, session });
+          await update({ type: "neoInfo", data: formatter(CUSTOMER?.receivableInfo?.neoInfo, db.NeoInfo), where: { ...where, registertopolicedate: moment(CUSTOMER?.loanInfo?.neoInfo?.registertopolicedate), relation_type: "RECEIVABLE", relation_id: receivable.id }, session });
       }
     }
     if (CUSTOMER?.onusInfo){
-      let onus = await update({ type : "onus", data : { ...CUSTOMER?.onusInfo, }, where: {
+      let onus = await update({ type : "onus", data : formatter(CUSTOMER?.onusInfo, db.OCOnusInformation), where: {
         ...where,
         o_c_onus_starteddate: CUSTOMER?.onusInfo?.o_c_onus_starteddate
       }, session });
@@ -395,11 +426,11 @@ export default logic(null, async (data, session) => {
         if (CUSTOMER?.onusInfo?.transactions && CUSTOMER?.onusInfo?.transactions.length > 0)
           await bulkUpdate({ type: "transaction", data: CUSTOMER?.onusInfo?.transactions, attribute: "datetopay", where: { ...where, relation_type: "ONUS", relation_id: onus.id }, session });
         if (CUSTOMER?.onusInfo?.neoInfo)
-          await update({ type: "neoInfo", data: CUSTOMER?.onusInfo?.neoInfo, where: { ...where, registertopolicedate: moment(CUSTOMER?.onusInfo?.neoInfo?.registertopolicedate), relation_type: "ONUS", relation_id: onus.id }, session });
+          await update({ type: "neoInfo", data: formatter(CUSTOMER?.onusInfo?.neoInfo, db.NeoInfo), where: { ...where, registertopolicedate: moment(CUSTOMER?.onusInfo?.neoInfo?.registertopolicedate), relation_type: "ONUS", relation_id: onus.id }, session });
       }
     }
     if (CUSTOMER?.bondInfo){
-      let bond = await update({ type : "bond", data : { ...CUSTOMER?.bondInfo }, where: {
+      let bond = await update({ type : "bond", data : formatter(CUSTOMER?.bondInfo, db.OBond), where: {
         ...where,
         o_bond_starteddate: CUSTOMER?.bondInfo?.o_bond_starteddate
       }, session });
@@ -412,29 +443,30 @@ export default logic(null, async (data, session) => {
     }
     if (CUSTOMER?.mrtInfo){
       let falls = CUSTOMER.mrtInfo.map(item => {
+        let entry = formatter(item, db.OCMortgage);
         return async () => {
           if (item.o_c_mrtstateregisterno){
             let mortgage = await db.find(db.OCMortgage, { where: {
               ...where,
-              o_c_mrtstateregisterno: item.o_c_mrtstateregisterno,
-              o_c_mrtconfirmeddate  : moment(item.o_c_mrtconfirmeddate)
+              o_c_mrtstateregisterno: entry?.o_c_mrtstateregisterno,
+              o_c_mrtconfirmeddate  : moment(entry?.o_c_mrtconfirmeddate)
             } });
             if (!mortgage){
-              await db.create(db.OCMortgage, item, session);
+              await db.create(db.OCMortgage, entry, session);
             } else {
-              await db.update(mortgage, item, session);
+              await db.update(mortgage, entry, session);
             }
           } else {
             let mortgage = await db.find(db.OCMortgage, { where: {
               ...where,
-              o_c_mrtorgname          : item.o_c_mrtorgname,
-              o_c_mrtregistereddatefim: moment(item.o_c_mrtregistereddatefim),
-              o_c_mrtregisterno       : item.o_c_mrtregisterno
+              o_c_mrtorgname          : entry?.o_c_mrtorgname,
+              o_c_mrtregistereddatefim: moment(entry?.o_c_mrtregistereddatefim),
+              o_c_mrtregisterno       : entry?.o_c_mrtregisterno
             } });
             if (!mortgage){
-              await db.create(db.OCMortgage, item, session);
+              await db.create(db.OCMortgage, entry, session);
             } else {
-              await db.update(mortgage, item, session);
+              await db.update(mortgage, entry, session);
             }
           }
           await Promise.resolve();

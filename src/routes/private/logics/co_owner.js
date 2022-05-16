@@ -4,6 +4,35 @@ import moment from "moment";
 import { fall } from "../../../utils";
 import { NotfoundError } from "@goodtechsoft/micro-service/lib/errors";
 
+const formatter = (value = {}, model) => {
+
+  const attributes = model.rawAttributes;
+
+  const mapped = Object.keys(attributes).reduce((acc, key) => {
+    return {
+      ...acc,
+      [key]: attributes[key].type.constructor.name
+    };
+  }, {});
+
+  return {
+    ...Object.keys(value).reduce((acc, key) => {
+      let attributeType = mapped[key];
+
+      if (attributeType && value[key] && attributeType === "DATE") {
+        return {
+          ...acc,
+          [key]: moment(value[key]).format("YYYY-MM-DD")
+        };
+      }
+      return {
+        ...acc,
+        [key]: value[key]
+      };
+    }, {})
+  };
+};
+
 export default async (register_no, session) => {
   let filters = {};
   let relnos = [];
@@ -80,7 +109,7 @@ export default async (register_no, session) => {
       switch (item.type) {
         case "LOAN": {
           // console.log("=====================================>", item.relation_id);
-          let value = await db.find(db.OCLoanInformation, { where: { id: item.relation_id } }, session);
+          let value = await db.find(db.OCLoanInformation, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCLoanInformation));
           if (value && value.payment_status === "PAID"){
             let customer = await db.find(db.Customer, { where: {
               o_c_customercode: value.o_c_customercode,
@@ -89,11 +118,11 @@ export default async (register_no, session) => {
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             PAID_LOANS.push({
-              ...value.dataValues,
-              o_c_loan_starteddate  : moment(value.o_c_loan_starteddate).format("YYYY-MM-DD"),
-              o_c_loan_expdate      : moment(value.o_c_loan_expdate).format("YYYY-MM-DD"),
-              o_c_loan_extdate      : moment(value.o_c_loan_extdate).format("YYYY-MM-DD"),
-              o_c_updatedexpdate    : moment(value.o_c_updatedexpdate).format("YYYY-MM-DD"),
+              ...value,
+              // o_c_loan_starteddate  : moment(value.o_c_loan_starteddate).format("YYYY-MM-DD"),
+              // o_c_loan_expdate      : moment(value.o_c_loan_expdate).format("YYYY-MM-DD"),
+              // o_c_loan_extdate      : moment(value.o_c_loan_extdate).format("YYYY-MM-DD"),
+              // o_c_updatedexpdate    : moment(value.o_c_updatedexpdate).format("YYYY-MM-DD"),
               o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_loan_loanclasscode],
               customer,
             });
@@ -105,11 +134,11 @@ export default async (register_no, session) => {
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             UNPAID_LOANS.push({
-              ...value.dataValues,
-              o_c_loan_starteddate  : moment(value.o_c_loan_starteddate).format("YYYY-MM-DD"),
-              o_c_loan_expdate      : moment(value.o_c_loan_expdate).format("YYYY-MM-DD"),
-              o_c_loan_extdate      : moment(value.o_c_loan_extdate).format("YYYY-MM-DD"),
-              o_c_updatedexpdate    : moment(value.o_c_updatedexpdate).format("YYYY-MM-DD"),
+              ...value,
+              // o_c_loan_starteddate  : moment(value.o_c_loan_starteddate).format("YYYY-MM-DD"),
+              // o_c_loan_expdate      : moment(value.o_c_loan_expdate).format("YYYY-MM-DD"),
+              // o_c_loan_extdate      : moment(value.o_c_loan_extdate).format("YYYY-MM-DD"),
+              // o_c_updatedexpdate    : moment(value.o_c_updatedexpdate).format("YYYY-MM-DD"),
               o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_loan_loanclasscode],
               customer
             });
@@ -117,7 +146,7 @@ export default async (register_no, session) => {
           break;
         }
         case "LEASING": {
-          let value = await db.find(db.OCLeasing, { where: { id: item.relation_id } }, session);
+          let value = await db.find(db.OCLeasing, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCLeasing));
           if (value && value.payment_status === "PAID"){
             let customer = await db.find(db.Customer, { where: {
               o_c_customercode: value.o_c_customercode,
@@ -126,9 +155,9 @@ export default async (register_no, session) => {
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             PAID_LEASINGS.push({
-              ...value.dataValues,
-              o_c_leasing_starteddate  : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
-              o_c_leasing_expdate      : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
+              ...value,
+              // o_c_leasing_starteddate  : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
+              // o_c_leasing_expdate      : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
               o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_leasing_loanclasscode],
               customer
             });
@@ -140,9 +169,9 @@ export default async (register_no, session) => {
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             UNPAID_LEASINGS.push({
-              ...value.dataValues,
-              o_c_leasing_starteddate  : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
-              o_c_leasing_expdate      : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
+              ...value,
+              // o_c_leasing_starteddate  : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
+              // o_c_leasing_expdate      : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
               o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_leasing_loanclasscode],
               customer
             });
@@ -150,7 +179,7 @@ export default async (register_no, session) => {
           break;
         }
         case "ACCREDIT": {
-          let value = await db.find(db.OCAccredit, { where: { id: item.relation_id } }, session);
+          let value = await db.find(db.OCAccredit, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCAccredit));
           if (value){
             let customer = await db.find(db.Customer, { where: {
               o_c_customercode: value.o_c_customercode,
@@ -159,14 +188,14 @@ export default async (register_no, session) => {
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             ACCREDITS.push({
-              ...value.dataValues,
+              ...value,
               customer
             });
           }
           break;
         }
         case "ONUS": {
-          let value = await db.find(db.OCOnusInformation, { where: { id: item.relation_id } }, session);
+          let value = await db.find(db.OCOnusInformation, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCOnusInformation));
           if (value && item.payment_status === "PAID"){
             let customer = await db.find(db.Customer, { where: {
               o_c_customercode: value.o_c_customercode,
@@ -175,12 +204,12 @@ export default async (register_no, session) => {
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             PAID_ONUS.push({
-              ...value.dataValues,
-              o_c_onus_rightopeneddate : moment(value.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
-              o_c_onus_starteddate     : moment(value.o_c_onus_starteddate).format("YYYY-MM-DD"),
-              o_c_onus_paymentfinaldate: moment(value.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
-              o_c_onus_expdate         : moment(value.o_c_onus_expdate).format("YYYY-MM-DD"),
-              o_c_onus_loanclasscode   : APPENDIX.APPENDIX_EO[value.o_c_onus_loanclasscode],
+              ...value,
+              // o_c_onus_rightopeneddate : moment(value.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
+              // o_c_onus_starteddate     : moment(value.o_c_onus_starteddate).format("YYYY-MM-DD"),
+              // o_c_onus_paymentfinaldate: moment(value.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
+              // o_c_onus_expdate         : moment(value.o_c_onus_expdate).format("YYYY-MM-DD"),
+              o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_onus_loanclasscode],
               customer,
             });
           } else if (value) {
@@ -191,19 +220,19 @@ export default async (register_no, session) => {
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             UNPAID_ONUS.push({
-              ...item.dataValues,
-              o_c_onus_rightopeneddate : moment(value.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
-              o_c_onus_starteddate     : moment(value.o_c_onus_starteddate).format("YYYY-MM-DD"),
-              o_c_onus_paymentfinaldate: moment(value.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
-              o_c_onus_expdate         : moment(value.o_c_onus_expdate).format("YYYY-MM-DD"),
-              o_c_onus_loanclasscode   : APPENDIX.APPENDIX_EO[value.o_c_onus_loanclasscode],
+              ...item,
+              // o_c_onus_rightopeneddate : moment(value.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
+              // o_c_onus_starteddate     : moment(value.o_c_onus_starteddate).format("YYYY-MM-DD"),
+              // o_c_onus_paymentfinaldate: moment(value.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
+              // o_c_onus_expdate         : moment(value.o_c_onus_expdate).format("YYYY-MM-DD"),
+              o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_onus_loanclasscode],
               customer
             });
           }
           break;
         }
         case "BOND": {
-          let value = await db.find(db.OBond, { where: { id: item.relation_id } }, session);
+          let value = await db.find(db.OBond, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OBond));
           if (value && value.payment_status === "PAID"){
             let customer = await db.find(db.Customer, { where: {
               o_c_customercode: value.o_c_customercode,
@@ -212,9 +241,9 @@ export default async (register_no, session) => {
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             PAID_BONDS.push({
-              ...value.dataValues,
-              o_bond_starteddate: moment(value.o_bond_starteddate).format("YYYY-MM-DD"),
-              o_bond_expdate    : moment(value.o_bond_expdate).format("YYYY-MM-DD"),
+              ...value,
+              // o_bond_starteddate: moment(value.o_bond_starteddate).format("YYYY-MM-DD"),
+              // o_bond_expdate    : moment(value.o_bond_expdate).format("YYYY-MM-DD"),
               customer
             });
           } else if (value){
@@ -225,16 +254,16 @@ export default async (register_no, session) => {
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             UNPAID_BONDS.push({
-              ...value.dataValues,
-              o_bond_starteddate: moment(value.o_bond_starteddate).format("YYYY-MM-DD"),
-              o_bond_expdate    : moment(value.o_bond_expdate).format("YYYY-MM-DD"),
+              ...value,
+              // o_bond_starteddate: moment(value.o_bond_starteddate).format("YYYY-MM-DD"),
+              // o_bond_expdate    : moment(value.o_bond_expdate).format("YYYY-MM-DD"),
               customer
             });
           }
           break;
         }
         case "GUARANTEE": {
-          let value = await db.find(db.OCGuarantee, { where: { id: item.relation_id } }, session);
+          let value = await db.find(db.OCGuarantee, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCGuarantee));
           if (value){
             let customer = await db.find(db.Customer, { where: {
               o_c_customercode: value.o_c_customercode,
@@ -243,7 +272,7 @@ export default async (register_no, session) => {
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             GUARANTEES.push({
-              ...value.dataValues,
+              ...value,
               o_c_guarantee_loanclasscode: APPENDIX.APPENDIX_EO[item?.o_c_guarantee_loanclasscode],
               customer
             });

@@ -73,7 +73,7 @@ export default async ({ data, where }) => {
   let accredit = {
     id                         : id,
     o_c_accredit_advamount     : data?.o_c_accredit_advamount,
-    o_c_accredit_starteddate   : moment(data?.o_c_accredit_starteddate),
+    o_c_accredit_starteddate   : data?.o_c_accredit_starteddate,
     o_c_accredit_expdate       : data?.o_c_accredit_expdate,
     o_c_accredit_currencycode  : data?.o_c_accredit_currencycode,
     o_c_accredit_type          : data?.o_c_accredit_type,

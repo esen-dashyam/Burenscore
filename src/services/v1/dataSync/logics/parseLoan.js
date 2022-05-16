@@ -138,7 +138,7 @@ export default async ({ data, where }) => {
     o_c_loanrelnos            : relnos,
     o_c_loan_loanprovenance   : data?.o_c_loan_loanProvenance,
     o_c_loan_balance          : data?.o_c_loan_balance,
-    o_c_loan_starteddate      : moment(data?.o_c_loan_starteddate),
+    o_c_loan_starteddate      : data?.o_c_loan_starteddate,
     o_c_loan_expdate          : data?.o_c_loan_expdate,
     o_c_loan_currencycode     : data?.o_c_loan_currencycode,
     o_c_loan_sectorcode       : data?.o_c_loan_sectorcode,
@@ -161,7 +161,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "DETAIL",
       relation_type: "LOAN",
-      datetopay    : moment(item?.o_c_loandetail_datetopay),
+      datetopay    : item?.o_c_loandetail_datetopay,
       amounttopay  : item?.o_c_loandetail_amounttopay,
       relation_id  : loanInfo?.id,
     });
@@ -171,7 +171,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "PERFORMANCE",
       relation_type: "LOAN",
-      datetopay    : moment(item?.o_c_loanperformance_datetopay),
+      datetopay    : item?.o_c_loanperformance_datetopay,
       amounttopay  : item?.o_c_loanperformance_amounttopay,
       relation_id  : loanInfo?.id,
     });
@@ -181,7 +181,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "INTEREST_DETAIL",
       relation_type: "LOAN",
-      datetopay    : moment(item?.o_c_loaninterestdetail_datetopay),
+      datetopay    : item?.o_c_loaninterestdetail_datetopay,
       amounttopay  : item?.o_c_loaninterestdetail_amounttopay,
       relation_id  : loanInfo?.id,
     });
@@ -191,7 +191,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "INTEREST_PERFORMANCE",
       relation_type: "LOAN",
-      datetopay    : moment(item?.o_c_loaninterestperformance_datetopay),
+      datetopay    : item?.o_c_loaninterestperformance_datetopay,
       amounttopay  : item?.o_c_loaninterestperformance_amounttopay,
       relation_id  : loanInfo?.id,
     });
@@ -206,7 +206,7 @@ export default async ({ data, where }) => {
     causetostartcase        : data.loan_neoinfo?.c_loan_causetostartcase,
     datetstartcase          : data.loan_neoinfo?.c_loan_datetstartcase,
     registertopolice        : data.loan_neoinfo?.o_c_loan_registertopolice,
-    registertopolicedate    : moment(data.loan_neoinfo?.o_c_loan_registertopolicedate),
+    registertopolicedate    : data.loan_neoinfo?.o_c_loan_registertopolicedate,
     timesinpolice           : data.loan_neoinfo?.o_c_loan_timesinpolice,
     registertoprocuror      : data.loan_neoinfo?.o_c_loan_registertoprocuror,
     registertoprocurordate  : data.loan_neoinfo?.o_c_loan_registertoprocurordate,

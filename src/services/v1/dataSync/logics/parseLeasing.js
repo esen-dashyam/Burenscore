@@ -123,7 +123,7 @@ export default async ({ data, where }) => {
     o_c_leasingmrtnos            : mrtnos,
     o_c_leasingrelnos            : relnos,
     o_c_leasing_balance          : data?.o_c_leasing_balance,
-    o_c_leasing_starteddate      : moment(data?.o_c_leasing_starteddate),
+    o_c_leasing_starteddate      : data?.o_c_leasing_starteddate,
     o_c_leasing_expdate          : data?.o_c_leasing_expdate,
     o_c_leasing_currencycode     : data?.o_c_leasing_currencycode,
     o_c_leasing_sectorcode       : data?.o_c_leasing_sectorcode,
@@ -144,7 +144,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "DETAIL",
       relation_type: "LEASING",
-      datetopay    : moment(item?.o_c_leasingdetail_datetopay),
+      datetopay    : item?.o_c_leasingdetail_datetopay,
       amounttopay  : item?.o_c_leasingdetail_amounttopay,
       relation_id  : leasingInfo?.id,
     });
@@ -154,7 +154,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "PERFORMANCE",
       relation_type: "LEASING",
-      datetopay    : moment(item?.o_c_leasingperformance_datetopay),
+      datetopay    : item?.o_c_leasingperformance_datetopay,
       amounttopay  : item?.o_c_leasingperformance_amounttopay,
       relation_id  : leasingInfo?.id,
     });
@@ -164,7 +164,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "INTEREST_DETAIL",
       relation_type: "LEASING",
-      datetopay    : moment(item?.o_c_leasinginterestdetail_datetopay),
+      datetopay    : item?.o_c_leasinginterestdetail_datetopay,
       amounttopay  : item?.o_c_leasinginterestdetail_amounttopay,
       relation_id  : leasingInfo?.id,
     });
@@ -174,7 +174,7 @@ export default async ({ data, where }) => {
       ...where,
       type         : "INTEREST_PERFORMANCE",
       relation_type: "LEASING",
-      datetopay    : moment(item?.o_c_leasinginterestperformance_datetopay),
+      datetopay    : item?.o_c_leasinginterestperformance_datetopay,
       amounttopay  : item?.o_c_leasinginterestperformance_amounttopay,
       relation_id  : leasingInfo?.id,
     });
@@ -188,7 +188,7 @@ export default async ({ data, where }) => {
     causetostartcase        : data?.leasing_neoinfo?.c_leasing_causetostartcase,
     datetstartcase          : data?.leasing_neoinfo?.c_leasing_datetstartcase,
     registertopolice        : data?.leasing_neoinfo?.o_c_leasing_registertopolice,
-    registertopolicedate    : moment(data?.leasing_neoinfo?.o_c_leasing_registertopolicedate),
+    registertopolicedate    : data?.leasing_neoinfo?.o_c_leasing_registertopolicedate,
     timesinpolice           : data?.leasing_neoinfo?.o_c_leasing_timesinpolice,
     registertoprocuror      : data?.leasing_neoinfo?.o_c_leasing_registertoprocuror,
     registertoprocurordate  : data?.leasing_neoinfo?.o_c_leasing_registertoprocurordate,

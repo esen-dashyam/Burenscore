@@ -78,7 +78,7 @@ export default async ({ data, where }) => {
     o_bond_advamount     : data?.o_bond_advamount,
 	  o_c_bondmrtnos       : mrtnos,
 	  o_c_bondrelnos       : relnos,
-	  o_bond_starteddate   : moment(data?.o_bond_starteddate),
+	  o_bond_starteddate   : data?.o_bond_starteddate,
 	  o_bond_expdate       : data?.o_bond_expdate,
 	  o_bond_currencycode  : data?.o_bond_currencycode,
 	  o_bond_type          : data?.o_bond_type,
