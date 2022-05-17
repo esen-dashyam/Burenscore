@@ -4,6 +4,7 @@ import { NotfoundError } from "@goodtechsoft/micro-service/lib/errors";
 import Joi from "joi";
 import { APPENDIX, ERRORS, FORMATTABLE_VARIABLES } from "../../../constants";
 import { co_owner, owner } from "./logics";
+import moment from "moment";
 const schema = Joi.object({
   register_no     : Joi.string().required(),
   report_rel_types: Joi.string().required(),
@@ -77,6 +78,6 @@ export default logic(schema, async (data, session) => {
   return ({
     count   : result.count,
     rows    : result.rows,
-    customer: { ...formatter(customer, db.Customer) },
+    customer: { ...formatter(customer.dataValues, db.Customer) },
   });
 });

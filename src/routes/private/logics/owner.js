@@ -132,9 +132,6 @@ export default async (register_no, session) => {
   let guarantee = await db.findAll(db.OCGuarantee, { where: where }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCGuarantee)));
   let bonds = await db.findAll(db.OBond, { where: where, }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OBond)));
   let accredits = await db.findAll(db.OCAccredit, { where: where }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCAccredit)));
-  // console.log("############################################################################");
-  // console.log(loans);
-  // console.log("############################################################################");
   loans.forEach(item => {
     // console.log("o_c_loan_loanclasscode:", item.o_c_loan_loanclasscode);
     if (item.payment_status === "PAID"){
