@@ -3,6 +3,8 @@ import { db } from "@goodtechsoft/sequelize-postgres";
 import { NotfoundError } from "@goodtechsoft/micro-service/lib/errors";
 import Joi from "joi";
 import { APPENDIX, ERRORS, FORMATTABLE_VARIABLES } from "../../../constants";
+import moment from "moment";
+
 const schema = Joi.object({
   id  : Joi.string().required(),
   type: Joi.string().required(),

@@ -2,7 +2,7 @@ import { logic } from "@goodtechsoft/micro-service";
 import { db } from "@goodtechsoft/sequelize-postgres";
 import Joi from "joi";
 import { APPENDIX, FORMATTABLE_VARIABLES } from "../../../constants";
-
+import moment from "moment";
 const schema = Joi.object({
   filter: Joi.object({
     id: Joi.string().required(),
