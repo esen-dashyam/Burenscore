@@ -1,6 +1,7 @@
 import { logic } from "@goodtechsoft/micro-service";
 import { db } from "@goodtechsoft/sequelize-postgres";
 import Joi from "joi";
+import { APPENDIX, FORMATTABLE_VARIABLES } from "../../../constants";
 
 const schema = Joi.object({
   filter: Joi.object({
@@ -11,7 +12,40 @@ const schema = Joi.object({
     limit: Joi.number().required()
   }).required(),
 });
+const formatter = (value = {}, model) => {
 
+  const attributes = model.rawAttributes;
+
+  const mapped = Object.keys(attributes).reduce((acc, key) => {
+    return {
+      ...acc,
+      [key]: attributes[key].type.constructor.name
+    };
+  }, {});
+
+  return {
+    ...Object.keys(value).reduce((acc, key) => {
+      let attributeType = mapped[key];
+
+      if (attributeType && value[key] && attributeType === "DATE") {
+        return {
+          ...acc,
+          [key]: moment(value[key]).format("YYYY-MM-DD")
+        };
+      }
+      if (FORMATTABLE_VARIABLES[key]){
+        return {
+          ...acc,
+          [key]: APPENDIX[FORMATTABLE_VARIABLES[key]][value[key]] || value[key],
+        };
+      }
+      return {
+        ...acc,
+        [key]: value[key]
+      };
+    }, {})
+  };
+};
 export default logic(schema, async (data, session) => {
   const {
     filter,
@@ -35,7 +69,7 @@ export default logic(schema, async (data, session) => {
   }, session);
 
   return ({
-    rows,
+    rows: rows.map(entry => formatter(entry, db.OCMortgage)),
     count
   });
 });

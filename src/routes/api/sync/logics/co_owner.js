@@ -1,5 +1,5 @@
 import { db } from "@goodtechsoft/sequelize-postgres";
-import { APPENDIX, ERRORS } from "../../../../constants";
+import { APPENDIX, ERRORS, FORMATTABLE_VARIABLES } from "../../../../constants";
 import moment from "moment";
 import { fall } from "../../../../utils";
 import { NotfoundError } from "@goodtechsoft/micro-service/lib/errors";
@@ -23,6 +23,12 @@ const formatter = (value = {}, model) => {
         return {
           ...acc,
           [key]: moment(value[key]).format("YYYY-MM-DD")
+        };
+      }
+      if (FORMATTABLE_VARIABLES[key]){
+        return {
+          ...acc,
+          [key]: APPENDIX[FORMATTABLE_VARIABLES[key]][value[key]] || value[key],
         };
       }
       return {
@@ -123,7 +129,7 @@ export default async (register_no, session) => {
               // o_c_loan_expdate      : moment(value.o_c_loan_expdate).format("YYYY-MM-DD"),
               // o_c_loan_extdate      : moment(value.o_c_loan_extdate).format("YYYY-MM-DD"),
               // o_c_updatedexpdate    : moment(value.o_c_updatedexpdate).format("YYYY-MM-DD"),
-              o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_loan_loanclasscode],
+              // o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_loan_loanclasscode],
               customer,
             });
           } else if (value){
@@ -139,7 +145,7 @@ export default async (register_no, session) => {
               // o_c_loan_expdate      : moment(value.o_c_loan_expdate).format("YYYY-MM-DD"),
               // o_c_loan_extdate      : moment(value.o_c_loan_extdate).format("YYYY-MM-DD"),
               // o_c_updatedexpdate    : moment(value.o_c_updatedexpdate).format("YYYY-MM-DD"),
-              o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_loan_loanclasscode],
+              // o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_loan_loanclasscode],
               customer
             });
           }
@@ -158,7 +164,7 @@ export default async (register_no, session) => {
               ...value,
               // o_c_leasing_starteddate  : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
               // o_c_leasing_expdate      : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
-              o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_leasing_loanclasscode],
+              // o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_leasing_loanclasscode],
               customer
             });
           } else if (value) {
@@ -172,7 +178,7 @@ export default async (register_no, session) => {
               ...value,
               // o_c_leasing_starteddate  : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
               // o_c_leasing_expdate      : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
-              o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_leasing_loanclasscode],
+              // o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_leasing_loanclasscode],
               customer
             });
           }
@@ -225,7 +231,7 @@ export default async (register_no, session) => {
               // o_c_onus_starteddate     : moment(value.o_c_onus_starteddate).format("YYYY-MM-DD"),
               // o_c_onus_paymentfinaldate: moment(value.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
               // o_c_onus_expdate         : moment(value.o_c_onus_expdate).format("YYYY-MM-DD"),
-              o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_onus_loanclasscode],
+              // o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_onus_loanclasscode],
               customer
             });
           }
@@ -273,7 +279,7 @@ export default async (register_no, session) => {
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             GUARANTEES.push({
               ...value,
-              o_c_guarantee_loanclasscode: APPENDIX.APPENDIX_EO[item?.o_c_guarantee_loanclasscode],
+              // o_c_guarantee_loanclasscode: APPENDIX.APPENDIX_EO[item?.o_c_guarantee_loanclasscode],
               customer
             });
           }

@@ -2,7 +2,7 @@ import { logic } from "@goodtechsoft/micro-service";
 import { db } from "@goodtechsoft/sequelize-postgres";
 import { NotfoundError } from "@goodtechsoft/micro-service/lib/errors";
 import Joi from "joi";
-import { ERRORS } from "../../../constants";
+import { APPENDIX, ERRORS, FORMATTABLE_VARIABLES } from "../../../constants";
 import { co_owner, owner } from "./logics";
 const schema = Joi.object({
   register_no     : Joi.string().required(),
@@ -10,6 +10,40 @@ const schema = Joi.object({
   report_purpose  : Joi.string().required()
 });
 
+const formatter = (value = {}, model) => {
+
+  const attributes = model.rawAttributes;
+
+  const mapped = Object.keys(attributes).reduce((acc, key) => {
+    return {
+      ...acc,
+      [key]: attributes[key].type.constructor.name
+    };
+  }, {});
+
+  return {
+    ...Object.keys(value).reduce((acc, key) => {
+      let attributeType = mapped[key];
+
+      if (attributeType && value[key] && attributeType === "DATE") {
+        return {
+          ...acc,
+          [key]: moment(value[key]).format("YYYY-MM-DD")
+        };
+      }
+      if (FORMATTABLE_VARIABLES[key]){
+        return {
+          ...acc,
+          [key]: APPENDIX[FORMATTABLE_VARIABLES[key]][value[key]] || value[key],
+        };
+      }
+      return {
+        ...acc,
+        [key]: value[key]
+      };
+    }, {})
+  };
+};
 export default logic(schema, async (data, session) => {
   const {
     register_no,
@@ -41,8 +75,8 @@ export default logic(schema, async (data, session) => {
   }
 
   return ({
-    count: result.count,
-    rows : result.rows,
-    customer,
+    count   : result.count,
+    rows    : result.rows,
+    customer: { ...formatter(customer, db.Customer) },
   });
 });
