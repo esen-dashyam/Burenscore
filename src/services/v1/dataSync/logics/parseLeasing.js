@@ -30,6 +30,7 @@ const schema = Joi.object({
   o_c_leasing_fee           : Joi.number().max(999999999999.99).precision(2).required(),
   o_c_leasing_updatedexpdate: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
   o_c_leasing_loanclasscode : Joi.string().valid(Object.keys(APPENDIX_EO)).required(),
+  o_c_leasing_isapproved    : Joi.number().integer().required(),
   o_c_leasingtransactions   : Joi.object({
     o_c_leasing_loancharttype    : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
     o_c_leasing_interestcharttype: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required().required(),
@@ -92,15 +93,16 @@ export default async ({ data, where }) => {
         mrtno      : item
       });
     });
-  } else if (data?.o_c_leasingmrtno?.o_c_leasingmrtno)
+  } else if (data?.o_c_leasingmrtnos?.o_c_leasingmrtno){
     mrtnos.push({
       ...where,
       relation_id: id,
       type       : "LEASING",
-      mrtno      : data?.o_c_leasingmrtno?.o_c_leasingmrtno
+      mrtno      : data?.o_c_leasingmrtnos?.o_c_leasingmrtno
     });
-  // console.log("==========>", mrtnos);
-  if (Array.isArray(data.o_c_leasingrelnos.o_c_leasingrelno)){
+  }
+  console.log("MRT==========>", mrtnos);
+  if (Array.isArray(data.o_c_leasingrelnos?.o_c_leasingrelno)){
     data.o_c_leasingrelnos.o_c_leasingrelno.forEach(item => {
       relnos.push({
         ...where,

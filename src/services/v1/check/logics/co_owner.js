@@ -10,18 +10,18 @@ export default async (data, session) => {
   let filters = {};
   if (where.o_c_registerno.length <= 8){
     filters.o_c_relationorg_registerno = where.o_c_registerno;
-    filters.o_c_relationorg_orgrelation = "03";
+    // filters.o_c_relationorg_orgrelation = "03";
     let relationOrg = await db.findAll(db.OCRelationorg, { where: filters }, session);
     if (relationOrg?.length > 0) {
       relnos = await db.findAll(db.Relno, { where: {
-        relno           : relationOrg.map(item => item.o_c_relationcustomer_relno),
+        relno           : relationOrg.map(item => item.o_c_relationorg_relno),
         o_c_customercode: relationOrg.map(item => item.o_c_customercode),
         o_c_bank_code   : relationOrg.map(item => item.o_c_bank_code),
         o_c_registerno  : relationOrg.map(item => item.o_c_registerno),
       } }, session);
     } } else {
     filters.o_c_relationcustomer_registerno = where.o_c_registerno;
-    filters.o_c_relationcustomer_citizenrelation = "04";
+    // filters.o_c_relationcustomer_citizenrelation = "04";
     let relationCustomers = await db.findAll(db.OCRelationcustomer, { where: filters }, session);
     if (relationCustomers?.length > 0){
       relnos = await db.findAll(db.Relno, { where: {

@@ -1,11 +1,11 @@
 import moment from "moment";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERROR_DETAILS, ERROR_CODES } from "../../../../constants";
+import { ERROR_DETAILS, ERROR_CODES, APPENDIX } from "../../../../constants";
 import Joi from "joi";
 const schemaArray = Joi.array().items(Joi.object({
   o_c_mrtno          : Joi.number().precision(2).positive().required(),
   o_c_mrtno_internal : Joi.number().required(),
-  o_c_mrtcode        : Joi.number().required(),
+  o_c_mrtcode        : Joi.number().valid(Object.keys(APPENDIX.APPENDIX_MORTGAGE)).required(),
   o_c_mrtdescription : Joi.string().max(150).required(),
   o_c_is_real_estate : Joi.number().required(),
   o_c_dateofvaluation: Joi.string().optional().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).allow([null, ""]),

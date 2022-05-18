@@ -59,11 +59,11 @@ export default async (register_no, session) => {
   if (where.o_c_registerno.length <= 8){
     // console.log("==============>", where.o_c_registerno.length);
     filters.o_c_relationorg_registerno = where.o_c_registerno;
-    filters.o_c_relationorg_orgrelation = "03";
+    // filters.o_c_relationorg_orgrelation = "03";
     let relationOrg = await db.findAll(db.OCRelationorg, { where: filters }, session);
     if (relationOrg?.length > 0) {
       relnos = await db.findAll(db.Relno, { where: {
-        relno           : relationOrg.map(item => item.o_c_relationcustomer_relno),
+        relno           : relationOrg.map(item => item.o_c_relationorg_relno),
         o_c_customercode: relationOrg.map(item => item.o_c_customercode),
         o_c_bank_code   : relationOrg.map(item => item.o_c_bank_code),
         o_c_registerno  : relationOrg.map(item => item.o_c_registerno),
@@ -78,7 +78,7 @@ export default async (register_no, session) => {
     }
   } else {
     filters.o_c_relationcustomer_registerno = where.o_c_registerno;
-    filters.o_c_relationcustomer_citizenrelation = "04";
+    // filters.o_c_relationcustomer_citizenrelation = "04";
     // console.log(filters);
     let relationCustomers = await db.findAll(db.OCRelationcustomer, { where: filters }, session);
     // console.log(relationCustomers);
@@ -122,6 +122,8 @@ export default async (register_no, session) => {
               o_c_bank_code   : value.o_c_bank_code,
               o_c_registerno  : value.o_c_registerno,
             } }, session);
+            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: item.id } }, session);
+            let mrt = await db.findAll();
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             PAID_LOANS.push({
               ...value,
