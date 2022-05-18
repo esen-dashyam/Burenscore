@@ -168,9 +168,10 @@ export default {
     "string.regex.base": "ME7027",
   },
   o_c_accredit_extcount: {
-    "any.required"     : "ME7029",
-    "any.empty"        : "ME7029",
-    "string.regex.base": "ME7030",
+    "any.required"   : "ME7029",
+    "any.empty"      : "ME7029",
+    "number.base"    : "ME7030",
+    "number.positive": "ME7030"
   },
   o_c_accredit_balance: {
     "any.required": "ME2084",
@@ -862,108 +863,108 @@ export default {
   },
   // FINANCIALINFO
   c_b_totalsale: {
-    "number.unsafe"   : "ME2102",
-    " number.positive": "ME2103"
+    "number.unsafe"  : "ME2102",
+    "number.positive": "ME2103"
   },
   c_b_totalcost: {
-    "number.unsafe"   : "ME2105",
-    " number.positive": "ME2106",
+    "number.unsafe"  : "ME2105",
+    "number.positive": "ME2106",
   },
   c_b_totalprofit: {
-    "number.unsafe"   : "ME2108",
-    " number.positive": "ME2109",
+    "number.unsafe"  : "ME2108",
+    "number.positive": "ME2109",
   },
   c_b_operatingexpense: {
-    "number.unsafe"   : "ME2111",
-    " number.positive": "ME2112",
+    "number.unsafe"  : "ME2111",
+    "number.positive": "ME2112",
   },
   c_b_operatingincome: {
-    "number.unsafe"   : "ME2114",
-    " number.positive": "ME2115",
+    "number.unsafe"  : "ME2114",
+    "number.positive": "ME2115",
   },
   c_b_otherincome: {
-    "number.unsafe"   : "ME2117",
-    " number.positive": "ME2118",
+    "number.unsafe"  : "ME2117",
+    "number.positive": "ME2118",
   },
   c_b_otherexpense: {
-    "number.unsafe"   : "ME2120",
-    " number.positive": "ME2121",
+    "number.unsafe"  : "ME2120",
+    "number.positive": "ME2121",
   },
   c_b_profitbeforetax: {
-    "number.unsafe"   : "ME2123",
-    " number.positive": "ME2124",
+    "number.unsafe"  : "ME2123",
+    "number.positive": "ME2124",
   },
   c_b_tax: {
-    "number.unsafe"   : "ME2126",
-    " number.positive": "ME2127",
+    "number.unsafe"  : "ME2126",
+    "number.positive": "ME2127",
   },
   c_b_netprofit: {
-    "number.unsafe"   : "ME2129",
-    " number.positive": "ME2130",
+    "number.unsafe"  : "ME2129",
+    "number.positive": "ME2130",
   },
   // CAPITAL
   c_p_totalasset: {
-    "number.unsafe"   : "ME2152",
-    " number.positive": "ME2153",
+    "number.unsafe"  : "ME2152",
+    "number.positive": "ME2153",
   },
   c_p_assettype: {
     "number.unsafe": "ME2155",
   },
   c_p_assetcost: {
-    "number.unsafe"   : "ME2156",
-    " number.positive": "ME2157",
+    "number.unsafe"  : "ME2156",
+    "number.positive": "ME2157",
   },
   c_p_assetdepreciation: {
-    "number.unsafe"   : "ME2159",
-    " number.positive": "ME2160",
+    "number.unsafe"  : "ME2159",
+    "number.positive": "ME2160",
   },
   c_p_assetownership: {
     "number.unsafe": "ME2162",
   },
   // FAMILY
   c_g_salary: {
-    "number.unsafe"   : "ME2182",
-    " number.positive": "ME2183",
+    "number.unsafe"  : "ME2182",
+    "number.positive": "ME2183",
   },
   c_g_otherincome: {
-    "number.unsafe"   : "ME2185",
-    " number.positive": "ME2186",
+    "number.unsafe"  : "ME2185",
+    "number.positive": "ME2186",
   },
   c_g_totalincome: {
-    "number.unsafe"   : "ME2188",
-    " number.positive": "ME2189",
+    "number.unsafe"  : "ME2188",
+    "number.positive": "ME2189",
   },
   c_g_foodexpense: {
-    "number.unsafe"   : "ME2191",
-    " number.positive": "ME2192",
+    "number.unsafe"  : "ME2191",
+    "number.positive": "ME2192",
   },
   c_g_expensetolease: {
-    "number.unsafe"   : "ME2194",
-    " number.positive": "ME2195",
+    "number.unsafe"  : "ME2194",
+    "number.positive": "ME2195",
   },
   c_g_commexpense: {
-    "number.unsafe"   : "ME2197",
-    " number.positive": "ME2198",
+    "number.unsafe"  : "ME2197",
+    "number.positive": "ME2198",
   },
   c_g_otherexpense: {
-    "number.unsafe"   : "ME2200",
-    " number.positive": "ME2201",
+    "number.unsafe"  : "ME2200",
+    "number.positive": "ME2201",
   },
   c_g_totalexpense: {
-    "number.unsafe"   : "ME2203",
-    " number.positive": "ME2204",
+    "number.unsafe"  : "ME2203",
+    "number.positive": "ME2204",
   },
   c_g_netincome: {
-    "number.unsafe"   : "ME2206",
-    " number.positive": "ME2207",
+    "number.unsafe"  : "ME2206",
+    "number.positive": "ME2207",
   },
   c_g_saving: {
-    "number.unsafe"   : "ME2209",
-    " number.positive": "ME2210",
+    "number.unsafe"  : "ME2209",
+    "number.positive": "ME2210",
   },
   c_g_totalsaving: {
-    "number.unsafe"   : "ME2212",
-    " number.positive": "ME2213",
+    "number.unsafe"  : "ME2212",
+    "number.positive": "ME2213",
   },
   c_g_savinghistory: {
     "number.unsafe": "ME2215",
@@ -1069,28 +1070,28 @@ export default {
     "number.positive": "ME3154",
   },
   o_mu_profitbeforetaxinterest: {
-    "number.unsafe"   : "ME3155",
-    " number.positive": "ME3156",
+    "number.unsafe"  : "ME3155",
+    "number.positive": "ME3156",
   },
   o_mu_deppressionexpense: {
     "number.unsafe"  : "ME3158",
     "number.positive": "ME3159",
   },
   o_mu_tax: {
-    "number.unsafe"   : "ME3161",
-    " number.positive": "ME3162",
+    "number.unsafe"  : "ME3161",
+    "number.positive": "ME3162",
   },
   o_mu_materialprocurement: {
-    "number.unsafe"   : "ME3164",
-    " number.positive": "ME3165",
+    "number.unsafe"  : "ME3164",
+    "number.positive": "ME3165",
   },
   o_m_financemoneyflow: {
-    "number.unsafe"   : "ME3167",
-    " number.positive": "ME3168",
+    "number.unsafe"  : "ME3167",
+    "number.positive": "ME3168",
   },
   o_ms_receivablechange: {
-    "number.unsafe"   : "ME3170",
-    " number.positive": "ME3171",
+    "number.unsafe"  : "ME3170",
+    "number.positive": "ME3171",
   },
   o_ms_shorttimeinvestchange: {
     "number.unsafe"  : "ME3173",
@@ -1109,8 +1110,8 @@ export default {
     "number.positive": "ME3183",
   },
   o_ms_interestexpense: {
-    "number.unsafe"   : "ME3185",
-    " number.positive": "ME3186",
+    "number.unsafe"  : "ME3185",
+    "number.positive": "ME3186",
   },
   o_ms_ownerproperty: {
     "number.unsafe"  : "ME3188",
@@ -1121,8 +1122,8 @@ export default {
     "number.positive": "ME3192",
   },
   o_m_investmoneyflow: {
-    "number.unsafe"   : " ",
-    " number.positive": " ",
+    "number.unsafe"  : " ",
+    "number.positive": " ",
   },
   o_mh_building: {
     "number.unsafe"  : "ME3194",

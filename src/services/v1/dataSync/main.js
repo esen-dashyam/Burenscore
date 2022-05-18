@@ -426,8 +426,9 @@ export default logic(null, async (data, session) => {
         o_c_onus_starteddate: CUSTOMER?.onusInfo?.o_c_onus_starteddate
       }, session });
       if (onus) {
-        if (CUSTOMER?.onusInfo?.o_c_onusmrtnos && CUSTOMER?.onusInfo?.o_c_onusmrtnos > 0)
+        if (CUSTOMER?.onusInfo?.o_c_onusmrtnos && CUSTOMER?.onusInfo?.o_c_onusmrtnos.length > 0){
           await bulkUpdate({ type: "mrtno", data: CUSTOMER?.onusInfo?.o_c_onusmrtnos.map(item => ({ ...item, relation_id: onus.id })), attribute: "mrtno", where: { ...where, type: "ONUS", relation_id: onus.id }, session });
+        }
         if (CUSTOMER?.onusInfo?.o_c_onusrelnos && CUSTOMER?.onusInfo?.o_c_onusrelnos.length > 0)
           await bulkUpdate({ type: "relno", data: CUSTOMER?.onusInfo?.o_c_onusrelnos.map(item => ({ ...item, relation_id: onus.id })), attribute: "relno", where: { ...where, type: "ONUS", relation_id: onus.id }, session });
         if (CUSTOMER?.onusInfo?.transactions && CUSTOMER?.onusInfo?.transactions.length > 0)

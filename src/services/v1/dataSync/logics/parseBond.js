@@ -39,7 +39,7 @@ export default async ({ data, where }) => {
   let id = uuidv4();
   let mrtnos = [];
   let relnos = [];
-  if (Array.isArray(data.o_c_bondmrtnos.o_c_bondmrtno)){
+  if (Array.isArray(data.o_c_bondmrtnos?.o_c_bondmrtno)){
     data.o_c_bondmrtnos.o_c_bondmrtno.forEach(item => {
       mrtnos.push({
         ...where,
@@ -48,7 +48,7 @@ export default async ({ data, where }) => {
         mrtno      : item
       });
     });
-  } else if (data.o_c_bondmrtnos.o_c_bondmrtno)
+  } else if (data.o_c_bondmrtnos?.o_c_bondmrtno)
     mrtnos.push({
       ...where,
       relation_id: id,
@@ -56,7 +56,7 @@ export default async ({ data, where }) => {
       mrtno      : data.o_c_bondmrtnos.o_c_bondmrtno
     });
 
-  if (Array.isArray(data.o_c_bondrelnos.o_c_bondrelno)){
+  if (Array.isArray(data.o_c_bondrelnos?.o_c_bondrelno)){
     data.o_c_bondrelnos.o_c_bondrelno.forEach(item => {
       relnos.push({
         ...where,
@@ -65,7 +65,7 @@ export default async ({ data, where }) => {
         relno      : item
       });
     });
-  } else if (data.o_c_bondrelnos.o_c_bondrelno)
+  } else if (data.o_c_bondrelnos?.o_c_bondrelno)
     relnos.push({
       ...where,
       relation_id: id,
