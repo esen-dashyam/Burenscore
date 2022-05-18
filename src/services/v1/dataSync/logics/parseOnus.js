@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { APPENDIX, ERROR_DETAILS, ERROR_CODES } from "../../../../constants";
 import Joi from "joi";
+import APPENDIX_O from "../../../../constants/APPENDIX_O";
 
 const checkDuplicate = (array, key) =>{
   let duplicate = false;
@@ -14,7 +15,33 @@ const checkDuplicate = (array, key) =>{
   }
   return duplicate;
 };
+
+const neoSchema = Joi.object({
+  orgmeasure              : Joi.string().max(500).optional().allow([null, ""]),
+  measuredate             : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  measuredescription      : Joi.string().max(500).optional().allow([null, ""]),
+  causetostartcase        : Joi.string().valid(Object.keys(APPENDIX_O)).optional().allow([null, ""]),
+  datetstartcase          : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  registertopolice        : Joi.number().max(1).allow([null, ""]),
+  registertopolicedate    : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  timesinpolice           : Joi.number().allow([null, ""]),
+  registertoprocuror      : Joi.number().min(0).max(1).allow([null, ""]),
+  registertoprocurordate  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  timesinprocuror         : Joi.number().allow([null, ""]),
+  registertocourt         : Joi.number().min(0).max(1).allow([null, ""]),
+  registertocourtdate     : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  timesincourt            : Joi.number().allow([null, ""]),
+  shiftocourt2            : Joi.number().min(0).max(1).allow([null, ""]),
+  shifttocourt2date       : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  timesincourt2           : Joi.number().allow([null, ""]),
+  shiftocourtdecision     : Joi.string().allow([null, ""]),
+  shifttocourtdecisiondate: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  ignoredcrime            : Joi.number().min(0).max(1).allow([null, ""]),
+  ignoreddate             : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  courtorderno            : Joi.string().max(50).allow([null, ""]),
+}).options({ allowUnknown: true });
 const schema = Joi.object({
+
   o_c_onus_advamount      : Joi.number().required(),
   o_c_onus_balance        : Joi.number().required(),
   o_c_onus_rightopeneddate: Joi.string()
@@ -58,6 +85,7 @@ const schema = Joi.object({
       }))
     })
   })
+
 }).options({ allowUnknown: true });
 
 export default async ({ data, where }) => {
@@ -182,34 +210,42 @@ export default async ({ data, where }) => {
       relation_id  : onusInfo?.id,
     });
   });
-  let neoInfo = {
-    relation_id             : onusInfo.id,
-    relation_type           : "ONUS",
-    orgmeasure              : data?.onus_neoinfo?.c_onus_orgmeasure,
-    measuredate             : data?.onus_neoinfo?.c_onus_measuredate,
-    measuredescription      : data?.onus_neoinfo?.c_onus_measuredescription,
-    causetostartcase        : data?.onus_neoinfo?.c_onus_causetostartcase,
-    datetstartcase          : data?.onus_neoinfo?.c_onus_datetstartcase,
-    registertopolice        : data?.onus_neoinfo?.c_onus_registertopolice,
-    registertopolicedate    : data?.onus_neoinfo?.c_onus_registertopolicedate,
-    timesinpolice           : data?.onus_neoinfo?.c_onus_timesinpolice,
-    registertoprocuror      : data?.onus_neoinfo?.c_onus_registertoprocuror,
-    registertoprocurordate  : data?.onus_neoinfo?.c_onus_registertoprocurordate,
-    timesinprocuror         : data?.onus_neoinfo?.c_onus_timesinprocuror,
-    registertocourt         : data?.onus_neoinfo?.c_onus_registertocourt,
-    registertocourtdate     : data?.onus_neoinfo?.c_onus_registertocourtdate,
-    timesincourt            : data?.onus_neoinfo?.c_onus_timesincourt,
-    shiftocourt2            : data?.onus_neoinfo?.c_onus_shiftocourt2,
-    shifttocourt2date       : data?.onus_neoinfo?.c_onus_shifttocourt2date,
-    timesincourt2           : data?.onus_neoinfo?.c_onus_timesincourt2,
-    shiftocourtdecision     : data?.onus_neoinfo?.c_onus_shiftocourtdecision,
-    shifttocourtdecisiondate: data?.onus_neoinfo?.c_onus_shifttocourtdecisiondate,
-    ignoredcrime            : data?.onus_neoinfo?.c_onus_ignoredcrime,
-    ignoreddate             : data?.onus_neoinfo?.c_onus_ignoreddate,
-    courtorderno            : data?.onus_neoinfo?.c_onus_courtorderno,
-    ...where
-  };
-
+  let neoInfo = null;
+  if (data?.onus_neoinfo){
+    neoInfo = {
+      relation_id             : onusInfo.id,
+      relation_type           : "ONUS",
+      orgmeasure              : data?.onus_neoinfo?.c_onus_orgmeasure,
+      measuredate             : data?.onus_neoinfo?.c_onus_measuredate,
+      measuredescription      : data?.onus_neoinfo?.c_onus_measuredescription,
+      causetostartcase        : data?.onus_neoinfo?.c_onus_causetostartcase,
+      datetstartcase          : data?.onus_neoinfo?.c_onus_datetstartcase,
+      registertopolice        : data?.onus_neoinfo?.c_onus_registertopolice,
+      registertopolicedate    : data?.onus_neoinfo?.c_onus_registertopolicedate,
+      timesinpolice           : data?.onus_neoinfo?.c_onus_timesinpolice,
+      registertoprocuror      : data?.onus_neoinfo?.c_onus_registertoprocuror,
+      registertoprocurordate  : data?.onus_neoinfo?.c_onus_registertoprocurordate,
+      timesinprocuror         : data?.onus_neoinfo?.c_onus_timesinprocuror,
+      registertocourt         : data?.onus_neoinfo?.c_onus_registertocourt,
+      registertocourtdate     : data?.onus_neoinfo?.c_onus_registertocourtdate,
+      timesincourt            : data?.onus_neoinfo?.c_onus_timesincourt,
+      shiftocourt2            : data?.onus_neoinfo?.c_onus_shiftocourt2,
+      shifttocourt2date       : data?.onus_neoinfo?.c_onus_shifttocourt2date,
+      timesincourt2           : data?.onus_neoinfo?.c_onus_timesincourt2,
+      shiftocourtdecision     : data?.onus_neoinfo?.c_onus_shiftocourtdecision,
+      shifttocourtdecisiondate: data?.onus_neoinfo?.c_onus_shifttocourtdecisiondate,
+      ignoredcrime            : data?.onus_neoinfo?.c_onus_ignoredcrime,
+      ignoreddate             : data?.onus_neoinfo?.c_onus_ignoreddate,
+      courtorderno            : data?.onus_neoinfo?.c_onus_courtorderno,
+      ...where
+    };
+    try {
+      await neoSchema.validate(neoInfo);
+    }
+    catch (err) {
+      throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
+    }
+  }
   onusInfo.transactions = TRANSACTIONS;
   onusInfo.neoInfo = neoInfo;
 

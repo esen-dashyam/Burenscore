@@ -56,7 +56,7 @@ const schema = Joi.object({
   o_fitchrating                 : Joi.string().valid(Object.keys(APPENDIX_P_FITCH)).optional().allow([null, ""]),
   o_sandp_rating                : Joi.string().valid(Object.keys(APPENDIX_R)).optional().allow([null, ""]),
   o_moodysrating                : Joi.string().valid(Object.keys(APPENDIX_C)).optional().allow([null, ""]),
-  o_companytypecode             : Joi.string().valid(Object.keys(APPENDIX_J)).optional().allow([null, ""]),
+  o_companytypecode             : Joi.string().valid(Object.keys(APPENDIX_J)).optional().required(),
   o_c_president_family_firstname: Joi.string().required().when("o_c_isorganization", {
     is  : 1,
     then: Joi.string().optional().allow([null, ""])

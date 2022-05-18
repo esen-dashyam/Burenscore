@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { APPENDIX, ERROR_CODES, ERROR_DETAILS } from "../../../../constants";
 import Joi from "joi";
+import APPENDIX_O from "../../../../constants/APPENDIX_O";
+import { optional } from "joi/lib/types/lazy";
 
 
 const checkDuplicate = (array, key) => {
@@ -15,6 +17,29 @@ const checkDuplicate = (array, key) => {
   }
   return duplicate;
 };
+
+const neoSchema = Joi.object({
+  orgmeasure              : Joi.string().max(500).optional().allow([null, ""]),
+  measuredate             : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  measuredescription      : Joi.string().max(500).optional().allow([null, ""]),
+  causetostartcase        : Joi.string().valid(Object.keys(APPENDIX_O)).optional().allow([null, ""]),
+  datetstartcase          : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  registertopolice        : Joi.number().min(0).max(1).allow([null, ""]),
+  registertopolicedate    : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  timesinpolice           : Joi.number().allow([null, ""]),
+  registertoprocuror      : Joi.number().min(0).max(1).allow([null, ""]),
+  timesinprocuror         : Joi.number().allow([null, ""]),
+  registertocourt         : Joi.number().min(0).max(1).allow([null, ""]),
+  registertocourtdate     : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  timesincourt            : Joi.number().allow([null, ""]),
+  shiftocourt2            : Joi.number().min(0).max(1).allow([null, ""]),
+  shiftocourtdecision     : Joi.string().allow([null, ""]),
+  shifttocourtdecisiondate: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  ignoredcrime            : Joi.number().min(0).max(1).allow([null, ""]),
+  ignoreddate             : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  courtorderno            : Joi.string().max(50).allow([null, ""]),
+}).options({ allowUnknown: true });
+
 const schema =Joi.object({
   o_c_receivable_balance    : Joi.number().required(),
   o_c_receivable_advamount  : Joi.number().required(),
@@ -137,34 +162,42 @@ export default async ({ data, where }) => {
       relation_id  : receivableInfo?.id,
     });
   });
-  let neoInfo = {
-    relation_id             : receivableInfo.id,
-    relation_type           : "RECEIVABLE",
-    orgmeasure              : data?.receivable_neoinfo?.c_receivable_orgmeasure,
-    measuredate             : data?.receivable_neoinfo?.c_receivable_measuredate,
-    measuredescription      : data?.receivable_neoinfo?.c_receivable_measuredescription,
-    causetostartcase        : data?.receivable_neoinfo?.c_receivable_causetostartcase,
-    datetstartcase          : data?.receivable_neoinfo?.c_receivable_datetstartcase,
-    registertopolice        : data?.receivable_neoinfo?.o_c_receivable_registertopolice,
-    registertopolicedate    : data?.receivable_neoinfo?.o_c_receivable_registertopolicedate,
-    timesinpolice           : data?.receivable_neoinfo?.o_c_receivable_timesinpolice,
-    registertoprocuror      : data?.receivable_neoinfo?.o_c_receivable_registertoprocuror,
-    registertoprocurordate  : data?.receivable_neoinfo?.o_c_receivable_registertoprocurordate,
-    timesinprocuror         : data?.receivable_neoinfo?.o_c_receivable_timesinprocuror,
-    registertocourt         : data?.receivable_neoinfo?.o_c_receivable_registertocourt,
-    registertocourtdate     : data?.receivable_neoinfo?.o_c_receivable_registertocourtdate,
-    timesincourt            : data?.receivable_neoinfo?.o_c_receivable_timesincourt,
-    shiftocourt2            : data?.receivable_neoinfo?.o_c_receivable_shiftocourt2,
-    shifttocourt2date       : data?.receivable_neoinfo?.o_c_receivable_shifttocourt2date,
-    timesincourt2           : data?.receivable_neoinfo?.o_c_receivable_timesincourt2,
-    shiftocourtdecision     : data?.receivable_neoinfo?.o_c_receivable_shiftocourtdecision,
-    shifttocourtdecisiondate: data?.receivable_neoinfo?.o_c_receivable_shifttocourtdecisiondate,
-    ignoredcrime            : data?.receivable_neoinfo?.o_c_receivable_ignoredcrime,
-    ignoreddate             : data?.receivable_neoinfo?.o_c_receivable_ignoreddate,
-    courtorderno            : data?.receivable_neoinfo?.o_c_receivable_courtorderno,
-    ...where
-  };
-
+  let neoInfo = null;
+  if (data?.receivable_neoinfo){
+    neoInfo = {
+      relation_id             : receivableInfo.id,
+      relation_type           : "RECEIVABLE",
+      orgmeasure              : data?.receivable_neoinfo?.c_receivable_orgmeasure,
+      measuredate             : data?.receivable_neoinfo?.c_receivable_measuredate,
+      measuredescription      : data?.receivable_neoinfo?.c_receivable_measuredescription,
+      causetostartcase        : data?.receivable_neoinfo?.c_receivable_causetostartcase,
+      datetstartcase          : data?.receivable_neoinfo?.c_receivable_datetstartcase,
+      registertopolice        : data?.receivable_neoinfo?.o_c_receivable_registertopolice,
+      registertopolicedate    : data?.receivable_neoinfo?.o_c_receivable_registertopolicedate,
+      timesinpolice           : data?.receivable_neoinfo?.o_c_receivable_timesinpolice,
+      registertoprocuror      : data?.receivable_neoinfo?.o_c_receivable_registertoprocuror,
+      registertoprocurordate  : data?.receivable_neoinfo?.o_c_receivable_registertoprocurordate,
+      timesinprocuror         : data?.receivable_neoinfo?.o_c_receivable_timesinprocuror,
+      registertocourt         : data?.receivable_neoinfo?.o_c_receivable_registertocourt,
+      registertocourtdate     : data?.receivable_neoinfo?.o_c_receivable_registertocourtdate,
+      timesincourt            : data?.receivable_neoinfo?.o_c_receivable_timesincourt,
+      shiftocourt2            : data?.receivable_neoinfo?.o_c_receivable_shiftocourt2,
+      shifttocourt2date       : data?.receivable_neoinfo?.o_c_receivable_shifttocourt2date,
+      timesincourt2           : data?.receivable_neoinfo?.o_c_receivable_timesincourt2,
+      shiftocourtdecision     : data?.receivable_neoinfo?.o_c_receivable_shiftocourtdecision,
+      shifttocourtdecisiondate: data?.receivable_neoinfo?.o_c_receivable_shifttocourtdecisiondate,
+      ignoredcrime            : data?.receivable_neoinfo?.o_c_receivable_ignoredcrime,
+      ignoreddate             : data?.receivable_neoinfo?.o_c_receivable_ignoreddate,
+      courtorderno            : data?.receivable_neoinfo?.o_c_receivable_courtorderno,
+      ...where
+    };
+    try {
+      await neoSchema.validate(neoInfo);
+    }
+    catch (err) {
+      throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
+    }
+  }
   receivableInfo.transactions = TRANSACTIONS;
   receivableInfo.neoInfo = neoInfo;
 

@@ -3,6 +3,7 @@ import { ERROR_CODES, ERROR_DETAILS } from "../../../../constants";
 import Joi from "joi";
 import { db } from "@goodtechsoft/sequelize-postgres";
 import { fall } from "../../../../utils";
+import APPENDIX_D from "../../../../constants/APPENDIX_D";
 const checkDuplicate = (array, key) => {
   let duplicate = false;
   if (array.length > 2){
@@ -19,7 +20,7 @@ const customerSchemaObject = Joi.object({
   o_c_relationcustomer_lastName       : Joi.string().required(),
   o_c_relationcustomer_isforeign      : Joi.number().required(),
   o_c_relationcustomer_registerno     : Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required(),
-  o_c_relationcustomer_citizenrelation: Joi.string().required(),
+  o_c_relationcustomer_citizenrelation: Joi.string().valid(Object.keys(APPENDIX_D)).required(),
   o_c_relationcustomer_isfinancialonus: Joi.number().required(),
   o_c_relationcustomer_relno          : Joi.string().required(),
 }).options({ allowUnknown: true });
@@ -28,14 +29,14 @@ const customerSchemaArray = Joi.array().items(Joi.object({
   o_c_relationcustomer_lastName       : Joi.string().required(),
   o_c_relationcustomer_isforeign      : Joi.number().required(),
   o_c_relationcustomer_registerno     : Joi.string().regex(/[А-Я||Ү||Ө][А-Я||Ү||Ө][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required(),
-  o_c_relationcustomer_citizenrelation: Joi.string().required(),
+  o_c_relationcustomer_citizenrelation: Joi.string().valid(Object.keys(APPENDIX_D)).required(),
   o_c_relationcustomer_isfinancialonus: Joi.number().required(),
   o_c_relationcustomer_relno          : Joi.string().required(),
 })).options({ allowUnknown: true });
 const orgSchemaObject = Joi.object({
   o_c_relationorg_orgname        : Joi.string().max(50).required(),
   o_c_relationorg_isforeign      : Joi.number().required(),
-  o_c_relationorg_stateregisterno: Joi.string().allow([null, ""]),
+  o_c_relationorg_stateregisterno: Joi.string().max(16).allow([null, ""]),
   o_c_relationorg_registerno     : Joi.string().regex(/[0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required(),
   o_c_relationorg_orgrelation    : Joi.string().required(),
   o_c_relationorg_isfinancialonus: Joi.number().required(),
@@ -44,7 +45,7 @@ const orgSchemaObject = Joi.object({
 const orgSchemaArray = Joi.array().items(Joi.object({
   o_c_relationorg_orgname        : Joi.string().max(50).required(),
   o_c_relationorg_isforeign      : Joi.number().required(),
-  o_c_relationorg_stateregisterno: Joi.string().allow([null, ""]),
+  o_c_relationorg_stateregisterno: Joi.string().max(16).allow([null, ""]),
   o_c_relationorg_registerno     : Joi.string().regex(/[0-9][0-9][0-9][0-9][0-9][0-9][0-9]/).required(),
   o_c_relationorg_orgrelation    : Joi.string().required(),
   o_c_relationorg_isfinancialonus: Joi.number().required(),
@@ -68,7 +69,8 @@ export default async ({ data, where, type, session }) => {
         if (err.code){
           throw new ValidationError(err.code, ERROR_DETAILS[err.code]);
         }
-        throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
+        throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]], APPENDIX_D[err.message[0]]);
+
       }
       let falls = data.map(item => {
         return async () => {
@@ -96,7 +98,8 @@ export default async ({ data, where, type, session }) => {
       }
       catch (err) {
         console.log("================================", err);
-        throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
+
+        throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]], APPENDIX_D);
       }
       // let relno = await db.find(db.OCRelationcustomer, {
       //   ...where,

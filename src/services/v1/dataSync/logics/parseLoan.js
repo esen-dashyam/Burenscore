@@ -6,6 +6,7 @@ import APPENDIX_K from "../../../../constants/APPENDIX_K";
 import APPENDIX_EO from "../../../../constants/APPENDIX_EO";
 import APPENDIX_A from "../../../../constants/APPENDIX_A";
 import Joi from "joi";
+import APPENDIX_O from "../../../../constants/APPENDIX_O";
 const checkDuplicate = (array, key) => {
   let duplicate = false;
   array.forEach((item, index) => {
@@ -14,7 +15,32 @@ const checkDuplicate = (array, key) => {
   });
   return duplicate;
 };
+const neoSchema = Joi.object({
+  orgmeasure              : Joi.string().max(500).optional().allow([null, ""]),
+  measuredate             : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  measuredescription      : Joi.string().max(500).optional().allow([null, ""]),
+  causetostartcase        : Joi.string().valid(Object.keys(APPENDIX_O)).optional().allow([null, ""]),
+  datetstartcase          : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  registertopolice        : Joi.number().min(0).max(1).allow([null, ""]),
+  registertopolicedate    : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  timesinpolice           : Joi.number().allow([null, ""]),
+  registertoprocurordate  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  timesinprocuror         : Joi.number().allow([null, ""]),
+  registertocourt         : Joi.number().min(0).max(1).allow([null, ""]),
+  registertocourtdate     : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  timesincourt            : Joi.number().allow([null, ""]),
+  shiftocourt2            : Joi.number().min(0).max(1).allow([null, ""]),
+  shifttocourt2date       : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  timesincourt2           : Joi.number().allow([null, ""]),
+  shiftocourtdecision     : Joi.number().min(0).max(1).allow([null, ""]),
+  shifttocourtdecisiondate: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  ignoredcrime            : Joi.number().min(0).max(1).allow([null, ""]),
+  ignoreddate             : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
+  courtorderno            : Joi.string().max(50).allow([null, ""]),
+}).options({ allowUnknown: true });
+
 const schema = Joi.object({
+
   o_c_loan_provideLoanSize: Joi.number().max(999999999999999.99).precision(2).required(),
   o_c_loan_balance        : Joi.number().max(999999999999999.99).precision(2).required(),
   o_c_loan_loanProvenance : Joi.string().valid(Object.keys(APPENDIX_K)).required(),
@@ -197,34 +223,42 @@ export default async ({ data, where }) => {
     });
   });
 
-  let neoInfo = {
-    relation_id             : loanInfo.id,
-    relation_type           : "LOAN",
-    orgmeasure              : data.loan_neoinfo?.c_loan_orgmeasure,
-    measuredate             : data.loan_neoinfo?.c_loan_measuredate,
-    measuredescription      : data.loan_neoinfo?.c_loan_measuredescription,
-    causetostartcase        : data.loan_neoinfo?.c_loan_causetostartcase,
-    datetstartcase          : data.loan_neoinfo?.c_loan_datetstartcase,
-    registertopolice        : data.loan_neoinfo?.o_c_loan_registertopolice,
-    registertopolicedate    : data.loan_neoinfo?.o_c_loan_registertopolicedate,
-    timesinpolice           : data.loan_neoinfo?.o_c_loan_timesinpolice,
-    registertoprocuror      : data.loan_neoinfo?.o_c_loan_registertoprocuror,
-    registertoprocurordate  : data.loan_neoinfo?.o_c_loan_registertoprocurordate,
-    timesinprocuror         : data.loan_neoinfo?.o_c_loan_timesinprocuror,
-    registertocourt         : data.loan_neoinfo?.o_c_loan_registertocourt,
-    registertocourtdate     : data.loan_neoinfo?.o_c_loan_registertocourtdate,
-    timesincourt            : data.loan_neoinfo?.o_c_loan_timesincourt,
-    shiftocourt2            : data.loan_neoinfo?.o_c_loan_shiftocourt2,
-    shifttocourt2date       : data.loan_neoinfo?.o_c_loan_shifttocourt2date,
-    timesincourt2           : data.loan_neoinfo?.o_c_loan_timesincourt2,
-    shiftocourtdecision     : data.loan_neoinfo?.o_c_loan_shiftocourtdecision,
-    shifttocourtdecisiondate: data.loan_neoinfo?.o_c_loan_shifttocourtdecisiondate,
-    ignoredcrime            : data.loan_neoinfo?.o_c_loan_ignoredcrime,
-    ignoreddate             : data.loan_neoinfo?.o_c_loan_ignoreddate,
-    courtorderno            : data.loan_neoinfo?.o_c_loan_courtorderno,
-    ...where
-  };
-
+  let neoInfo = null;
+  if (data.loan_neoinfo){
+    neoInfo = {
+      relation_id             : loanInfo.id,
+      relation_type           : "LOAN",
+      orgmeasure              : data.loan_neoinfo?.c_loan_orgmeasure,
+      measuredate             : data.loan_neoinfo?.c_loan_measuredate,
+      measuredescription      : data.loan_neoinfo?.c_loan_measuredescription,
+      causetostartcase        : data.loan_neoinfo?.c_loan_causetostartcase,
+      datetstartcase          : data.loan_neoinfo?.c_loan_datetstartcase,
+      registertopolice        : data.loan_neoinfo?.o_c_loan_registertopolice,
+      registertopolicedate    : data.loan_neoinfo?.o_c_loan_registertopolicedate,
+      timesinpolice           : data.loan_neoinfo?.o_c_loan_timesinpolice,
+      registertoprocuror      : data.loan_neoinfo?.o_c_loan_registertoprocuror,
+      registertoprocurordate  : data.loan_neoinfo?.o_c_loan_registertoprocurordate,
+      timesinprocuror         : data.loan_neoinfo?.o_c_loan_timesinprocuror,
+      registertocourt         : data.loan_neoinfo?.o_c_loan_registertocourt,
+      registertocourtdate     : data.loan_neoinfo?.o_c_loan_registertocourtdate,
+      timesincourt            : data.loan_neoinfo?.o_c_loan_timesincourt,
+      shiftocourt2            : data.loan_neoinfo?.o_c_loan_shiftocourt2,
+      shifttocourt2date       : data.loan_neoinfo?.o_c_loan_shifttocourt2date,
+      timesincourt2           : data.loan_neoinfo?.o_c_loan_timesincourt2,
+      shiftocourtdecision     : data.loan_neoinfo?.o_c_loan_shiftocourtdecision,
+      shifttocourtdecisiondate: data.loan_neoinfo?.o_c_loan_shifttocourtdecisiondate,
+      ignoredcrime            : data.loan_neoinfo?.o_c_loan_ignoredcrime,
+      ignoreddate             : data.loan_neoinfo?.o_c_loan_ignoreddate,
+      courtorderno            : data.loan_neoinfo?.o_c_loan_courtorderno,
+      ...where
+    };
+    try {
+      await neoSchema.validate(neoInfo);
+    }
+    catch (err) {
+      throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
+    }
+  }
   loanInfo.transactions = TRANSACTIONS;
   loanInfo.neoInfo = neoInfo;
 

@@ -1,3 +1,4 @@
+
 export default {
   // CUSTOMER
   o_c_customercode: {
@@ -21,7 +22,7 @@ export default {
   o_c_isorganization: {
     "any.empty"   : "ME2018",
     "any.required": "ME2018",
-    "string.base" : "ME2019",
+    "number.base" : "ME2019",
   },
   o_c_customername: {
     "any.empty"   : "ME2020",
@@ -29,15 +30,12 @@ export default {
     "string.max"  : "ME2021",
   },
   c_lastname: {
-    "any.empty"   : "ME2022",
-    "any.required": "ME2022",
-    "string.max"  : "ME2022",
+    "string.max": "ME2022",
   },
   o_c_isforeign: {
     "any.empty"   : "ME2023",
     "any.required": "ME2023",
-    "number.max"  : "ME2024",
-    "number.base" : "ME2025",
+    "number.base" : "ME2024",
   },
   o_c_birthdate: {
     "string.regex.base": "ME2025",
@@ -58,9 +56,7 @@ export default {
     "string.regex.base": "ME2031",
   },
   o_c_stateregister_passportorno: {
-    "any.empty"   : "ME2031",
-    "any.required": "ME2031",
-    "string.max"  : "ME2032",
+    "string.base": "ME2032",
   },
   c_familynumofmembers: {
     "any.empty"     : "ME2034",
@@ -86,8 +82,9 @@ export default {
     "string.max": "ME2045",
   },
   o_companytypecode: {
-    "any.valid" : "ME2047",
-    "string.max": "ME2046",
+    "any.required" : "ME2050",
+    "any.empty"    : "ME2048",
+    "any.allowOnly": "",
   },
   o_c_president_family_firstname: {
     "any.empty"   : "ME2051",
@@ -102,7 +99,8 @@ export default {
   o_c_president_family_isforeign: {
     "any.required": "ME2055",
     "any.empty"   : "ME2055",
-    "number.max"  : "ME2056",
+    "number.base" : "ME2057",
+    "string.max"  : "ME2056",
   },
   o_c_president_family_registerno: {
     "any.empty"        : "ME2058",
@@ -762,6 +760,7 @@ export default {
     "string.max"  : "ME3419",
   },
   o_c_relationcustomer_lastName: {
+    "any.empty" : "o_c_relationcustomer_lastName-таг нь байхгүй байна ",
     "string.max": "ME3384",
   },
   o_c_relationcustomer_isforeign: {
@@ -775,9 +774,10 @@ export default {
     "string.regex.base": "ME3388",
   },
   o_c_relationcustomer_citizenrelation: {
-    "any.required": "ME3389",
-    "any.empty"   : "ME3391",
-    "string.max"  : "ME3390",
+    "any.required" : "ME3389",
+    "any.empty"    : "ME3391",
+    "string.max"   : "ME3390",
+    "any.allowOnly": "",
   },
   o_c_relationcustomer_isfinancialonus: {
     "any.required": "ME3392",
@@ -799,7 +799,7 @@ export default {
     "number.base" : "ME3365",
   },
   o_c_relationorg_stateregisterno: {
-    "string.regex.base": "ME3368",
+    "string.max": "ME3368",
   },
   o_c_relationorg_registerno: {
     "any.required"     : "ME3366",
@@ -827,6 +827,7 @@ export default {
     "string.max"  : "ME3033",
   },
   o_shareholder_lastname: {
+    "any.empty" : "o_shareholder_lastname таг нь байхгүй байна",
     "string.max": "ME3034",
   },
   o_shareholdercus_isforeign: {
@@ -835,8 +836,9 @@ export default {
     "number.base" : "ME3036",
   },
   o_shareholdercus_registerno: {
-    "any.required": "ME3038",
-    "any.empty"   : "ME3039",
+    "any.required"     : "ME3038",
+    "any.empty"        : "ME3038",
+    "string.regex.base": "ME3039",
   },
   o_shareholder_orgname: {
     "any.required": "ME3022",
@@ -1224,5 +1226,73 @@ export default {
   o_netprofit: {
     "number.unsafe"  : "ME3300",
     "number.positive": "ME3302",
+  },
+  // ----------------------------------------------------------------------------------------------------------------------
+  Orgmeasure: {
+    "string.max": "ME3502",
+  },
+  Measuredate: {
+    "string.regex.base": "ME3503",
+  },
+  Measuredescription: {
+    "string.max": "ME3504",
+  },
+  Causetostartcase: {
+    "string.max": "ME3505",
+    "any.empty" : "ME3506",
+  },
+  Datetstartcase: {
+    "string.regex.base": "ME3507",
+  },
+  Registertopolice: {
+    "string.max": "ME3508",
+  },
+  Registertopolicedate: {
+    "string.regex.base": "ME3509",
+  },
+  Timesinpolice: {
+    "string.max": "ME3510",
+  },
+  Registertoprocuror: {
+    "string.max": "ME3511",
+  },
+  Registertoprocurordate: {
+    "string.regex.base": "ME3512",
+  },
+  Timesinprocuror: {
+    "string.max": "ME3513",
+  },
+  Registertocourt: {
+    "string.max": "ME3514",
+  },
+  Registertocourtdate: {
+    "string.regex.base": "ME3515",
+  },
+  Timesincourt: {
+    "string.max": "ME3516",
+  },
+  Shiftocourt2: {
+    "string.max": "ME3517",
+  },
+  Shifttocourt2date: {
+    "string.regex.base": "ME3518",
+  },
+  Timesincourt2: {
+    "string.max": "ME3519",
+  },
+  Shiftocourtdecision: {
+    "string.max": "ME3520",
+  },
+  Shifttocourtdecisiondate: {
+    "string.regex.base": "ME3521",
+  },
+  Ignoredcrime: {
+    "string.max": "ME3522",
+  },
+  Ignoreddate: {
+    "string.regex.base": "ME3523",
+  },
+  Courtorderno: {
+    "string.max": "ME3524",
   },
 };
