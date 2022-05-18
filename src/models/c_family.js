@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     c_g_salary: {
       type     : DataTypes.DECIMAL(20, 2),
-      allowNull: false,
+      allowNull: true,
     },
     c_g_otherincome: {
       type     : DataTypes.DECIMAL(20, 2),
