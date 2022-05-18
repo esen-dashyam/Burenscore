@@ -22,7 +22,14 @@ const formatter = (value = {}, model) => {
       if (attributeType && value[key] && attributeType === "DATE") {
         return {
           ...acc,
-          [key]: moment(value[key]).format("YYYY-MM-DD")
+          [key]: moment(value[key]).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD")
+        };
+      }
+      if (key === "o_c_loan_loanclasscode" || key === "o_c_leasing_loanclasscode" || key ==="o_c_onus_loanclasscode" || key === "o_c_receivable_loanclasscode" || key === "o_c_loanline_loanclasscode" || key === "o_c_guarantee_loanclasscode"){
+        return {
+          ...acc,
+          [key]          : value[key],
+          [`${key}_name`]: APPENDIX[FORMATTABLE_VARIABLES[key]][value[key]] || value[key]
         };
       }
       if (FORMATTABLE_VARIABLES[key]){
@@ -30,6 +37,14 @@ const formatter = (value = {}, model) => {
           ...acc,
           [key]: APPENDIX[FORMATTABLE_VARIABLES[key]][value[key]] || value[key],
         };
+      }
+      if (key === "o_c_bank_code"){
+        return {
+          ...acc,
+          [key]        : value[key],
+          o_c_bank_name: APPENDIX[FORMATTABLE_VARIABLES.o_c_bank_name][value[key]] || value[key]
+        };
+
       }
       return {
         ...acc,
@@ -122,9 +137,19 @@ export default async (register_no, session) => {
               o_c_bank_code   : value.o_c_bank_code,
               o_c_registerno  : value.o_c_registerno,
             } }, session);
+            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+            let mortgage;
+            if (mrtnos.length > 0){
+              mortgage = await db.findAll(db.OCMortgage, { where: {
+                o_c_customercode: value.o_c_customercode,
+                o_c_bank_code   : value.o_c_bank_code,
+                o_c_registerno  : value.o_c_registerno,
+                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session);
+            }
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             PAID_LOANS.push({
               ...value,
+              mortgage,
               // o_c_loan_starteddate  : moment(value.o_c_loan_starteddate).format("YYYY-MM-DD"),
               // o_c_loan_expdate      : moment(value.o_c_loan_expdate).format("YYYY-MM-DD"),
               // o_c_loan_extdate      : moment(value.o_c_loan_extdate).format("YYYY-MM-DD"),
@@ -139,14 +164,24 @@ export default async (register_no, session) => {
               o_c_registerno  : value.o_c_registerno,
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
+            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+            let mortgage;
+            if (mrtnos.length > 0){
+              mortgage = await db.findAll(db.OCMortgage, { where: {
+                o_c_customercode: value.o_c_customercode,
+                o_c_bank_code   : value.o_c_bank_code,
+                o_c_registerno  : value.o_c_registerno,
+                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session);
+            }
             UNPAID_LOANS.push({
-              ...value.dataValues,
+              ...value,
               // o_c_loan_starteddate  : moment(value.o_c_loan_starteddate).format("YYYY-MM-DD"),
               // o_c_loan_expdate      : moment(value.o_c_loan_expdate).format("YYYY-MM-DD"),
               // o_c_loan_extdate      : moment(value.o_c_loan_extdate).format("YYYY-MM-DD"),
               // o_c_updatedexpdate    : moment(value.o_c_updatedexpdate).format("YYYY-MM-DD"),
               // o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_loan_loanclasscode],
-              customer
+              customer,
+              mortgage
             });
           }
           break;
@@ -160,12 +195,22 @@ export default async (register_no, session) => {
               o_c_registerno  : value.o_c_registerno,
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
+            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+            let mortgage;
+            if (mrtnos.length > 0){
+              mortgage = await db.findAll(db.OCMortgage, { where: {
+                o_c_customercode: value.o_c_customercode,
+                o_c_bank_code   : value.o_c_bank_code,
+                o_c_registerno  : value.o_c_registerno,
+                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session);
+            }
             PAID_LEASINGS.push({
               ...value,
               // o_c_leasing_starteddate  : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
               // o_c_leasing_expdate      : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
               // o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_leasing_loanclasscode],
-              customer
+              customer,
+              mortgage
             });
           } else if (value) {
             let customer = await db.find(db.Customer, { where: {
@@ -174,12 +219,22 @@ export default async (register_no, session) => {
               o_c_registerno  : value.o_c_registerno,
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
+            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+            let mortgage;
+            if (mrtnos.length > 0){
+              mortgage = await db.findAll(db.OCMortgage, { where: {
+                o_c_customercode: value.o_c_customercode,
+                o_c_bank_code   : value.o_c_bank_code,
+                o_c_registerno  : value.o_c_registerno,
+                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session);
+            }
             UNPAID_LEASINGS.push({
               ...value,
               // o_c_leasing_starteddate  : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
               // o_c_leasing_expdate      : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
               // o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_leasing_loanclasscode],
-              customer
+              customer,
+              mortgage
             });
           }
           break;
@@ -193,9 +248,19 @@ export default async (register_no, session) => {
               o_c_registerno  : value.o_c_registerno,
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
+            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+            let mortgage;
+            if (mrtnos.length > 0){
+              mortgage = await db.findAll(db.OCMortgage, { where: {
+                o_c_customercode: value.o_c_customercode,
+                o_c_bank_code   : value.o_c_bank_code,
+                o_c_registerno  : value.o_c_registerno,
+                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session);
+            }
             ACCREDITS.push({
               ...value,
-              customer
+              customer,
+              mortgage
             });
           }
           break;
@@ -209,14 +274,24 @@ export default async (register_no, session) => {
               o_c_registerno  : value.o_c_registerno,
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
+            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+            let mortgage;
+            if (mrtnos.length > 0){
+              mortgage = await db.findAll(db.OCMortgage, { where: {
+                o_c_customercode: value.o_c_customercode,
+                o_c_bank_code   : value.o_c_bank_code,
+                o_c_registerno  : value.o_c_registerno,
+                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session);
+            }
             PAID_ONUS.push({
               ...value,
               // o_c_onus_rightopeneddate : moment(value.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
               // o_c_onus_starteddate     : moment(value.o_c_onus_starteddate).format("YYYY-MM-DD"),
               // o_c_onus_paymentfinaldate: moment(value.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
               // o_c_onus_expdate         : moment(value.o_c_onus_expdate).format("YYYY-MM-DD"),
-              o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_onus_loanclasscode],
+              // o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_onus_loanclasscode],
               customer,
+              mortgage
             });
           } else if (value) {
             let customer = await db.find(db.Customer, { where: {
@@ -225,6 +300,15 @@ export default async (register_no, session) => {
               o_c_registerno  : value.o_c_registerno,
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
+            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+            let mortgage;
+            if (mrtnos.length > 0){
+              mortgage = await db.findAll(db.OCMortgage, { where: {
+                o_c_customercode: value.o_c_customercode,
+                o_c_bank_code   : value.o_c_bank_code,
+                o_c_registerno  : value.o_c_registerno,
+                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session);
+            }
             UNPAID_ONUS.push({
               ...item,
               // o_c_onus_rightopeneddate : moment(value.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
@@ -232,7 +316,8 @@ export default async (register_no, session) => {
               // o_c_onus_paymentfinaldate: moment(value.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
               // o_c_onus_expdate         : moment(value.o_c_onus_expdate).format("YYYY-MM-DD"),
               // o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_onus_loanclasscode],
-              customer
+              customer,
+              mortgage
             });
           }
           break;
@@ -246,11 +331,21 @@ export default async (register_no, session) => {
               o_c_registerno  : value.o_c_registerno,
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
+            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+            let mortgage;
+            if (mrtnos.length > 0){
+              mortgage = await db.findAll(db.OCMortgage, { where: {
+                o_c_customercode: value.o_c_customercode,
+                o_c_bank_code   : value.o_c_bank_code,
+                o_c_registerno  : value.o_c_registerno,
+                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session);
+            }
             PAID_BONDS.push({
               ...value,
               // o_bond_starteddate: moment(value.o_bond_starteddate).format("YYYY-MM-DD"),
               // o_bond_expdate    : moment(value.o_bond_expdate).format("YYYY-MM-DD"),
-              customer
+              customer,
+              mortgage
             });
           } else if (value){
             let customer = await db.find(db.Customer, { where: {
@@ -259,11 +354,21 @@ export default async (register_no, session) => {
               o_c_registerno  : value.o_c_registerno,
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
+            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+            let mortgage;
+            if (mrtnos.length > 0){
+              mortgage = await db.findAll(db.OCMortgage, { where: {
+                o_c_customercode: value.o_c_customercode,
+                o_c_bank_code   : value.o_c_bank_code,
+                o_c_registerno  : value.o_c_registerno,
+                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session);
+            }
             UNPAID_BONDS.push({
               ...value,
               // o_bond_starteddate: moment(value.o_bond_starteddate).format("YYYY-MM-DD"),
               // o_bond_expdate    : moment(value.o_bond_expdate).format("YYYY-MM-DD"),
-              customer
+              customer,
+              mortgage
             });
           }
           break;
@@ -277,10 +382,20 @@ export default async (register_no, session) => {
               o_c_registerno  : value.o_c_registerno,
             } }, session);
             if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
+            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+            let mortgage;
+            if (mrtnos.length > 0){
+              mortgage = await db.findAll(db.OCMortgage, { where: {
+                o_c_customercode: value.o_c_customercode,
+                o_c_bank_code   : value.o_c_bank_code,
+                o_c_registerno  : value.o_c_registerno,
+                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session);
+            }
             GUARANTEES.push({
               ...value,
               // o_c_guarantee_loanclasscode: APPENDIX.APPENDIX_EO[item?.o_c_guarantee_loanclasscode],
-              customer
+              customer,
+              mortgage
             });
           }
           break;

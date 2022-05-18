@@ -56,6 +56,12 @@ const formatter = (value = {}, model) => {
           [key]: value[key]
         };
       }
+      if (key === "o_c_bank_code"){
+        return {
+          ...acc,
+          [key]: APPENDIX.BANK_CODES[value[key]] || value[key],
+        };
+      }
       if (FORMATTABLE_VARIABLES[key]){
         return {
           ...acc,
@@ -125,19 +131,14 @@ export default async (register_no, session) => {
   let customer = await db.find(db.Customer, {
     where: where
   }).then(data => formatter(data.dataValues, db.Customer));
-  console.log("=========>", customer);
   if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
   // let loansWithBalance = await db.findAll(db.OCLoanInformation, { where: { ...where, o_c_loan_balance: { [Op.gt]: 0 } } }, session);
   // let loansWithOutBalance = await db.findAll(db.OCLoanInformation, { where: { ...where, o_c_loan_balance: { [Op.eq]: 0 } } }, session);
 
   let loans = await db.findAll(db.OCLoanInformation, { where: where }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCLoanInformation)));
   let loanmrtno = await db.findAll(db.Mrtno, { where: where }, session);
-  console.log("==============>", loanmrtno);
   let loanmrt = (await db.findAll(db.OCMortgage, { where: { ...where, o_c_mrtno: loanmrtno.map(item => item.mrtno) } }, session)).map(mrt => ({ ...formatter(mrt.dataValues, db.OCMortgage), relation_id: loanmrtno.find(no => no.mrtno === mrt.o_c_mrtno)?.relation_id }));
-  console.log("********* ********* ********* ********* ********* *********  ********* *********  *********  *********  ********* ********* ");
   // console.log(loanmrt.map(item => item.relation_id));
-  console.log(loanmrt);
-  console.log("********* ********* ********* ********* ********* *********  ********* *********  *********  *********  ********* ********* ");
   let leasings = await db.findAll(db.OCLeasing, { where: { ...where, } }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCLeasing)));
   let onus = await db.findAll(db.OCOnusInformation, { where: where }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCOnusInformation)));
   let receivables = await db.findAll(db.OCReceivable, { where: where }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCReceivable)));
