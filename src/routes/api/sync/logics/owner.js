@@ -3,6 +3,7 @@ import { db, Sequelize } from "@goodtechsoft/sequelize-postgres";
 import { ERRORS, APPENDIX, FORMATTABLE_VARIABLES } from "../../../../constants";
 import moment from "moment";
 import axios from "axios";
+
 const { Op } = Sequelize;
 
 const getCurrencies = async ({ currencyCode }) => {
@@ -46,7 +47,13 @@ const formatter = (value = {}, model) => {
       if (attributeType && value[key] && attributeType === "DATE") {
         return {
           ...acc,
-          [key]: moment(value[key]).format("YYYY-MM-DD")
+          [key]: moment(value[key]).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD")
+        };
+      }
+      if (key === "o_c_loan_loanclasscode" || key === "o_c_leasing_loanclasscode" || key ==="o_c_onus_loanclasscode" || key === "o_c_receivable_loanclasscode" || key === "o_c_loanline_loanclasscode" || key === "o_c_guarantee_loanclasscode"){
+        return {
+          ...acc,
+          [key]: value[key]
         };
       }
       if (FORMATTABLE_VARIABLES[key]){
@@ -62,7 +69,7 @@ const formatter = (value = {}, model) => {
     }, {})
   };
 };
-
+// o_c_onus_loanclasscode, o_c_receivable_loanclasscode, o_c_loanline_loanclasscode o_c_guarantee_loanclasscode
 export default async (register_no, session) => {
   let TOTAL_COUNT = { NORMAL: 0, OVERDUE: 0, ABNORMAL: 0, UNCERTAIN: 0, BAD: 0, };
   let TOTAL_VALUE = { NORMAL: 0, OVERDUE: 0, ABNORMAL: 0, UNCERTAIN: 0, BAD: 0, };
@@ -118,6 +125,7 @@ export default async (register_no, session) => {
   let customer = await db.find(db.Customer, {
     where: where
   }).then(data => formatter(data.dataValues, db.Customer));
+  console.log("=========>", customer);
   if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
   // let loansWithBalance = await db.findAll(db.OCLoanInformation, { where: { ...where, o_c_loan_balance: { [Op.gt]: 0 } } }, session);
   // let loansWithOutBalance = await db.findAll(db.OCLoanInformation, { where: { ...where, o_c_loan_balance: { [Op.eq]: 0 } } }, session);
@@ -130,9 +138,6 @@ export default async (register_no, session) => {
   let guarantee = await db.findAll(db.OCGuarantee, { where: where }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCGuarantee)));
   let bonds = await db.findAll(db.OBond, { where: where, }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OBond)));
   let accredits = await db.findAll(db.OCAccredit, { where: where }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCAccredit)));
-  // console.log("############################################################################");
-  // console.log(loans);
-  // console.log("############################################################################");
   loans.forEach(item => {
     // console.log("o_c_loan_loanclasscode:", item.o_c_loan_loanclasscode);
     if (item.payment_status === "PAID"){
@@ -142,7 +147,7 @@ export default async (register_no, session) => {
         // o_c_loan_expdate      : moment(item.o_c_loan_expdate).format("YYYY-MM-DD"),
         // o_c_loan_extdate      : moment(item.o_c_loan_extdate).format("YYYY-MM-DD"),
         // o_c_updatedexpdate    : moment(item.o_c_updatedexpdate).format("YYYY-MM-DD"),
-        // o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_loan_loanclasscode]
+        o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_loan_loanclasscode]
       });
     } else {
       UNPAID_LOANS.push({
@@ -151,7 +156,7 @@ export default async (register_no, session) => {
         // o_c_loan_expdate      : moment(item.o_c_loan_expdate).format("YYYY-MM-DD"),
         // o_c_loan_extdate      : moment(item.o_c_loan_extdate).format("YYYY-MM-DD"),
         // o_c_updatedexpdate    : moment(item.o_c_updatedexpdate).format("YYYY-MM-DD"),
-        // o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_loan_loanclasscode]
+        o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_loan_loanclasscode]
       });
     }
     switch (item.o_c_loan_loanclasscode) {
@@ -222,14 +227,14 @@ export default async (register_no, session) => {
         ...item,
         // o_c_leasing_starteddate  : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
         // o_c_leasing_expdate      : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
-        // o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_leasing_loanclasscode]
+        o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_leasing_loanclasscode]
       });
     } else {
       UNPAID_LEASINGS.push({
         ...item,
         // o_c_leasing_starteddate  : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
         // o_c_leasing_expdate      : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
-        // o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_leasing_loanclasscode]
+        o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_leasing_loanclasscode]
       });
     }
     switch (item.o_c_leasing_loanclasscode) {
@@ -303,7 +308,7 @@ export default async (register_no, session) => {
         // o_c_onus_starteddate     : moment(item.o_c_onus_starteddate).format("YYYY-MM-DD"),
         // o_c_onus_paymentfinaldate: moment(item.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
         // o_c_onus_expdate         : moment(item.o_c_onus_expdate).format("YYYY-MM-DD"),
-        // o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_onus_loanclasscode]
+        o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_onus_loanclasscode]
       });
     } else {
       UNPAID_ONUS.push({
@@ -312,7 +317,7 @@ export default async (register_no, session) => {
         // o_c_onus_starteddate     : moment(item.o_c_onus_starteddate).format("YYYY-MM-DD"),
         // o_c_onus_paymentfinaldate: moment(item.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
         // o_c_onus_expdate         : moment(item.o_c_onus_expdate).format("YYYY-MM-DD"),
-        // o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_onus_loanclasscode]
+        o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_onus_loanclasscode]
       });
     }
     switch (item.o_c_onus_loanclasscode) {
@@ -383,7 +388,7 @@ export default async (register_no, session) => {
         ...item,
         // o_c_receivable_starteddate  : moment(item.o_c_receivable_starteddate).format("YYYY-MM-DD"),
         // o_c_receivable_expdate      : moment(item.o_c_receivable_expdate).format("YYYY-MM-DD"),
-        // o_c_receivable_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_receivable_loanclasscode]
+        o_c_receivable_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_receivable_loanclasscode]
       });
     } else {
       UNPAID_RECEIVABLS.push({
@@ -391,7 +396,7 @@ export default async (register_no, session) => {
         // o_c_receivable_starteddate  : moment(item.o_c_receivable_starteddate).format("YYYY-MM-DD"),
         // o_c_receivable_expdate      : moment(item.o_c_receivable_expdate).format("YYYY-MM-DD"),
         // o_c_receivable_extdate      : moment(item.o_c_receivable_extdate).format("YYYY-MM-DD"),
-        // o_c_receivable_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_receivable_loanclasscode]
+        o_c_receivable_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_receivable_loanclasscode]
       });
     }
     switch (item.o_c_receivable_loanclasscode) {
@@ -463,7 +468,7 @@ export default async (register_no, session) => {
         // o_c_loanline_starteddate  : moment(item.o_c_loanline_starteddate).format("YYYY-MM-DD"),
         // o_c_loanline_expdate      : moment(item.o_c_loanline_expdate).format("YYYY-MM-DD"),
         // o_c_loanline_timestoloan  : moment(item.o_c_loanline_timestoloan).format("YYYY-MM-DD"),
-        // o_c_loanline_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_loanline_loanclasscode]
+        o_c_loanline_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_loanline_loanclasscode]
       });
     } else {
       UNPAID_LOANLINES.push({
@@ -471,7 +476,7 @@ export default async (register_no, session) => {
         // o_c_loanline_starteddate  : moment(item.o_c_loanline_starteddate).format("YYYY-MM-DD"),
         // o_c_loanline_expdate      : moment(item.o_c_loanline_expdate).format("YYYY-MM-DD"),
         // o_c_loanline_timestoloan  : moment(item.o_c_loanline_timestoloan).format("YYYY-MM-DD"),
-        // o_c_loanline_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_loanline_loanclasscode]
+        o_c_loanline_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_loanline_loanclasscode]
       });
     }
     switch (item.o_c_loanline_loanclasscode) {
@@ -638,13 +643,8 @@ export default async (register_no, session) => {
   RISK_VALUE = { NORMAL: parseFloat(RISK_VALUE.NORMAL).toFixed(2), OVERDUE: parseFloat(RISK_VALUE.OVERDUE).toFixed(2), ABNORMAL: parseFloat(RISK_VALUE.ABNORMAL).toFixed(2), UNCERTAIN: parseFloat(RISK_VALUE.UNCERTAIN).toFixed(2), BAD: parseFloat(RISK_VALUE.BAD).toFixed(2), };
 
   return {
-    get_date: moment(new Date).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD HH:mm"),
-    customer: {
-      ...customer.dataValues,
-      c_occupation     : APPENDIX.APPENDIX_Y[customer.c_occupation],
-      // o_c_birthdate    : moment(customer.o_c_birthdate).format("YYYY-MM-DD"),
-      o_companytypecode: APPENDIX.APPENDIX_J[customer?.o_companytypecode]
-    },
+    get_date  : moment(new Date).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD HH:mm"),
+    customer,
     PAID_LOANS,
     PAID_LEASINGS,
     PAID_ONUS,
@@ -657,15 +657,20 @@ export default async (register_no, session) => {
     UNPAID_RECEIVABLS,
     UNPAID_LOANLINES,
     UNPAID_BONDS,
-    GUARANTEES: guarantee,
-    ACCREDITS : accredits,
+    GUARANTEES: guarantee.map(item => {
+      return {
+        ...item,
+        o_c_guarantee_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_guarantee_loanclasscode]
+      };
+    }),
+    ACCREDITS: accredits,
     TOTAL_COUNT,
     TOTAL_VALUE,
-    NORMAL    : TOTAL_NORMAL,
-    OVERDUE   : TOTAL_OVERDUE,
-    ABNORMAL  : TOTAL_ABNORMAL,
-    UNCERTAIN : TOTAL_UNCERTAIN,
-    BAD       : TOTAL_BAD,
+    NORMAL   : TOTAL_NORMAL,
+    OVERDUE  : TOTAL_OVERDUE,
+    ABNORMAL : TOTAL_ABNORMAL,
+    UNCERTAIN: TOTAL_UNCERTAIN,
+    BAD      : TOTAL_BAD,
     UNPAID_VALUE,
     UNPAID_COUNT,
     UNPAID_NORMAL,
