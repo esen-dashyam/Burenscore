@@ -676,14 +676,14 @@ export default async (register_no, session) => {
     UNPAID_BONDS,
     GUARANTEES: guarantee.map(item => {
       return {
-        ...item,
+        ...formatter(item, db.OCGuarantee),
         o_c_guarantee_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_guarantee_loanclasscode],
         mortgage                   : loanmrt.filter(mrt => mrt.relation_id === item.id)
       };
     }),
     ACCREDITS: accredits.map(item => {
       return {
-        ...item,
+        ...formatter(item, db.OCAccredit),
         mortgage: loanmrt.filter(mrt => mrt.relation_id === item.id)
       };
     }),

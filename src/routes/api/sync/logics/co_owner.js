@@ -1,9 +1,9 @@
-import { db } from "@goodtechsoft/sequelize-postgres";
+import { db, Sequelize } from "@goodtechsoft/sequelize-postgres";
 import { APPENDIX, ERRORS, FORMATTABLE_VARIABLES } from "../../../../constants";
 import moment from "moment";
 import { fall } from "../../../../utils";
 import { NotfoundError } from "@goodtechsoft/micro-service/lib/errors";
-
+const { Op } = Sequelize;
 const formatter = (value = {}, model) => {
 
   const attributes = model.rawAttributes;
@@ -125,18 +125,35 @@ export default async (register_no, session) => {
   //   type     : DataTypes.STRING(255),
   //   allowNull: false,
   // },
+  let customers = await db.findAll(db.Customer, { where: {
+    [Op.or]: [{
+      o_c_customercode: relnos.map(item => item.o_c_customercode),
+      o_c_bank_code   : relnos.map(item => item.o_c_bank_code),
+    }],
+    o_c_registerno: relnos.map(item => item.o_c_registerno)
+  } });
+  let transactions = (await db.findAll(db.Transaction, { where: {
+    [Op.or]: [{
+      o_c_customercode: relnos.map(item => item.o_c_customercode),
+      o_c_bank_code   : relnos.map(item => item.o_c_bank_code),
+    }],
+    o_c_registerno: relnos.map(item => item.o_c_registerno),
+    type          : "PERFORMANCE"
+  },
+  sort: [["datetopay", "ASC"]]
+  }, session)).reduce((acc, iter) => {
+    return {
+      ...acc,
+      [iter.relation_id]: moment(iter.datetopay).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD")
+    };
+  }, {});
+
   let falls = relnos.map(item => {
     return async () => {
       switch (item.type) {
         case "LOAN": {
-          // console.log("=====================================>", item.relation_id);
           let value = await db.find(db.OCLoanInformation, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCLoanInformation));
           if (value && value.payment_status === "PAID"){
-            let customer = await db.find(db.Customer, { where: {
-              o_c_customercode: value.o_c_customercode,
-              o_c_bank_code   : value.o_c_bank_code,
-              o_c_registerno  : value.o_c_registerno,
-            } }, session);
             let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
             let mortgage;
             if (mrtnos.length > 0){
@@ -146,24 +163,14 @@ export default async (register_no, session) => {
                 o_c_registerno  : value.o_c_registerno,
                 o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session);
             }
-            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             PAID_LOANS.push({
               ...value,
               mortgage,
-              // o_c_loan_starteddate  : moment(value.o_c_loan_starteddate).format("YYYY-MM-DD"),
-              // o_c_loan_expdate      : moment(value.o_c_loan_expdate).format("YYYY-MM-DD"),
-              // o_c_loan_extdate      : moment(value.o_c_loan_extdate).format("YYYY-MM-DD"),
-              // o_c_updatedexpdate    : moment(value.o_c_updatedexpdate).format("YYYY-MM-DD"),
-              // o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_loan_loanclasscode],
-              customer,
+              customer : customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_bank_code)),
+              paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD")
+
             });
           } else if (value){
-            let customer = await db.find(db.Customer, { where: {
-              o_c_customercode: value.o_c_customercode,
-              o_c_bank_code   : value.o_c_bank_code,
-              o_c_registerno  : value.o_c_registerno,
-            } }, session);
-            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
             let mortgage;
             if (mrtnos.length > 0){
@@ -175,13 +182,8 @@ export default async (register_no, session) => {
             }
             UNPAID_LOANS.push({
               ...value,
-              // o_c_loan_starteddate  : moment(value.o_c_loan_starteddate).format("YYYY-MM-DD"),
-              // o_c_loan_expdate      : moment(value.o_c_loan_expdate).format("YYYY-MM-DD"),
-              // o_c_loan_extdate      : moment(value.o_c_loan_extdate).format("YYYY-MM-DD"),
-              // o_c_updatedexpdate    : moment(value.o_c_updatedexpdate).format("YYYY-MM-DD"),
-              // o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_loan_loanclasscode],
-              customer,
-              mortgage
+              mortgage,
+              customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_bank_code)),
             });
           }
           break;
@@ -189,12 +191,6 @@ export default async (register_no, session) => {
         case "LEASING": {
           let value = await db.find(db.OCLeasing, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCLeasing));
           if (value && value.payment_status === "PAID"){
-            let customer = await db.find(db.Customer, { where: {
-              o_c_customercode: value.o_c_customercode,
-              o_c_bank_code   : value.o_c_bank_code,
-              o_c_registerno  : value.o_c_registerno,
-            } }, session);
-            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
             let mortgage;
             if (mrtnos.length > 0){
@@ -206,19 +202,11 @@ export default async (register_no, session) => {
             }
             PAID_LEASINGS.push({
               ...value,
-              // o_c_leasing_starteddate  : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
-              // o_c_leasing_expdate      : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
-              // o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_leasing_loanclasscode],
-              customer,
+              customer : customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_bank_code)),
+              paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD"),
               mortgage
             });
           } else if (value) {
-            let customer = await db.find(db.Customer, { where: {
-              o_c_customercode: value.o_c_customercode,
-              o_c_bank_code   : value.o_c_bank_code,
-              o_c_registerno  : value.o_c_registerno,
-            } }, session);
-            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
             let mortgage;
             if (mrtnos.length > 0){
@@ -230,10 +218,7 @@ export default async (register_no, session) => {
             }
             UNPAID_LEASINGS.push({
               ...value,
-              // o_c_leasing_starteddate  : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
-              // o_c_leasing_expdate      : moment(value.o_c_leasing_starteddate).format("YYYY-MM-DD"),
-              // o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_leasing_loanclasscode],
-              customer,
+              customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_bank_code)),
               mortgage
             });
           }
@@ -242,12 +227,6 @@ export default async (register_no, session) => {
         case "ACCREDIT": {
           let value = await db.find(db.OCAccredit, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCAccredit));
           if (value){
-            let customer = await db.find(db.Customer, { where: {
-              o_c_customercode: value.o_c_customercode,
-              o_c_bank_code   : value.o_c_bank_code,
-              o_c_registerno  : value.o_c_registerno,
-            } }, session);
-            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
             let mortgage;
             if (mrtnos.length > 0){
@@ -259,7 +238,7 @@ export default async (register_no, session) => {
             }
             ACCREDITS.push({
               ...value,
-              customer,
+              customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_bank_code)),
               mortgage
             });
           }
@@ -268,12 +247,6 @@ export default async (register_no, session) => {
         case "ONUS": {
           let value = await db.find(db.OCOnusInformation, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCOnusInformation));
           if (value && item.payment_status === "PAID"){
-            let customer = await db.find(db.Customer, { where: {
-              o_c_customercode: value.o_c_customercode,
-              o_c_bank_code   : value.o_c_bank_code,
-              o_c_registerno  : value.o_c_registerno,
-            } }, session);
-            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
             let mortgage;
             if (mrtnos.length > 0){
@@ -285,21 +258,11 @@ export default async (register_no, session) => {
             }
             PAID_ONUS.push({
               ...value,
-              // o_c_onus_rightopeneddate : moment(value.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
-              // o_c_onus_starteddate     : moment(value.o_c_onus_starteddate).format("YYYY-MM-DD"),
-              // o_c_onus_paymentfinaldate: moment(value.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
-              // o_c_onus_expdate         : moment(value.o_c_onus_expdate).format("YYYY-MM-DD"),
-              // o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_onus_loanclasscode],
-              customer,
+              customer : customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_bank_code)),
+              paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD"),
               mortgage
             });
           } else if (value) {
-            let customer = await db.find(db.Customer, { where: {
-              o_c_customercode: value.o_c_customercode,
-              o_c_bank_code   : value.o_c_bank_code,
-              o_c_registerno  : value.o_c_registerno,
-            } }, session);
-            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
             let mortgage;
             if (mrtnos.length > 0){
@@ -311,12 +274,7 @@ export default async (register_no, session) => {
             }
             UNPAID_ONUS.push({
               ...item,
-              // o_c_onus_rightopeneddate : moment(value.o_c_onus_rightopeneddate).format("YYYY-MM-DD"),
-              // o_c_onus_starteddate     : moment(value.o_c_onus_starteddate).format("YYYY-MM-DD"),
-              // o_c_onus_paymentfinaldate: moment(value.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
-              // o_c_onus_expdate         : moment(value.o_c_onus_expdate).format("YYYY-MM-DD"),
-              // o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[value.o_c_onus_loanclasscode],
-              customer,
+              customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_bank_code)),
               mortgage
             });
           }
@@ -325,12 +283,6 @@ export default async (register_no, session) => {
         case "BOND": {
           let value = await db.find(db.OBond, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OBond));
           if (value && value.payment_status === "PAID"){
-            let customer = await db.find(db.Customer, { where: {
-              o_c_customercode: value.o_c_customercode,
-              o_c_bank_code   : value.o_c_bank_code,
-              o_c_registerno  : value.o_c_registerno,
-            } }, session);
-            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
             let mortgage;
             if (mrtnos.length > 0){
@@ -342,18 +294,11 @@ export default async (register_no, session) => {
             }
             PAID_BONDS.push({
               ...value,
-              // o_bond_starteddate: moment(value.o_bond_starteddate).format("YYYY-MM-DD"),
-              // o_bond_expdate    : moment(value.o_bond_expdate).format("YYYY-MM-DD"),
-              customer,
+              customer : customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_bank_code)),
+              paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD"),
               mortgage
             });
           } else if (value){
-            let customer = await db.find(db.Customer, { where: {
-              o_c_customercode: value.o_c_customercode,
-              o_c_bank_code   : value.o_c_bank_code,
-              o_c_registerno  : value.o_c_registerno,
-            } }, session);
-            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
             let mortgage;
             if (mrtnos.length > 0){
@@ -367,7 +312,7 @@ export default async (register_no, session) => {
               ...value,
               // o_bond_starteddate: moment(value.o_bond_starteddate).format("YYYY-MM-DD"),
               // o_bond_expdate    : moment(value.o_bond_expdate).format("YYYY-MM-DD"),
-              customer,
+              customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_bank_code)),
               mortgage
             });
           }
@@ -376,12 +321,6 @@ export default async (register_no, session) => {
         case "GUARANTEE": {
           let value = await db.find(db.OCGuarantee, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCGuarantee));
           if (value){
-            let customer = await db.find(db.Customer, { where: {
-              o_c_customercode: value.o_c_customercode,
-              o_c_bank_code   : value.o_c_bank_code,
-              o_c_registerno  : value.o_c_registerno,
-            } }, session);
-            if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
             let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
             let mortgage;
             if (mrtnos.length > 0){
@@ -393,8 +332,7 @@ export default async (register_no, session) => {
             }
             GUARANTEES.push({
               ...value,
-              // o_c_guarantee_loanclasscode: APPENDIX.APPENDIX_EO[item?.o_c_guarantee_loanclasscode],
-              customer,
+              customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_bank_code)),
               mortgage
             });
           }
