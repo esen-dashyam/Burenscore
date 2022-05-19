@@ -175,6 +175,7 @@ export default logic(null, async (data, session) => {
     CUSTOMER.bondInfo = await parseBond({ data: bond, where });
     CUSTOMER.mrtInfo = await parseMortgage({ data: mrtInfo, where });
   } catch (err) {
+    console.log(err);
     return ({
       error: {
         code    : err?.code,

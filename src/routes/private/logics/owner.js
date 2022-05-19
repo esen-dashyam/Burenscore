@@ -134,7 +134,13 @@ export default async (register_no, session) => {
   if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
   // let loansWithBalance = await db.findAll(db.OCLoanInformation, { where: { ...where, o_c_loan_balance: { [Op.gt]: 0 } } }, session);
   // let loansWithOutBalance = await db.findAll(db.OCLoanInformation, { where: { ...where, o_c_loan_balance: { [Op.eq]: 0 } } }, session);
-
+  let transactions = (await db.findAll(db.Transaction, { where: { ...where, type: "PERFORMANCE" }, sort: [["datetopay", "ASC"]] }, session)).reduce((acc, iter) => {
+    return {
+      ...acc,
+      [iter.relation_id]: moment(iter.datetopay).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD")
+    };
+  }, {});
+  console.log("=====>", transactions);
   let loans = await db.findAll(db.OCLoanInformation, { where: where }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCLoanInformation)));
   let loanmrtno = await db.findAll(db.Mrtno, { where: where }, session);
   let loanmrt = (await db.findAll(db.OCMortgage, { where: { ...where, o_c_mrtno: loanmrtno.map(item => item.mrtno) } }, session)).map(mrt => ({ ...formatter(mrt.dataValues, db.OCMortgage), relation_id: loanmrtno.find(no => no.mrtno === mrt.o_c_mrtno)?.relation_id }));
@@ -147,24 +153,16 @@ export default async (register_no, session) => {
   let bonds = await db.findAll(db.OBond, { where: where, }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OBond)));
   let accredits = await db.findAll(db.OCAccredit, { where: where }, session).then(data => data.map(entry => formatter(entry.dataValues, db.OCAccredit)));
   loans.forEach(item => {
-    // console.log("o_c_loan_loanclasscode:", item.o_c_loan_loanclasscode);
     if (item.payment_status === "PAID"){
       PAID_LOANS.push({
         ...item,
-        // o_c_loan_starteddate  : moment(item.o_c_loan_starteddate).format("YYYY-MM-DD"),
-        // o_c_loan_expdate      : moment(item.o_c_loan_expdate).format("YYYY-MM-DD"),
-        // o_c_loan_extdate      : moment(item.o_c_loan_extdate).format("YYYY-MM-DD"),
-        // o_c_updatedexpdate    : moment(item.o_c_updatedexpdate).format("YYYY-MM-DD"),
         o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_loan_loanclasscode],
-        mortgage              : loanmrt.filter(mrt => mrt.relation_id === item.id)
+        mortgage              : loanmrt.filter(mrt => mrt.relation_id === item.id),
+        paid_date             : transactions[item.id] ? transactions[item.id] : item.updated_at
       });
     } else {
       UNPAID_LOANS.push({
         ...item,
-        // o_c_loan_starteddate  : moment(item.o_c_loan_starteddate).format("YYYY-MM-DD"),
-        // o_c_loan_expdate      : moment(item.o_c_loan_expdate).format("YYYY-MM-DD"),
-        // o_c_loan_extdate      : moment(item.o_c_loan_extdate).format("YYYY-MM-DD"),
-        // o_c_updatedexpdate    : moment(item.o_c_updatedexpdate).format("YYYY-MM-DD"),
         o_c_loan_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_loan_loanclasscode],
         mortgage              : loanmrt.filter(mrt => mrt.relation_id === item.id)
       });
@@ -238,7 +236,8 @@ export default async (register_no, session) => {
         // o_c_leasing_starteddate  : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
         // o_c_leasing_expdate      : moment(item.o_c_leasing_starteddate).format("YYYY-MM-DD"),
         o_c_leasing_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_leasing_loanclasscode],
-        mortgage                 : loanmrt.filter(mrt => mrt.relation_id === item.id)
+        mortgage                 : loanmrt.filter(mrt => mrt.relation_id === item.id),
+        paid_date                : transactions[item.id] ? transactions[item.id] : item.updated_at
       });
     } else {
       UNPAID_LEASINGS.push({
@@ -321,7 +320,8 @@ export default async (register_no, session) => {
         // o_c_onus_paymentfinaldate: moment(item.o_c_onus_paymentfinaldate).format("YYYY-MM-DD"),
         // o_c_onus_expdate         : moment(item.o_c_onus_expdate).format("YYYY-MM-DD"),
         o_c_onus_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_onus_loanclasscode],
-        mortgage              : loanmrt.filter(mrt => mrt.relation_id === item.id)
+        mortgage              : loanmrt.filter(mrt => mrt.relation_id === item.id),
+        paid_date             : transactions[item.id] ? transactions[item.id] : item.updated_at
       });
     } else {
       UNPAID_ONUS.push({
@@ -402,7 +402,8 @@ export default async (register_no, session) => {
         ...item,
         // o_c_receivable_starteddate  : moment(item.o_c_receivable_starteddate).format("YYYY-MM-DD"),
         // o_c_receivable_expdate      : moment(item.o_c_receivable_expdate).format("YYYY-MM-DD"),
-        o_c_receivable_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_receivable_loanclasscode]
+        o_c_receivable_loanclasscode: APPENDIX.APPENDIX_EO[item.o_c_receivable_loanclasscode],
+        paid_date                   : transactions[item.id] ? transactions[item.id] : item.updated_at
       });
     } else {
       UNPAID_RECEIVABLS.push({

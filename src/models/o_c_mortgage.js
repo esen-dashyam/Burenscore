@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_mrtcode: {
-      type     : DataTypes.DECIMAL(24, 2),
+      type     : DataTypes.STRING(6),
       allowNull: true,
     },
     o_c_mrtdescription: {
