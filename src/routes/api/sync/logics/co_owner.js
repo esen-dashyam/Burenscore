@@ -165,7 +165,7 @@ export default async (register_no, session) => {
             }
             PAID_LOANS.push({
               ...value,
-              mortgage,
+              mortgage : mortgage.map(item => formatter(item, db.OCMortgage)),
               customer : customers.find(c => c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno),
               paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD")
 
@@ -182,7 +182,7 @@ export default async (register_no, session) => {
             }
             UNPAID_LOANS.push({
               ...value,
-              mortgage,
+              mortgage: mortgage.map(item => formatter(item, db.OCMortgage)),
               customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
             });
           }
@@ -204,7 +204,7 @@ export default async (register_no, session) => {
               ...value,
               customer : customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
               paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD"),
-              mortgage
+              mortgage : mortgage.map(item => formatter(item, db.OCMortgage))
             });
           } else if (value) {
             let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
@@ -219,7 +219,7 @@ export default async (register_no, session) => {
             UNPAID_LEASINGS.push({
               ...value,
               customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
-              mortgage
+              mortgage: mortgage.map(item => formatter(item, db.OCMortgage))
             });
           }
           break;
@@ -239,7 +239,7 @@ export default async (register_no, session) => {
             ACCREDITS.push({
               ...value,
               customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
-              mortgage
+              mortgage: mortgage.map(item => formatter(item, db.OCMortgage))
             });
           }
           break;
@@ -260,7 +260,7 @@ export default async (register_no, session) => {
               ...value,
               customer : customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
               paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD"),
-              mortgage
+              mortgage : mortgage.map(item => formatter(item, db.OCMortgage))
             });
           } else if (value) {
             let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
@@ -275,7 +275,7 @@ export default async (register_no, session) => {
             UNPAID_ONUS.push({
               ...item,
               customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
-              mortgage
+              mortgage: mortgage.map(item => formatter(item, db.OCMortgage))
             });
           }
           break;
@@ -296,7 +296,7 @@ export default async (register_no, session) => {
               ...value,
               customer : customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
               paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD"),
-              mortgage
+              mortgage : mortgage.map(item => formatter(item, db.OCMortgage))
             });
           } else if (value){
             let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
@@ -313,7 +313,7 @@ export default async (register_no, session) => {
               // o_bond_starteddate: moment(value.o_bond_starteddate).format("YYYY-MM-DD"),
               // o_bond_expdate    : moment(value.o_bond_expdate).format("YYYY-MM-DD"),
               customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
-              mortgage
+              mortgage: mortgage.map(item => formatter(item, db.OCMortgage))
             });
           }
           break;
@@ -333,7 +333,7 @@ export default async (register_no, session) => {
             GUARANTEES.push({
               ...value,
               customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
-              mortgage
+              mortgage: mortgage.map(item => formatter(item, db.OCMortgage))
             });
           }
           break;
