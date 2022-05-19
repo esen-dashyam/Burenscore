@@ -569,7 +569,7 @@ export default {
   },
   o_c_customer_firstname: {
     "any.required": "ME2489",
-    "any.empty"   : "ME2489 ",
+    "any.empty"   : "ME2489",
     "string.max"  : "ME2490",
   },
   o_c_customer_lastname: {
@@ -597,12 +597,12 @@ export default {
   },
   o_c_organization_orgregisterno: {
     "any.required": "ME2500",
-    "any.empty"   : "ME2500 ",
+    "any.empty"   : "ME2500",
     "number.base" : "ME2501",
   },
   o_c_organization_stateregisterno: {
     "any.required": "ME2502",
-    "any.empty"   : "ME2502 ",
+    "any.empty"   : "ME2502",
     "number.base" : "ME2503",
   },
   o_c_mrtstateregisterno: {
