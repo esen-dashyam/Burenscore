@@ -47,7 +47,7 @@ export default {
   ME2046                             : "o_c_customer_information-ны moodysrating таагийн утгын урт заасан утгатай тэнцүү биш байна.'",
   ME2047                             : "o_c_customer_information-ны moodysrating таагийн утга нь жагсаалтанд байхгүй байна.'",
   ME2048                             : "o_c_customer_information-ны сompanytypecode тааг байхгүй байна.'",
-  ME2049                             : "o_c_customer_information-ны сompanytypecode таагийн утгын урт заасан утгатай тэнцүү биш байна.'",
+  ME2049                             : "o_c_customer_information-ны сompanytypecode таагийн заасан утгатай тэнцүү биш байна.'",
   ME2050                             : "o_c_customer_information-ны сompanytypecode таагийн утга нь жагсаалтанд байхгүй байна.'",
   ME2051                             : "o_c_customer_information-ны рresident_family_firstname тааг байхгүй байна.'",
   ME2052                             : "o_c_customer_information-ны рresident_family_firstname таагийн утгын урт заасан хэмжээнээс хэтэрсэн байна.'",
@@ -947,5 +947,6 @@ export default {
   W50103                             : "Барьцаа хөрөнгийн мэдээлэл нэмэхэд алдаа гарлаа.'",
   TE1000                             : "Лавлагаанд тусгагдахгүй төлөлт хийгдэж дууссан үүргийн мэдээлэл байна'",
   O_C_GUARANTEE_LOANCLASSCODE_INVALID: "o_c_guarantee_loanclasscode tag-н утга буруу байна",
-  O_C_GUARANTEE_LOANCLASSCODE        : "o_c_guarantee_loanclasscode tag байхгүй байна"
+  O_C_GUARANTEE_LOANCLASSCODE        : "o_c_guarantee_loanclasscode tag байхгүй байна",
+  9000                               : "o_c_birthdate-tag байхгүй байна",
 };
