@@ -130,10 +130,11 @@ export default async (register_no, session) => {
   };
   let customer = await db.find(db.Customer, {
     where: where
-  }).then(data => formatter(data.dataValues, db.Customer));
+  }, session);
   if (!customer) throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
   // let loansWithBalance = await db.findAll(db.OCLoanInformation, { where: { ...where, o_c_loan_balance: { [Op.gt]: 0 } } }, session);
   // let loansWithOutBalance = await db.findAll(db.OCLoanInformation, { where: { ...where, o_c_loan_balance: { [Op.eq]: 0 } } }, session);
+  customer = formatter(customer.dataValues, db.Customer);
   let transactions = (await db.findAll(db.Transaction, { where: { ...where, type: "PERFORMANCE" }, sort: [["datetopay", "ASC"]] }, session)).reduce((acc, iter) => {
     return {
       ...acc,

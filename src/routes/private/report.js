@@ -22,7 +22,7 @@ export default method.post("/report", schema, async (req, res, session) => {
     result = await co_owner(register_no, session);
   }
   let count = await partnerService.count({ register_no }, session);
-
+  console.log(result);
   res.json({
     ...result,
     count
