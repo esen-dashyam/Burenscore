@@ -41,7 +41,6 @@ const neoSchema = Joi.object({
   courtorderno            : Joi.string().max(50).allow([null, ""]),
 }).options({ allowUnknown: true });
 const schema = Joi.object({
-
   o_c_onus_advamount      : Joi.number().required(),
   o_c_onus_balance        : Joi.number().required(),
   o_c_onus_rightopeneddate: Joi.string()
