@@ -577,7 +577,7 @@ export default {
   },
   o_c_customer_isforeign: {
     "any.required": "ME2492",
-    "any.empty"   : "ME2492 ",
+    "any.empty"   : "ME2492",
     "number.base" : "ME2493",
   },
   o_c_customer_registerno: {
@@ -587,7 +587,7 @@ export default {
   },
   o_c_organization_orgname: {
     "any.required": "ME2496",
-    "any.empty"   : "ME2496 ",
+    "any.empty"   : "ME2496",
     "string.max"  : "ME2497",
   },
   o_c_organization_localregistered: {
@@ -612,12 +612,12 @@ export default {
   },
   o_c_mrtcertificateno: {
     "any.required": "ME2466",
-    "any.empty"   : "ME2466 ",
+    "any.empty"   : "ME2466",
     "string.max"  : "ME2467",
   },
   o_c_mrtconfirmeddate: {
     "any.required"     : "ME2468",
-    "any.empty"        : "ME2468 ",
+    "any.empty"        : "ME2468",
     "string.regex.base": "ME2469",
   },
   o_c_mrtorgname: {
@@ -627,7 +627,7 @@ export default {
   },
   o_c_mrtregistereddatefim: {
     "any.required"      : "ME2473",
-    "any.empty"         : "ME2473 ",
+    "any.empty"         : "ME2473",
     "sstring.regex.base": "ME2474",
   },
   o_c_mrtregisterno: {
@@ -637,12 +637,12 @@ export default {
   },
   o_c_mrtcertificatenofim: {
     "any.required": "ME2477",
-    "any.empty"   : "ME2477 ",
+    "any.empty"   : "ME2477",
     "sstring.max" : "ME2478",
   },
   o_c_causetoshiftto: {
     "any.required": "ME2510",
-    "any.empty"   : "ME2510 ",
+    "any.empty"   : "ME2510",
     "sstring.max" : "ME2509",
   },
   o_c_courtorderdate: {
