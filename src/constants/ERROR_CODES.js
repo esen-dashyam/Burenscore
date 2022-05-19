@@ -20,8 +20,9 @@ export default {
     "string.max"  : "ME2017",
   },
   o_c_isorganization: {
-    "any.empty"   : "ME2018",
+    "number.empty": "ME2018",
     "any.required": "ME2018",
+    "number.max"  : "ME2019",
     "number.base" : "ME2019",
   },
   o_c_customername: {
@@ -33,11 +34,12 @@ export default {
     "string.max": "ME2022",
   },
   o_c_isforeign: {
-    "any.empty"   : "ME2023",
-    "any.required": "ME2023",
-    "number.base" : "ME2024",
+    "integer.empty": "ME2023",
+    "any.required" : "ME2023",
+    "number.base"  : "ME2024",
   },
   o_c_birthdate: {
+    "any.empty"        : "9000",
     "string.regex.base": "ME2025",
   },
   o_c_zipcode: {
@@ -82,9 +84,9 @@ export default {
     "string.max": "ME2045",
   },
   o_companytypecode: {
-    "any.required" : "ME2050",
-    "any.empty"    : "ME2048",
-    "any.allowOnly": "",
+    "any.required" : "ME2048",
+    "any.empty"    : "ME2050",
+    "any.allowOnly": "ME2049",
   },
   o_c_president_family_firstname: {
     "any.empty"   : "ME2051",
@@ -775,10 +777,10 @@ export default {
     "string.regex.base": "ME3388",
   },
   o_c_relationcustomer_citizenrelation: {
-    "any.required" : "ME3389",
-    "any.empty"    : "ME3391",
+    "any.required" : "ME3391",
+    "any.empty"    : "ME3389",
     "string.max"   : "ME3390",
-    "any.allowOnly": "",
+    "any.allowOnly": "ME3390",
   },
   o_c_relationcustomer_isfinancialonus: {
     "any.required": "ME3392",
@@ -1229,71 +1231,72 @@ export default {
     "number.positive": "ME3302",
   },
   // ----------------------------------------------------------------------------------------------------------------------
-  Orgmeasure: {
+  orgmeasure: {
     "string.max": "ME3502",
   },
-  Measuredate: {
+  measuredate: {
     "string.regex.base": "ME3503",
   },
-  Measuredescription: {
+  measuredescription: {
     "string.max": "ME3504",
   },
-  Causetostartcase: {
-    "string.max": "ME3505",
-    "any.empty" : "ME3506",
+  causetostartcase: {
+    "string.max"   : "ME3505",
+    "any.empty"    : "ME3506",
+    "any.allowOnly": "ME3505",
   },
-  Datetstartcase: {
+  datetstartcase: {
     "string.regex.base": "ME3507",
   },
-  Registertopolice: {
-    "string.max": "ME3508",
+  registertopolice: {
+    "number.base": "ME3508",
   },
-  Registertopolicedate: {
+  registertopolicedate: {
     "string.regex.base": "ME3509",
   },
-  Timesinpolice: {
+  timesinpolice: {
     "string.max": "ME3510",
   },
-  Registertoprocuror: {
+  registertoprocuror: {
     "string.max": "ME3511",
   },
-  Registertoprocurordate: {
+  registertoprocurordate: {
     "string.regex.base": "ME3512",
   },
-  Timesinprocuror: {
+  timesinprocuror: {
     "string.max": "ME3513",
   },
-  Registertocourt: {
-    "string.max": "ME3514",
+  registertocourt: {
+    "number.max": "ME3514",
   },
-  Registertocourtdate: {
+  registertocourtdate: {
     "string.regex.base": "ME3515",
   },
-  Timesincourt: {
+  timesincourt: {
     "string.max": "ME3516",
   },
-  Shiftocourt2: {
+  shiftocourt2: {
     "string.max": "ME3517",
   },
-  Shifttocourt2date: {
+  shifttocourt2date: {
     "string.regex.base": "ME3518",
   },
-  Timesincourt2: {
+  timesincourt2: {
     "string.max": "ME3519",
   },
-  Shiftocourtdecision: {
-    "string.max": "ME3520",
+  shiftocourtdecision: {
+    "number.base": "ME3520",
   },
-  Shifttocourtdecisiondate: {
+  shifttocourtdecisiondate: {
     "string.regex.base": "ME3521",
   },
-  Ignoredcrime: {
+  ignoredcrime: {
     "string.max": "ME3522",
   },
-  Ignoreddate: {
+  ignoreddate: {
     "string.regex.base": "ME3523",
   },
-  Courtorderno: {
+  courtorderno: {
     "string.max": "ME3524",
   },
 };
