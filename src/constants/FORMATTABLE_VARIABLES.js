@@ -44,5 +44,6 @@ export default { // customer
   c_onus_causetostartcase             : "APPENDIX_O",
   c_loan_causetostartcase             : "APPENDIX_O",
   o_shareholder_sectorcode            : "APPENDIX_A",
+  o_c_bank_name                       : "BANK_CODES"
 }
 ;

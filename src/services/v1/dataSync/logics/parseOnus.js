@@ -57,6 +57,7 @@ const schema = Joi.object({
   o_c_onus_commissionperc: Joi.number().required(),
   o_c_onus_fee           : Joi.number().required(),
   o_c_onus_loanclasscode : Joi.string().max(16).required(),
+  o_c_onus_isapproved    : Joi.number().valid([1, 0]).optional().allow(null, ""),
   o_c_onustransactions   : Joi.object({
     o_c_onus_loancharttype    : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
     o_c_onus_interestcharttype: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),
@@ -113,7 +114,8 @@ export default async ({ data, where }) => {
   let id = uuidv4();
   let mrtnos = [];
   let relnos = [];
-  if (Array.isArray(data.o_c_onusmrtnos.o_c_onusmrtno)){
+  console.log("ONUS=MRTNO_PRASEMAI", data.o_c_onusmrtnos.o_c_onusmrtno);
+  if (Array.isArray(data.o_c_onusmrtnos?.o_c_onusmrtno)){
     data.o_c_onusmrtnos.o_c_onusmrtno.forEach(item => {
       mrtnos.push({
         ...where,
@@ -122,15 +124,15 @@ export default async ({ data, where }) => {
         mrtno      : item
       });
     });
-  } else if (data.o_c_onusmrtnos.o_c_onusmrtno)
+  } else if (data.o_c_onusmrtnos?.o_c_onusmrtno)
     mrtnos.push({
       ...where,
       relation_id: id,
       type       : "ONUS",
       mrtno      : data.o_c_onusmrtnos.o_c_onusmrtno
     });
-  // console.log("==========>", mrtnos);
-  if (Array.isArray(data.o_c_onusrelnos.o_c_onusrelno)){
+  console.log("==========>", mrtnos);
+  if (Array.isArray(data.o_c_onusrelnos?.o_c_onusrelno)){
     data.o_c_onusrelnos.o_c_onusrelno.forEach(item => {
       relnos.push({
         ...where,
@@ -139,7 +141,7 @@ export default async ({ data, where }) => {
         relno      : item
       });
     });
-  } else if (data.o_c_onusrelnos.o_c_onusrelno)
+  } else if (data.o_c_onusrelnos?.o_c_onusrelno)
     relnos.push({
       ...where,
       relation_id: id,

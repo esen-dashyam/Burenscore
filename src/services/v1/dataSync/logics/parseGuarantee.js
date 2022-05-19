@@ -36,7 +36,7 @@ export default async ({ data, where }) => {
   let id = uuidv4();
   let mrtnos = [];
   let relnos = [];
-  if (Array.isArray(data.o_c_guaranteemrtnos.o_c_guaranteemrtno)){
+  if (Array.isArray(data.o_c_guaranteemrtnos?.o_c_guaranteemrtno)){
     data.o_c_guaranteemrtnos.o_c_guaranteemrtno.forEach(item => {
       mrtnos.push({
         ...where,
@@ -45,7 +45,7 @@ export default async ({ data, where }) => {
         mrtno      : item
       });
     });
-  } else if (data.o_c_guaranteemrtnos.o_c_guaranteemrtno)
+  } else if (data.o_c_guaranteemrtnos?.o_c_guaranteemrtno)
     mrtnos.push({
       ...where,
       relation_id: id,
@@ -53,7 +53,7 @@ export default async ({ data, where }) => {
       mrtno      : data.o_c_guaranteemrtnos.o_c_guaranteemrtno
     });
   // console.log("==========>", mrtnos);
-  if (Array.isArray(data.o_c_guaranteerelnos.o_c_guaranteerelno)){
+  if (Array.isArray(data?.o_c_guaranteerelnos?.o_c_guaranteerelno)){
     data.o_c_guaranteerelnos.o_c_guaranteerelno.forEach(item => {
       relnos.push({
         ...where,
@@ -62,7 +62,7 @@ export default async ({ data, where }) => {
         relno      : item
       });
     });
-  } else if (data.o_c_guaranteerelnos.o_c_guaranteerelno)
+  } else if (data?.o_c_guaranteerelnos?.o_c_guaranteerelno)
     relnos.push({
       ...where,
       relation_id: id,

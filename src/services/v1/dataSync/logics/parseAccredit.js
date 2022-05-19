@@ -16,7 +16,7 @@ const schema = Joi.object({
   o_c_accredit_commissionperc: Joi.number().max(999999999999).precision(2).required(),
   o_c_accredit_fee           : Joi.number().max(999999999999).precision(2).required(),
   o_c_accredit_updatedexpdate: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
-  o_c_accredit_extcount      : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
+  o_c_accredit_extcount      : Joi.number().integer().required(),
   o_c_accredit_balance       : Joi.number().max(999999999999999).precision(2).required(),
   o_c_accreditmrtnos         : Joi.object({
     o_c_accreditmrtno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string())),
@@ -38,7 +38,7 @@ export default async ({ data, where }) => {
   let id = uuidv4();
   let mrtnos = [];
   let relnos = [];
-  if (Array.isArray(data.o_c_accreditmrtnos.o_c_accreditmrtno)){
+  if (Array.isArray(data.o_c_accreditmrtnos?.o_c_accreditmrtno)){
     data.o_c_accreditmrtnos.o_c_accreditmrtno.forEach(item => {
       mrtnos.push({
         ...where,
@@ -54,7 +54,7 @@ export default async ({ data, where }) => {
       type       : "ACCREDIT",
       mrtno      : data.o_c_accreditmrtnos.o_c_accreditmrtno
     });
-  if (Array.isArray(data.o_c_accreditrelnos.o_c_accreditrelno)){
+  if (Array.isArray(data.o_c_accreditrelnos?.o_c_accreditrelno)){
     data.o_c_accreditrelnos.o_c_accreditrelno.forEach(item => {
       relnos.push({
         ...where,
