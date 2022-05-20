@@ -136,198 +136,202 @@ export default async (register_no, session) => {
   // console.log(customers.map(item => ({ bank: item.o_c_bank_code, rd: item.o_c_registerno })));
   let falls = relnos.map(item => {
     return async () => {
-      switch (item.type) {
-        case "LOAN": {
-          let value = await db.find(db.OCLoanInformation, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCLoanInformation));
-          if (value && value.payment_status === "PAID"){
-            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-            let mortgage;
-            if (mrtnos.length > 0){
-              mortgage = (await db.findAll(db.OCMortgage, { where: {
-                o_c_customercode: value.o_c_customercode,
-                o_c_bank_code   : value.o_c_bank_code,
-                o_c_registerno  : value.o_c_registerno,
-                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
-            }
-            PAID_LOANS.push({
-              ...value,
-              mortgage,
-              customer : customers.find(c => c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno),
-              paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD")
+      try {
+        switch (item.type) {
+          case "LOAN": {
+            let value = await db.find(db.OCLoanInformation, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCLoanInformation));
+            if (value && value.payment_status === "PAID"){
+              let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+              let mortgage;
+              if (mrtnos.length > 0){
+                mortgage = (await db.findAll(db.OCMortgage, { where: {
+                  o_c_customercode: value.o_c_customercode,
+                  o_c_bank_code   : value.o_c_bank_code,
+                  o_c_registerno  : value.o_c_registerno,
+                  o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+              }
+              PAID_LOANS.push({
+                ...value,
+                mortgage,
+                customer : customers.find(c => c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno),
+                paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD")
 
-            });
-          } else if (value){
-            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-            let mortgage;
-            if (mrtnos.length > 0){
-              mortgage = (await db.findAll(db.OCMortgage, { where: {
-                o_c_customercode: value.o_c_customercode,
-                o_c_bank_code   : value.o_c_bank_code,
-                o_c_registerno  : value.o_c_registerno,
-                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+              });
+            } else if (value){
+              let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+              let mortgage;
+              if (mrtnos.length > 0){
+                mortgage = (await db.findAll(db.OCMortgage, { where: {
+                  o_c_customercode: value.o_c_customercode,
+                  o_c_bank_code   : value.o_c_bank_code,
+                  o_c_registerno  : value.o_c_registerno,
+                  o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+              }
+              UNPAID_LOANS.push({
+                ...value,
+                mortgage,
+                customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
+              });
             }
-            UNPAID_LOANS.push({
-              ...value,
-              mortgage,
-              customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
-            });
+            break;
           }
-          break;
-        }
-        case "LEASING": {
-          let value = await db.find(db.OCLeasing, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCLeasing));
-          if (value && value.payment_status === "PAID"){
-            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-            let mortgage;
-            if (mrtnos.length > 0){
-              mortgage = (await db.findAll(db.OCMortgage, { where: {
-                o_c_customercode: value.o_c_customercode,
-                o_c_bank_code   : value.o_c_bank_code,
-                o_c_registerno  : value.o_c_registerno,
-                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+          case "LEASING": {
+            let value = await db.find(db.OCLeasing, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCLeasing));
+            if (value && value.payment_status === "PAID"){
+              let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+              let mortgage;
+              if (mrtnos.length > 0){
+                mortgage = (await db.findAll(db.OCMortgage, { where: {
+                  o_c_customercode: value.o_c_customercode,
+                  o_c_bank_code   : value.o_c_bank_code,
+                  o_c_registerno  : value.o_c_registerno,
+                  o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+              }
+              PAID_LEASINGS.push({
+                ...value,
+                customer : customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
+                paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD"),
+                mortgage
+              });
+            } else if (value) {
+              let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+              let mortgage;
+              if (mrtnos.length > 0){
+                mortgage = (await db.findAll(db.OCMortgage, { where: {
+                  o_c_customercode: value.o_c_customercode,
+                  o_c_bank_code   : value.o_c_bank_code,
+                  o_c_registerno  : value.o_c_registerno,
+                  o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+              }
+              UNPAID_LEASINGS.push({
+                ...value,
+                customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
+                mortgage
+              });
             }
-            PAID_LEASINGS.push({
-              ...value,
-              customer : customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
-              paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD"),
-              mortgage
-            });
-          } else if (value) {
-            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-            let mortgage;
-            if (mrtnos.length > 0){
-              mortgage = (await db.findAll(db.OCMortgage, { where: {
-                o_c_customercode: value.o_c_customercode,
-                o_c_bank_code   : value.o_c_bank_code,
-                o_c_registerno  : value.o_c_registerno,
-                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
-            }
-            UNPAID_LEASINGS.push({
-              ...value,
-              customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
-              mortgage
-            });
+            break;
           }
-          break;
-        }
-        case "ACCREDIT": {
-          let value = await db.find(db.OCAccredit, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCAccredit));
-          if (value){
-            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-            let mortgage;
-            if (mrtnos.length > 0){
-              mortgage = (await db.findAll(db.OCMortgage, { where: {
-                o_c_customercode: value.o_c_customercode,
-                o_c_bank_code   : value.o_c_bank_code,
-                o_c_registerno  : value.o_c_registerno,
-                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+          case "ACCREDIT": {
+            let value = await db.find(db.OCAccredit, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCAccredit));
+            if (value){
+              let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+              let mortgage;
+              if (mrtnos.length > 0){
+                mortgage = (await db.findAll(db.OCMortgage, { where: {
+                  o_c_customercode: value.o_c_customercode,
+                  o_c_bank_code   : value.o_c_bank_code,
+                  o_c_registerno  : value.o_c_registerno,
+                  o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+              }
+              ACCREDITS.push({
+                ...value,
+                customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
+                mortgage
+              });
             }
-            ACCREDITS.push({
-              ...value,
-              customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
-              mortgage
-            });
+            break;
           }
-          break;
-        }
-        case "ONUS": {
-          let value = await db.find(db.OCOnusInformation, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCOnusInformation));
-          if (value && value.payment_status === "PAID"){
-            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-            let mortgage;
-            if (mrtnos.length > 0){
-              mortgage = (await db.findAll(db.OCMortgage, { where: {
-                o_c_customercode: value.o_c_customercode,
-                o_c_bank_code   : value.o_c_bank_code,
-                o_c_registerno  : value.o_c_registerno,
-                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+          case "ONUS": {
+            let value = await db.find(db.OCOnusInformation, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCOnusInformation));
+            if (value && value.payment_status === "PAID"){
+              let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+              let mortgage;
+              if (mrtnos.length > 0){
+                mortgage = (await db.findAll(db.OCMortgage, { where: {
+                  o_c_customercode: value.o_c_customercode,
+                  o_c_bank_code   : value.o_c_bank_code,
+                  o_c_registerno  : value.o_c_registerno,
+                  o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+              }
+              PAID_ONUS.push({
+                ...value,
+                customer : customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
+                paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD"),
+                mortgage
+              });
+            } else if (value) {
+              let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+              let mortgage;
+              if (mrtnos.length > 0){
+                mortgage = (await db.findAll(db.OCMortgage, { where: {
+                  o_c_customercode: value.o_c_customercode,
+                  o_c_bank_code   : value.o_c_bank_code,
+                  o_c_registerno  : value.o_c_registerno,
+                  o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+              }
+              UNPAID_ONUS.push({
+                ...value,
+                customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
+                mortgage
+              });
             }
-            PAID_ONUS.push({
-              ...value,
-              customer : customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
-              paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD"),
-              mortgage
-            });
-          } else if (value) {
-            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-            let mortgage;
-            if (mrtnos.length > 0){
-              mortgage = (await db.findAll(db.OCMortgage, { where: {
-                o_c_customercode: value.o_c_customercode,
-                o_c_bank_code   : value.o_c_bank_code,
-                o_c_registerno  : value.o_c_registerno,
-                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
-            }
-            UNPAID_ONUS.push({
-              ...value,
-              customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
-              mortgage
-            });
+            break;
           }
-          break;
-        }
-        case "BOND": {
-          let value = await db.find(db.OBond, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OBond));
-          if (value && value.payment_status === "PAID"){
-            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-            let mortgage;
-            if (mrtnos.length > 0){
-              mortgage = (await db.findAll(db.OCMortgage, { where: {
-                o_c_customercode: value.o_c_customercode,
-                o_c_bank_code   : value.o_c_bank_code,
-                o_c_registerno  : value.o_c_registerno,
-                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+          case "BOND": {
+            let value = await db.find(db.OBond, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OBond));
+            if (value && value.payment_status === "PAID"){
+              let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+              let mortgage;
+              if (mrtnos.length > 0){
+                mortgage = (await db.findAll(db.OCMortgage, { where: {
+                  o_c_customercode: value.o_c_customercode,
+                  o_c_bank_code   : value.o_c_bank_code,
+                  o_c_registerno  : value.o_c_registerno,
+                  o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+              }
+              PAID_BONDS.push({
+                ...value,
+                customer : customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
+                paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD"),
+                mortgage
+              });
+            } else if (value){
+              let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+              let mortgage;
+              if (mrtnos.length > 0){
+                mortgage = (await db.findAll(db.OCMortgage, { where: {
+                  o_c_customercode: value.o_c_customercode,
+                  o_c_bank_code   : value.o_c_bank_code,
+                  o_c_registerno  : value.o_c_registerno,
+                  o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+              }
+              UNPAID_BONDS.push({
+                ...value,
+                // o_bond_starteddate: moment(value.o_bond_starteddate).format("YYYY-MM-DD"),
+                // o_bond_expdate    : moment(value.o_bond_expdate).format("YYYY-MM-DD"),
+                customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
+                mortgage
+              });
             }
-            PAID_BONDS.push({
-              ...value,
-              customer : customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
-              paid_date: transactions[value.id] ? transactions[value.id] : moment(value.updated_at).tz("Asia/Ulaanbaatar").format("YYYY-MM-DD"),
-              mortgage
-            });
-          } else if (value){
-            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-            let mortgage;
-            if (mrtnos.length > 0){
-              mortgage = (await db.findAll(db.OCMortgage, { where: {
-                o_c_customercode: value.o_c_customercode,
-                o_c_bank_code   : value.o_c_bank_code,
-                o_c_registerno  : value.o_c_registerno,
-                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
-            }
-            UNPAID_BONDS.push({
-              ...value,
-              // o_bond_starteddate: moment(value.o_bond_starteddate).format("YYYY-MM-DD"),
-              // o_bond_expdate    : moment(value.o_bond_expdate).format("YYYY-MM-DD"),
-              customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
-              mortgage
-            });
+            break;
           }
-          break;
-        }
-        case "GUARANTEE": {
-          let value = await db.find(db.OCGuarantee, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCGuarantee));
-          if (value){
-            let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-            let mortgage;
-            if (mrtnos.length > 0){
-              mortgage = (await db.findAll(db.OCMortgage, { where: {
-                o_c_customercode: value.o_c_customercode,
-                o_c_bank_code   : value.o_c_bank_code,
-                o_c_registerno  : value.o_c_registerno,
-                o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+          case "GUARANTEE": {
+            let value = await db.find(db.OCGuarantee, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCGuarantee));
+            if (value){
+              let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
+              let mortgage;
+              if (mrtnos.length > 0){
+                mortgage = (await db.findAll(db.OCMortgage, { where: {
+                  o_c_customercode: value.o_c_customercode,
+                  o_c_bank_code   : value.o_c_bank_code,
+                  o_c_registerno  : value.o_c_registerno,
+                  o_c_mrtno       : mrtnos.map(item => item.mrtno) } }, session)).map(item => formatter(item.dataValues, db.OCMortgage));
+              }
+              GUARANTEES.push({
+                ...value,
+                customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
+                mortgage
+              });
             }
-            GUARANTEES.push({
-              ...value,
-              customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
-              mortgage
-            });
+            break;
           }
-          break;
-        }
-        default: {
-          break;
-        }
-      };
+          default: {
+            break;
+          }
+        };
+      } catch (err){
+        console.log(err);
+      }
     };
   });
   await fall(falls);
