@@ -69,7 +69,7 @@ export default logic(schema, async (data, session) => {
   }, session);
 
   return ({
-    rows: rows.map(entry => formatter(entry, db.OCMortgage)),
+    rows: rows.map(entry => formatter(entry.dataValues, db.OCMortgage)),
     count
   });
 });
