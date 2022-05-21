@@ -57,9 +57,7 @@ export default async (register_no, session) => {
   };
   let customer = {};
   if (where.o_c_registerno.length <= 8){
-    // console.log("==============>", where.o_c_registerno.length);
     filters.o_c_relationorg_registerno = where.o_c_registerno;
-    // filters.o_c_relationorg_orgrelation = "03";
     let relationOrg = await db.findAll(db.OCRelationorg, { where: filters }, session);
     if (relationOrg?.length > 0) {
       relnos = await db.findAll(db.Relno, { where: {
@@ -68,7 +66,6 @@ export default async (register_no, session) => {
         o_c_bank_code   : relationOrg.map(item => item.o_c_bank_code),
         o_c_registerno  : relationOrg.map(item => item.o_c_registerno),
       } }, session);
-      // console.log("RELNOS=====================================>", relnos);
       customer = {
         ...formatter(relationOrg[0].dataValues, db.OCRelationorg),
         o_c_relationorg_orgrelation: APPENDIX.APPENDIX_G[relationOrg[0]?.o_c_relationorg_orgrelation]
@@ -78,10 +75,7 @@ export default async (register_no, session) => {
     }
   } else {
     filters.o_c_relationcustomer_registerno = where.o_c_registerno;
-    // filters.o_c_relationcustomer_citizenrelation = "04";
-    // console.log(filters);
     let relationCustomers = await db.findAll(db.OCRelationcustomer, { where: filters }, session);
-    // console.log(relationCustomers);
     if (relationCustomers?.length > 0){
       relnos = await db.findAll(db.Relno, { where: {
         relno           : relationCustomers.map(item => item.o_c_relationcustomer_relno),
@@ -89,7 +83,6 @@ export default async (register_no, session) => {
         o_c_bank_code   : relationCustomers.map(item => item.o_c_bank_code),
         o_c_registerno  : relationCustomers.map(item => item.o_c_registerno),
       } }, session);
-      // console.log("relationCustomers=====================================>", relnos);
       customer = {
         ...formatter(relationCustomers[0].dataValues, db.OCRelationcustomer),
         o_c_relationcustomer_citizenrelation: APPENDIX.APPENDIX_D[relationCustomers[0]?.o_c_relationcustomer_citizenrelation]
@@ -98,18 +91,6 @@ export default async (register_no, session) => {
       throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
     }
   }
-  // o_c_customercode: {
-  //   type     : DataTypes.STRING(55),
-  //   allowNull: false,
-  // },
-  // o_c_bank_code: {
-  //   type     : DataTypes.STRING(255),
-  //   allowNull: false,
-  // },
-  // o_c_registerno: {
-  //   type     : DataTypes.STRING(255),
-  //   allowNull: false,
-  // },
   let customers = (await db.findAll(db.Customer, { where: {
     [Op.or]: [{
       o_c_customercode: relnos.map(item => item.o_c_customercode),
@@ -133,7 +114,6 @@ export default async (register_no, session) => {
     };
   }, {});
   console.log(customer);
-  // console.log(customers.map(item => ({ bank: item.o_c_bank_code, rd: item.o_c_registerno })));
   let falls = relnos.map(item => {
     return async () => {
       try {
@@ -297,8 +277,6 @@ export default async (register_no, session) => {
               }
               UNPAID_BONDS.push({
                 ...value,
-                // o_bond_starteddate: moment(value.o_bond_starteddate).format("YYYY-MM-DD"),
-                // o_bond_expdate    : moment(value.o_bond_expdate).format("YYYY-MM-DD"),
                 customer: customers.find(c => (c.o_c_bank_code === value.o_c_bank_code && value.o_c_registerno === c.o_c_registerno)),
                 mortgage
               });

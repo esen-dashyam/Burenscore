@@ -10,7 +10,6 @@ export default async (data, session) => {
   let filters = {};
   if (where.o_c_registerno.length <= 8){
     filters.o_c_relationorg_registerno = where.o_c_registerno;
-    // filters.o_c_relationorg_orgrelation = "03";
     let relationOrg = await db.findAll(db.OCRelationorg, { where: filters }, session);
     if (relationOrg?.length > 0) {
       relnos = await db.findAll(db.Relno, { where: {
@@ -21,7 +20,6 @@ export default async (data, session) => {
       } }, session);
     } } else {
     filters.o_c_relationcustomer_registerno = where.o_c_registerno;
-    // filters.o_c_relationcustomer_citizenrelation = "04";
     let relationCustomers = await db.findAll(db.OCRelationcustomer, { where: filters }, session);
     if (relationCustomers?.length > 0){
       relnos = await db.findAll(db.Relno, { where: {
@@ -71,7 +69,6 @@ export default async (data, session) => {
         }
         case "ACCREDIT": {
           let value = await db.find(db.OCAccredit, { where: { id: item.relation_id } }, session);
-          // console.log("ACCREDIT=================================>", value);
           if (value){
             let customer = await db.find(db.Customer, { where: {
               o_c_customercode: value.o_c_customercode,

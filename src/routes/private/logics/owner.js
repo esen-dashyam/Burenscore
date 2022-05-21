@@ -14,7 +14,6 @@ const getCurrencies = async ({ currencyCode }) => {
   };
   let result = await axios(config)
     .then(function (response) {
-      // console.log(JSON.stringify(response.data));
       let data = response.data.reduce((acc, iter)=> {
         return {
           ...acc,
@@ -24,7 +23,7 @@ const getCurrencies = async ({ currencyCode }) => {
       return data;
     })
     .catch(function (error) {
-      // console.log(error);
+      console.log(error);
     });
   return result;
 };
@@ -75,7 +74,6 @@ const formatter = (value = {}, model) => {
     }, {})
   };
 };
-// o_c_onus_loanclasscode, o_c_receivable_loanclasscode, o_c_loanline_loanclasscode o_c_guarantee_loanclasscode
 export default async (register_no, session) => {
   let TOTAL_COUNT = { NORMAL: 0, OVERDUE: 0, ABNORMAL: 0, UNCERTAIN: 0, BAD: 0, };
   let TOTAL_VALUE = { NORMAL: 0, OVERDUE: 0, ABNORMAL: 0, UNCERTAIN: 0, BAD: 0, };

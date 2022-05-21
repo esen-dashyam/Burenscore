@@ -34,16 +34,6 @@ export default logic(schema, async (data, session) => {
       type       : "INTEREST_DETAIL"
     }
   });
-  // let results = await db.query(`
-  //   SELECT
-  //      datetopay, amounttopay
-  //   FROM
-  //     transaction
-  //   WHERE
-  //     relation_id = ? AND type IN(?) AND datetopay < ?
-  //   ORDER BY
-  //     datetopay ASC`,
-  // [filter.id, ["DETAIL", "INTEREST_DETAIL"], rows[count - 1]?.datetopay]).select();
 
   return ({
     rows: rows.map(row => {
@@ -53,8 +43,7 @@ export default logic(schema, async (data, session) => {
         datetopay    : moment(row.datetopay).format("YYYY-MM-DD"),
         amounttopay  : row.amounttopay,
         interesttopay: interest?.amounttopay || 0,
-        // total        : parseFloat(row.amounttopay + interest?.amounttopay).toFixed(2),
-        total        : (parseFloat(row.amounttopay) + parseFloat(interest?.amounttopay)).toFixed(2)
+        total        : (parseFloat(row.amounttopay) + parseFloat(interest?.amounttopay)).toFixed(2) || 0
       };
     }),
     count

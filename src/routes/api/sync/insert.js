@@ -66,7 +66,6 @@ export default method.post("/sync/insert", schema, async (req, res, session) => 
     });
     await fall(falls);
   });
-  // console.log("BEFORE_RES", errors);
   res.json({
     request_id: request._id,
     errors

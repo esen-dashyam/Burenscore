@@ -79,7 +79,6 @@ export default logic(schema, async (data, session) => {
     }
     case "ACCREDIT": {
       value = await db.find(db.OCAccredit, { where: where }, session).then(data => formatter(data.dataValues, db.OCAccredit));
-      // console.log("ACCREDIT=================================>", value);
       customer = await db.find(db.Customer, { where: {
         o_c_customercode: value.o_c_customercode,
         o_c_bank_code   : value.o_c_bank_code,
@@ -89,7 +88,6 @@ export default logic(schema, async (data, session) => {
     }
     case "ONUS": {
       value = await db.find(db.OCOnusInformation, { where: where }, session).then(data => formatter(data.dataValues, db.OCOnusInformation));
-      // console.log("ONUS=================================>", value);
       customer = await db.find(db.Customer, { where: {
         o_c_customercode: value.o_c_customercode,
         o_c_bank_code   : value.o_c_bank_code,
@@ -99,7 +97,6 @@ export default logic(schema, async (data, session) => {
     }
     case "BOND": {
       value = await db.find(db.OBond, { where: where }, session).then(data => formatter(data.dataValues, db.OBond));
-      // console.log("BOND=================================>", value);
       customer = await db.find(db.Customer, { where: {
         o_c_customercode: value.o_c_customercode,
         o_c_bank_code   : value.o_c_bank_code,
@@ -109,7 +106,6 @@ export default logic(schema, async (data, session) => {
     }
     case "GUARANTEE": {
       value = await db.find(db.OCGuarantee, { where: where }, session).then(data => formatter(data.dataValues, db.OCGuarantee));
-      // console.log("GUARANTEE=================================>", value);
       customer = await db.find(db.Customer, { where: {
         o_c_customercode: value.o_c_customercode,
         o_c_bank_code   : value.o_c_bank_code,
@@ -119,7 +115,6 @@ export default logic(schema, async (data, session) => {
     }
     case "LOANLINE": {
       value = await db.find(db.OCLoanline, { where: where }, session).then(data, formatter(data.dataValues, db.OCLoanline));
-      // console.log("LOANLINE=================================>", value);
       customer = await db.find(db.Customer, { where: {
         o_c_customercode: value.o_c_customercode,
         o_c_bank_code   : value.o_c_bank_code,
@@ -129,7 +124,6 @@ export default logic(schema, async (data, session) => {
     }
     case "RECEIVABLE": {
       value = await db.find(db.OCReceivable, { where: where }, session).then(data => formatter(data.dataValues, db.OCReceivable));
-      // console.log("RECEIVABLE=================================>", value);
       customer = await db.find(db.Customer, { where: {
         o_c_customercode: value.o_c_customercode,
         o_c_bank_code   : value.o_c_bank_code,

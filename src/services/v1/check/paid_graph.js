@@ -34,18 +34,6 @@ export default logic(schema, async (data, session) => {
       type       : "INTEREST_PERFORMANCE"
     }
   });
-  // let results = await db.query(`
-  //   SELECT
-  //      datetopay, amounttopay
-  //   FROM
-  //     transaction
-  //   WHERE
-  //     relation_id = ? AND type IN(?) AND datetopay < ?
-  //   ORDER BY
-  //     datetopay ASC`,
-  // [filter.id, ["DETAIL", "INTEREST_DETAIL"], rows[count - 1]?.datetopay]).select();
-  console.log(rows);
-  console.log(results);
   return ({
     rows: rows.map(row => {
       let interest = results.find(r => moment(r.datetopay).format("YYYY-MM-DD") === moment(row.datetopay).format("YYYY-MM-DD"));
