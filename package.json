@@ -4,7 +4,7 @@
   "description": "Burenscore datasource service",
   "main": "index.js",
   "scripts": {
-    "start": "SERVER_TYPE=user PORT=30991 babel-node src/index.js",
+    "start": "TZ=utc SERVER_TYPE=user PORT=30991 babel-node src/index.js",
     "migrate": "SERVER_TYPE=user PORT=30991 babel-node src/index.js --dbmigrate",
     "production": "node build/index.js",
     "clean": "rm -rf ./build",

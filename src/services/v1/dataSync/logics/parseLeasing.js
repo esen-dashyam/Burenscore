@@ -10,6 +10,7 @@ import APPENDIX_O from "../../../../constants/APPENDIX_O";
 // o_c_leasingperformance_datetopay
 const checkDuplicate = (array, key) => {
   let duplicate = false;
+  if (!array) return duplicate;
   if (array.length > 2){
     array.forEach((item, index) => {
       if (array.find((el, i) => el[key] === item[key] && index !== i))

@@ -580,6 +580,16 @@ export default {
     "any.empty"   : "ME2492",
     "number.base" : "ME2493",
   },
+  o_c_mrt_address: {
+    "any.required": "ME2504",
+    "any.empty"   : "ME2504",
+    "string.max"  : "ME2505"
+  },
+  o_c_mrt_zipcode: {
+    "any.required": "ME2506",
+    "any.empty"   : "ME2506",
+    "string.max"  : "ME2507"
+  },
   o_c_customer_registerno: {
     "any.required"     : "ME2494",
     "any.empty"        : "ME2494 ",

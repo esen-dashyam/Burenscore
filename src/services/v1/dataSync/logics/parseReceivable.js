@@ -9,6 +9,7 @@ import { optional } from "joi/lib/types/lazy";
 
 const checkDuplicate = (array, key) => {
   let duplicate = false;
+  if (!array) return duplicate;
   if (array.length >2){
     array.forEach((item, index) => {
       if (array.find((element, i) => element[key] === item[key] && index !== i))

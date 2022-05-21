@@ -142,7 +142,7 @@ export default async (register_no, session) => {
             let value = await db.find(db.OCLoanInformation, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCLoanInformation));
             if (value && value.payment_status === "PAID"){
               let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-              let mortgage;
+              let mortgage = [];
               if (mrtnos.length > 0){
                 mortgage = (await db.findAll(db.OCMortgage, { where: {
                   o_c_customercode: value.o_c_customercode,
@@ -159,7 +159,7 @@ export default async (register_no, session) => {
               });
             } else if (value){
               let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-              let mortgage;
+              let mortgage =[];
               if (mrtnos.length > 0){
                 mortgage = (await db.findAll(db.OCMortgage, { where: {
                   o_c_customercode: value.o_c_customercode,
@@ -179,7 +179,7 @@ export default async (register_no, session) => {
             let value = await db.find(db.OCLeasing, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCLeasing));
             if (value && value.payment_status === "PAID"){
               let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-              let mortgage;
+              let mortgage = [];
               if (mrtnos.length > 0){
                 mortgage = (await db.findAll(db.OCMortgage, { where: {
                   o_c_customercode: value.o_c_customercode,
@@ -195,7 +195,7 @@ export default async (register_no, session) => {
               });
             } else if (value) {
               let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-              let mortgage;
+              let mortgage = [];
               if (mrtnos.length > 0){
                 mortgage = (await db.findAll(db.OCMortgage, { where: {
                   o_c_customercode: value.o_c_customercode,
@@ -215,7 +215,7 @@ export default async (register_no, session) => {
             let value = await db.find(db.OCAccredit, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCAccredit));
             if (value){
               let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-              let mortgage;
+              let mortgage = [];
               if (mrtnos.length > 0){
                 mortgage = (await db.findAll(db.OCMortgage, { where: {
                   o_c_customercode: value.o_c_customercode,
@@ -235,7 +235,7 @@ export default async (register_no, session) => {
             let value = await db.find(db.OCOnusInformation, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCOnusInformation));
             if (value && value.payment_status === "PAID"){
               let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-              let mortgage;
+              let mortgage =[];
               if (mrtnos.length > 0){
                 mortgage = (await db.findAll(db.OCMortgage, { where: {
                   o_c_customercode: value.o_c_customercode,
@@ -251,7 +251,7 @@ export default async (register_no, session) => {
               });
             } else if (value) {
               let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-              let mortgage;
+              let mortgage = [];
               if (mrtnos.length > 0){
                 mortgage = (await db.findAll(db.OCMortgage, { where: {
                   o_c_customercode: value.o_c_customercode,
@@ -271,7 +271,7 @@ export default async (register_no, session) => {
             let value = await db.find(db.OBond, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OBond));
             if (value && value.payment_status === "PAID"){
               let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-              let mortgage;
+              let mortgage = [];
               if (mrtnos.length > 0){
                 mortgage = (await db.findAll(db.OCMortgage, { where: {
                   o_c_customercode: value.o_c_customercode,
@@ -287,7 +287,7 @@ export default async (register_no, session) => {
               });
             } else if (value){
               let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-              let mortgage;
+              let mortgage = [];
               if (mrtnos.length > 0){
                 mortgage = (await db.findAll(db.OCMortgage, { where: {
                   o_c_customercode: value.o_c_customercode,
@@ -309,7 +309,7 @@ export default async (register_no, session) => {
             let value = await db.find(db.OCGuarantee, { where: { id: item.relation_id } }, session).then(data => formatter(data.dataValues, db.OCGuarantee));
             if (value){
               let mrtnos = await db.findAll(db.Mrtno, { where: { relation_id: value.id } }, session);
-              let mortgage;
+              let mortgage = [];
               if (mrtnos.length > 0){
                 mortgage = (await db.findAll(db.OCMortgage, { where: {
                   o_c_customercode: value.o_c_customercode,

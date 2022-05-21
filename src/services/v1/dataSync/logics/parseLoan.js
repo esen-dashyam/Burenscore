@@ -9,6 +9,7 @@ import Joi from "joi";
 import APPENDIX_O from "../../../../constants/APPENDIX_O";
 const checkDuplicate = (array, key) => {
   let duplicate = false;
+  if (!array) return duplicate;
   array.forEach((item, index) => {
     if (array.find((element, i) => element[key] === item[key] && index !== i))
       duplicate = true;

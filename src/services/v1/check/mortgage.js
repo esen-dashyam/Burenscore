@@ -3,6 +3,7 @@ import { db } from "@goodtechsoft/sequelize-postgres";
 import Joi from "joi";
 import { APPENDIX, FORMATTABLE_VARIABLES } from "../../../constants";
 import moment from "moment";
+import APPENDIX_MORTGAGE from "../../../constants/APPENDIX_MORTGAGE";
 const schema = Joi.object({
   filter: Joi.object({
     id: Joi.string().required(),
@@ -31,6 +32,12 @@ const formatter = (value = {}, model) => {
         return {
           ...acc,
           [key]: moment(value[key]).format("YYYY-MM-DD")
+        };
+      }
+      if (key === "o_c_mrtcode"){
+        return {
+          ...acc,
+          [key]: APPENDIX_MORTGAGE[value[key]] || value[key],
         };
       }
       if (FORMATTABLE_VARIABLES[key]){

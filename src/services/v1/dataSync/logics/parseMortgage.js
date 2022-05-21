@@ -11,6 +11,8 @@ const schemaArray = Joi.array().items(Joi.object({
   o_c_dateofvaluation: Joi.string().optional().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).allow([null, ""]),
   o_c_mrtvalue       : Joi.number().precision(2).positive().required(),
   o_c_mrtmaxlimit    : Joi.number().precision(2).positive().required(),
+  o_c_mrt_address    : Joi.string().max(250).required(),
+  o_c_mrt_zipcode    : Joi.string().max(500).optional().allow([null, ""]),
   o_c_customer       : Joi.object({
     o_c_customer_firstname : Joi.string().max(50).required(),
     o_c_customer_lastname  : Joi.string().max(50).required(),
@@ -50,6 +52,8 @@ const schemaObject = Joi.object({
   o_c_dateofvaluation: Joi.string().optional().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).allow([null, ""]),
   o_c_mrtvalue       : Joi.number().precision(2).positive().required(),
   o_c_mrtmaxlimit    : Joi.number().precision(2).positive().required(),
+  o_c_mrt_address    : Joi.string().max(250).required(),
+  o_c_mrt_zipcode    : Joi.string().max(500).optional().allow([null, ""]),
   o_c_customer       : Joi.object({
     o_c_customer_firstname : Joi.string().max(50).required(),
     o_c_customer_lastname  : Joi.string().max(50).required(),
@@ -157,6 +161,8 @@ export default async ({ data, where }) => {
       o_c_mrtregistereddatefim        : data?.o_c_authorityofimmovable?.o_c_mrtregistereddatefim,
       o_c_mrtregisterno               : data?.o_c_authorityofimmovable?.o_c_mrtregisterno,
       o_c_mrtcertificatenofim         : data?.o_c_authorityofimmovable?.o_c_mrtcertificatenofim,
+      o_c_mrt_address                 : data?.o_c_mrt_address,
+      o_c_mrt_zipcode                 : data?.o_c_mrt_zipcode,
       ...where,
     });
   }

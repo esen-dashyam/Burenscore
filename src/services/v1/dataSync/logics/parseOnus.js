@@ -7,6 +7,7 @@ import APPENDIX_O from "../../../../constants/APPENDIX_O";
 
 const checkDuplicate = (array, key) =>{
   let duplicate = false;
+  if (!array) return duplicate;
   if (array.length > 2){
     array.forEach((item, index) =>{
       if (array.find((element, i) => element[key] === item[key] && index !== i))
@@ -165,8 +166,8 @@ export default async ({ data, where }) => {
     o_c_onus_fee              : data?.o_c_onus_fee,
     o_c_onus_loanclasscode    : data?.o_c_onus_loanclasscode,
     o_c_onus_isapproved       : data?.o_c_onus_isapproved,
-    o_c_onus_loancharttype    : data?.o_c_onustransactions.c_onus_loancharttype,
-    o_c_onus_interestcharttype: data?.o_c_onustransactions.c_onus_interestcharttype,
+    o_c_onus_loancharttype    : data?.o_c_onustransactions?.c_onus_loancharttype,
+    o_c_onus_interestcharttype: data?.o_c_onustransactions?.c_onus_interestcharttype,
     ...where,
   };
 

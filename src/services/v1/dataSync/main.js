@@ -50,7 +50,13 @@ const formatter = (value = {}, model) => {
   return {
     ...Object.keys(value).reduce((acc, key) => {
       let attributeType = mapped[key];
-
+      if (model === db.Transaction){
+        console.log("===TRANSACRTIONFORMAT=====>");
+        return {
+          ...acc,
+          [key]: value[key]
+        };
+      }
       if (attributeType && value[key] && attributeType === "DATE") {
         // console.log({
         //   [key]: moment(value[key]).format("YYYY-MM-DD"),
@@ -69,36 +75,50 @@ const formatter = (value = {}, model) => {
   };
 };
 const bulkUpdate = async ({ type, data, attribute, where, session }) => {
-  // console.log("=============CHECKKEY===============");
   let oldData;
   let INSERT_DATA = [];
   try {
     if (attribute === "datetopay"){
       oldData = (await db.findAll(model[type], {
-        where     : where,
-        attributes: [attribute]
-      }, session))?.map(item => moment(item[attribute]));
-      // console.log("OLD_DATA_DATETOPAY:", oldData);
-      data.forEach(item => {
-        if (oldData.find(data => data === item.datetopay))
-          INSERT_DATA.push(item);
+        where: where,
+      }, session)).map(item => {
+        return {
+          ...item.dataValues,
+          datetopay: moment(item.datetopay).format("YYYY-MM-DD")
+        };
       });
+      if (oldData.length <= 0){
+        data.forEach(item => {
+          INSERT_DATA.push({
+            ...item,
+            datetopay: moment(item.datetopay)
+          });
+        });
+      } else {
+        data.forEach(iter => {
+          if (!oldData.find(f=> f.datetopay === iter.datetopay && f.type === iter.type)) {
+            console.log(oldData.find(f=> f.datetopay === iter.datetopay && f.type === iter.type));
+            INSERT_DATA.push(iter);
+          }
+        });
+      }
     } else {
       oldData = (await db.findAll(model[type], {
         where     : where,
         attributes: [attribute]
       }, session))?.map(item => item[attribute]);
-      console.log("OLD_DATA:", oldData);
       data.forEach(item => {
         if (oldData.indexOf(item[attribute]) === -1)
-          INSERT_DATA.push(item);
+          INSERT_DATA.push({
+            ...item,
+            datetopay: moment(item.datetopay)
+          });
       });
     }
-    // console.log("INSERT_DATA:", INSERT_DATA);
     if (INSERT_DATA.length > 0)
       await db.bulkCreate(model[type], INSERT_DATA, session);
   } catch (err){
-    // console.log(err);
+    console.log(err);
   }
 };
 const update = async ({ type, data, where, session }) => {

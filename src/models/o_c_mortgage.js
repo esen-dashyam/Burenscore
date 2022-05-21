@@ -129,6 +129,14 @@ module.exports = (sequelize, DataTypes) => {
       type     : DataTypes.STRING(50),
       allowNull: true,
     },
+    o_c_mrt_address: {
+      type     : DataTypes.STRING(250),
+      allowNull: true
+    },
+    o_c_mrt_zipcode: {
+      type     : DataTypes.STRING(500),
+      allowNull: true
+    },
     ...fields(DataTypes)
   });
 };

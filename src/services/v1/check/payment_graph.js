@@ -53,7 +53,8 @@ export default logic(schema, async (data, session) => {
         datetopay    : moment(row.datetopay).format("YYYY-MM-DD"),
         amounttopay  : row.amounttopay,
         interesttopay: interest?.amounttopay || 0,
-        total        : row.amounttopay + (interest?.amounttopay || 0),
+        // total        : parseFloat(row.amounttopay + interest?.amounttopay).toFixed(2),
+        total        : (parseFloat(row.amounttopay) + parseFloat(interest?.amounttopay)).toFixed(2)
       };
     }),
     count

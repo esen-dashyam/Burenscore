@@ -44,7 +44,8 @@ export default logic(schema, async (data, session) => {
   //   ORDER BY
   //     datetopay ASC`,
   // [filter.id, ["DETAIL", "INTEREST_DETAIL"], rows[count - 1]?.datetopay]).select();
-
+  console.log(rows);
+  console.log(results);
   return ({
     rows: rows.map(row => {
       let interest = results.find(r => moment(r.datetopay).format("YYYY-MM-DD") === moment(row.datetopay).format("YYYY-MM-DD"));
@@ -53,7 +54,7 @@ export default logic(schema, async (data, session) => {
         datetopay    : moment(row.datetopay).format("YYYY-MM-DD"),
         amounttopay  : row.amounttopay,
         interesttopay: interest?.amounttopay || 0,
-        total        : row.amounttopay + (interest?.amounttopay || 0),
+        total        : (parseFloat(row.amounttopay) + parseFloat(interest?.amounttopay)).toFixed(2)
       };
     }),
     count
