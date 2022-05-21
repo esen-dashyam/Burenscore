@@ -38,12 +38,13 @@ export default logic(schema, async (data, session) => {
   return ({
     rows: rows.map(row => {
       let interest = results.find(r => moment(r.datetopay).format("YYYY-MM-DD") === moment(row.datetopay).format("YYYY-MM-DD"));
+      let interestAmount = interest?.amounttopay || 0;
       return {
         ...row.dataValues,
         datetopay    : moment(row.datetopay).format("YYYY-MM-DD"),
         amounttopay  : row.amounttopay,
         interesttopay: interest?.amounttopay || 0,
-        total        : (parseFloat(row.amounttopay) + parseFloat(interest?.amounttopay)).toFixed(2) || 0
+        total        : (parseFloat(row.amounttopay) + parseFloat(interestAmount)).toFixed(2)
       };
     }),
     count
