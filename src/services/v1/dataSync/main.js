@@ -33,7 +33,7 @@ const insert = async (callback) => {
   try {
     await callback();
   } catch (err) {
-    // console.log(err);
+    console.log(err);
   }
 };
 const formatter = (value = {}, model) => {
@@ -51,17 +51,12 @@ const formatter = (value = {}, model) => {
     ...Object.keys(value).reduce((acc, key) => {
       let attributeType = mapped[key];
       if (model === db.Transaction){
-        console.log("===TRANSACRTIONFORMAT=====>");
         return {
           ...acc,
           [key]: value[key]
         };
       }
       if (attributeType && value[key] && attributeType === "DATE") {
-        // console.log({
-        //   [key]: moment(value[key]).format("YYYY-MM-DD"),
-        //   key
-        // });
         return {
           ...acc,
           [key]: moment(value[key])

@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     o_c_accredit_interestinperc: {
-      type     : DataTypes.DECIMAL(6, 2),
+      type     : DataTypes.DECIMAL(24, 2),
       allowNull: true,
     },
     o_c_accredit_commissionperc: {
