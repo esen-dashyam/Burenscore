@@ -84,14 +84,14 @@ const bulkUpdate = async ({ type, data, attribute, where, session }) => {
       }, session)).map(item => {
         return {
           ...item?.dataValues,
-          datetopay: moment(item.datetopay).format("YYYY-MM-DD")
+          datetopay: moment(item?.datetopay).format("YYYY-MM-DD")
         };
       });
       if (oldData.length <= 0){
         data.forEach(item => {
           INSERT_DATA.push({
             ...item,
-            datetopay: moment(item.datetopay)
+            datetopay: moment(item?.datetopay)
           });
         });
       } else {
