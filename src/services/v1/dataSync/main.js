@@ -83,7 +83,7 @@ const bulkUpdate = async ({ type, data, attribute, where, session }) => {
         where: where,
       }, session)).map(item => {
         return {
-          ...item.dataValues,
+          ...item?.dataValues,
           datetopay: moment(item.datetopay).format("YYYY-MM-DD")
         };
       });
