@@ -948,5 +948,13 @@ export default {
   TE1000                             : "Лавлагаанд тусгагдахгүй төлөлт хийгдэж дууссан үүргийн мэдээлэл байна'",
   O_C_GUARANTEE_LOANCLASSCODE_INVALID: "o_c_guarantee_loanclasscode tag-н утга буруу байна",
   O_C_GUARANTEE_LOANCLASSCODE        : "o_c_guarantee_loanclasscode tag байхгүй байна",
-  9000                               : "o_c_birthdate-tag байхгүй байна",
+  M9000                              : "o_c_birthdate-tag байхгүй байна",
+  M9001                              : "o_c_loan_information-ны isapproved таагийн утга 0 эсвэл 1 биш байна.",
+  M9002                              : "o_c_loanline_information-ны isapproved таагийн утга 0 эсвэл 1 биш байна.",
+  M9003                              : "o_c_accredit_information-ны isapproved таагийн утга 0 эсвэл 1 биш байна.",
+  M9004                              : "o_c_receivable_information-ны isapproved таагийн утга 0 эсвэл 1 биш байна.",
+  M9005                              : "o_c_onus_information-ны isapproved таагийн утга 0 эсвэл 1 биш байна.",
+  M9006                              : "o_c_mrtno_internal-тааг нь байхгүй байна",
+  M9007                              : "o_c_mrtno_internal-утгын урт заасан хэмжээнээс хэтэрсэн байна",
+  M9008                              : "o_c_mrtno_internal таагд оруулсан утгын формат буруу байна,"
 };

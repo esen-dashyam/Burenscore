@@ -24,7 +24,7 @@ const schema = Joi.object({
   o_c_accreditrelnos: Joi.object({
     o_c_accreditrelno: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string())),
   }).optional().optional().allow([null, ""]),
-
+  o_c_accredit_isapproved: Joi.number().min(0).max(1).required(),
 }).options({ allowUnknown: true });
 export default async ({ data, where }) => {
   if (!data) return null;

@@ -75,7 +75,7 @@ export default async ({ data, where, type }) => {
       catch (err) {
         console.log(err);
         // console.log("================================", err);
-        throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
+        throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
       }
       data.forEach(item => {
         shareholder.push({
@@ -93,7 +93,7 @@ export default async ({ data, where, type }) => {
       catch (err) {
         console.log(err);
         // console.log("================================", err);
-        throw new ValidationError(err.details[0].message, ERROR_DETAILS[err.details[0].message]);
+        throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
       }
       shareholder.push({
         ...where,

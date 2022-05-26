@@ -16,7 +16,7 @@ export default method.post("/sync/insert", schema, async (req, res, session) => 
       customer
     },
   } = req.body;
-  console.log(customer);
+  // console.log(customer);
 
   let customers = [];
   if (Array.isArray(customer)){

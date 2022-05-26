@@ -1,12 +1,9 @@
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { APPENDIX, ERROR_CODES, ERROR_DETAILS } from "../../../../constants";
+import { APPENDIX, ERROR_CODES, ERROR_DETAILS, VALUE_CODES } from "../../../../constants";
 import Joi from "joi";
 import APPENDIX_O from "../../../../constants/APPENDIX_O";
-import { optional } from "joi/lib/types/lazy";
-
-
 const checkDuplicate = (array, key) => {
   let duplicate = false;
   if (!array) return duplicate;
@@ -49,10 +46,10 @@ const schema =Joi.object({
     ).required(),
   o_c_receivable_expdate: Joi.string()
     .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
-  o_c_receivable_currencycode : Joi.string().required(),
-  o_c_receivable_type         : Joi.string().required(),
-  o_c_receivable_loanclasscode: Joi.string().max(16).required(),
-  o_c_receivable_isapproved   : Joi.number().optional().allow([null, ""]),
+  o_c_receivable_currencycode : Joi.string().valid(Object.keys(VALUE_CODES).map(item => VALUE_CODES[item])).required(),
+  o_c_receivable_type         : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_M)).required(),
+  o_c_receivable_loanclasscode: Joi.string().valid(Object.keys(APPENDIX.APPENDIX_EO)).required(),
+  o_c_receivable_isapproved   : Joi.number().max(1).min(0).optional().allow([null, ""]),
   o_c_receivable_extdate      : Joi.string()
     .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
   o_c_receivabletransactions: Joi.object({

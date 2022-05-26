@@ -28,6 +28,7 @@ let model = {
   receivable         : db.OCReceivable,
   onus               : db.OCOnusInformation,
   bond               : db.OBond,
+  s_code             : db.SCode
 };
 const insert = async (callback) => {
   try {
@@ -106,7 +107,6 @@ const bulkUpdate = async ({ type, data, attribute, where, session }) => {
         if (oldData.indexOf(item[attribute]) === -1)
           INSERT_DATA.push({
             ...item,
-            datetopay: moment(item.datetopay)
           });
       });
     }
@@ -174,7 +174,7 @@ export default logic(null, async (data, session) => {
   };
   let CUSTOMER = {};
   try {
-    CUSTOMER.customerInfo = await parseCustomer(customerInfo);
+    CUSTOMER.customerInfo = await parseCustomer(customerInfo, where);
     CUSTOMER.shareholderCustomer = await parseShareholder({ data: shareholderCustomer, where, type: "CUSTOMER" });
     CUSTOMER.shareholderOrg = await parseShareholder({ data: shareholderOrg, where, type: "ORG" });
     CUSTOMER.relationOrg = await parseRelation({ data: relationOrg, where, type: "ORG", session });
@@ -237,6 +237,19 @@ export default logic(null, async (data, session) => {
     if (CUSTOMER?.financialInfo?.o_t_report){
       await insert(() => db.create(db.OTReport, { ...formatter(CUSTOMER?.financialInfo?.o_t_report, db.OTReport) }, session));
     }
+    // / SCode
+
+    if (CUSTOMER?.customerInfo?.o_c_sectorcodes && CUSTOMER?.customerInfo?.o_c_sectorcodes.length > 0) {
+      console.log("=====================bbbbbbbb==============================");
+      console.log("===================================================", db.SCode, CUSTOMER?.customerInfo?.o_c_sectorcodes, session);
+      console.log("=======================ccccccccccc============================");
+      await insert(() => db.bulkCreate(db.SCode, CUSTOMER?.customerInfo?.o_c_sectorcodes, session));
+
+    }
+
+
+
+    // Scode
     // LOAN START
     if (CUSTOMER?.loanInfo){
       await insert(() => db.create(db.OCLoanInformation, { ...formatter(CUSTOMER?.loanInfo, db.OCLoanInformation) }, session));
@@ -249,6 +262,7 @@ export default logic(null, async (data, session) => {
       if (CUSTOMER?.loanInfo?.transactions && CUSTOMER?.loanInfo?.transactions.length > 0)
         await insert(() => db.bulkCreate(db.Transaction, CUSTOMER?.loanInfo?.transactions.map(entry => formatter(entry, db.Transaction)), session));
     }
+
     // LOAN END
     // LEASING START
     if (CUSTOMER?.leasingInfo){
@@ -279,10 +293,14 @@ export default logic(null, async (data, session) => {
         await insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.guarenteeInfo?.o_c_guaranteemrtnos, session));
       if (CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos && CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos.length > 0)
         await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos, session));
+
+      if (CUSTOMER?.guarenteeInfo?.o_c_guarantee_sectorcode && CUSTOMER?.guarenteeInfo?.o_c_guarantee_sectorcode.length > 0)
+        await insert(() => db.bulkCreate(db.SCode, CUSTOMER?.guarenteeInfo?.o_c_guarantee_sectorcode, session));
     }
     // GUARENTEE END
     if (CUSTOMER?.loanLineInfo){
       await insert(() => db.create(db.OCLoanline, { ...formatter(CUSTOMER?.loanLineInfo, db.OCLoanline) }, session));
+
     }
     // RECEIVABLE START
     if (CUSTOMER?.receivableInfo){
@@ -360,6 +378,14 @@ export default logic(null, async (data, session) => {
         await update({ type: "otReport", data: { ...formatter(CUSTOMER?.financialInfo?.o_t_report, db.OTReport) }, where, session });
       }
     }
+
+    // / scode start
+    if (CUSTOMER?.customerInfo){
+      if (CUSTOMER?.customerInfo?.o_c_sectorcodes && CUSTOMER?.customerInfo?.o_c_sectorcodes.length >0)
+        console.log("==========================AAAAAAAAAAAAAAAAa==================", CUSTOMER?.customerInfo?.o_c_sectorcodes);
+      await bulkUpdate({ type: "s_code", data: CUSTOMER?.customerInfo?.o_c_sectorcodes.map(item => ({ ...item, relation_id: customer.id })), attribute: "code", where: { ...where, type: "CUSTOMER", relation_id: customer.id }, session });
+    }
+    // / scode end
     if (CUSTOMER?.loanInfo){
       let loan = await update({ type : "loanInfo", data : { ...formatter(CUSTOMER?.loanInfo, db.OCLoanInformation) }, where: {
         ...where,

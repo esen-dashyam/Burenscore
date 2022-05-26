@@ -56,7 +56,7 @@ const schema = Joi.object({
   o_c_onus_interestinperc: Joi.number().required(),
   o_c_onus_commissionperc: Joi.number().required(),
   o_c_onus_fee           : Joi.number().required(),
-  o_c_onus_loanclasscode : Joi.string().max(16).required(),
+  o_c_onus_loanclasscode : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_EO)).required(),
   o_c_onus_isapproved    : Joi.number().valid([1, 0]).optional().allow(null, ""),
   o_c_onustransactions   : Joi.object({
     o_c_onus_loancharttype    : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),

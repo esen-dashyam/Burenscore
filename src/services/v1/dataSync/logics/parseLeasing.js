@@ -3,11 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { APPENDIX, ERROR_CODES, ERROR_DETAILS, VALUE_CODES } from "../../../../constants";
 import Joi from "joi";
-import APPENDIX_A from "../../../../constants/APPENDIX_A";
-import APPENDIX_EO from "../../../../constants/APPENDIX_EO";
-import APPENDIX_O from "../../../../constants/APPENDIX_O";
-
-// o_c_leasingperformance_datetopay
 const checkDuplicate = (array, key) => {
   let duplicate = false;
   if (!array) return duplicate;
@@ -23,7 +18,7 @@ const neoSchema = Joi.object({
   orgmeasure                   : Joi.string().max(500).optional().allow([null, ""]),
   measuredate                  : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
   measuredescription           : Joi.string().max(500).optional().allow([null, ""]),
-  causetostartcase             : Joi.string().valid(Object.keys(APPENDIX_O)).optional().allow([null, ""]),
+  causetostartcase             : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_O)).optional().allow([null, ""]),
   datetstartcase               : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
   registertopolice             : Joi.number().min(0).max(1).allow([null, ""]),
   registertopolicedate         : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).optional().allow([null, ""]),
@@ -48,12 +43,12 @@ const schema = Joi.object({
   o_c_leasing_starteddate   : Joi.string().regex(/(^(((\d\d)(([02468][048])|([13579][26]))-02-29)|(((\d\d)(\d\d)))-((((0\d)|(1[0-2]))-((0\d)|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))\s(([01]\d|2[0-3]):([0-5]\d):([0-5]\d))$)/).required(),
   o_c_leasing_expdate       : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
   o_c_leasing_currencycode  : Joi.string().valid(Object.keys(VALUE_CODES).map(item => VALUE_CODES[item])).required(),
-  o_c_leasing_sectorcode    : Joi.string().valid(Object.keys(APPENDIX_A)).required(),
+  o_c_leasing_sectorcode    : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_A)).required(),
   o_c_leasing_interestinperc: Joi.number().max(999999.99).precision(2).required(),
   o_c_leasing_commissionperc: Joi.number().max(999999999999.99).precision(2).required().required(),
   o_c_leasing_fee           : Joi.number().max(999999999999.99).precision(2).required(),
-  o_c_leasing_updatedexpdate: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
-  o_c_leasing_loanclasscode : Joi.string().valid(Object.keys(APPENDIX_EO)).required(),
+  o_c_leasing_updatedexpdate: Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).allow([null, ""]),
+  o_c_leasing_loanclasscode : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_EO)).required(),
   o_c_leasing_isapproved    : Joi.number().integer().required(),
   o_c_leasingtransactions   : Joi.object({
     o_c_leasing_loancharttype    : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_HAGAS_I)).required(),

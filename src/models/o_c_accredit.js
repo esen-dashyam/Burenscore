@@ -37,6 +37,10 @@ module.exports = (sequelize, DataTypes) => {
       type     : DataTypes.STRING(45),
       allowNull: true,
     },
+    o_c_accredit_sectorcode: {
+      type     : DataTypes.STRING(45),
+      allowNull: true,
+    },
     o_c_accredit_type: {
       type     : DataTypes.STRING(45),
       allowNull: true,

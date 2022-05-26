@@ -18,7 +18,7 @@ const schema = Joi.object({
   o_bond_currencycode  : Joi.string().valid(Object.keys(VALUE_CODES).map(item => VALUE_CODES[item])).required(),
   o_bond_type          : Joi.string().valid(Object.keys(APPENDIX_PHI)).required(),
   o_bond_bondmarket    : Joi.string().max(100).optional().allow([null, ""]),
-  o_bond_numberofbonds : Joi.number().integer().max(999999999999999).required(),
+  o_bond_numberofbonds : Joi.number().max(999999999999999).precision(2).required(),
   o_bond_bondunitprice : Joi.number().max(999999999999999).precision(2).required(),
   o_bond_interestinperc: Joi.number().max(999999).precision(2).required(),
   o_bond_balance       : Joi.number().max(999999999999999).precision(2).required(),

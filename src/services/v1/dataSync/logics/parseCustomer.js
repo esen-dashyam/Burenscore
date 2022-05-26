@@ -1,12 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
 import Joi from "joi";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
-import { ERROR_DETAILS, ERROR_CODES } from "../../../../constants";
+import { ERROR_DETAILS, ERROR_CODES, APPENDIX } from "../../../../constants";
 import APPENDIX_Y from "../../../../constants/APPENDIX_Y";
 import APPENDIX_P_FITCH from "../../../../constants/APPENDIX_P_FITCH";
 import APPENDIX_R from "../../../../constants/APPENDIX_R";
 import APPENDIX_C from "../../../../constants/APPENDIX_C";
 import APPENDIX_J from "../../../../constants/APPENDIX_J";
+import object from "joi/lib/types/object";
 
 const schema = Joi.object({
   o_c_customercode   : Joi.string().max(16).required(),
@@ -81,9 +82,12 @@ const schema = Joi.object({
   o_noofshareholders     : Joi.number().integer().optional().allow([null, ""]),
   c_familynumofunemployed: Joi.number().integer().optional().allow([null, ""]),
   c_job                  : Joi.string().max(250).optional().allow([null, ""]),
+  o_c_sectorcodes        : Joi.object({
+    o_c_sectorcode: Joi.string().valid(object.keys(APPENDIX.APPENDIX_A)).required(),
+  }).required(),
 }).options({ allowUnknown: true });
 
-export default async (customerInfo) => {
+export default async (customerInfo, where) => {
   if (!customerInfo) return null;
   try {
     await schema.validate(customerInfo);
@@ -91,6 +95,24 @@ export default async (customerInfo) => {
     console.log("=========", err);
     throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
   }
+  let id = uuidv4();
+  let s_codes = [];
+  if (Array.isArray(customerInfo.o_c_sectorcodes?.o_c_sectorcode)){
+    customerInfo.o_c_sectorcodes.o_c_sectorcode.forEach(item => {
+      s_codes.push({
+        ...where,
+        relation_id: id,
+        type       : "CUSTOMER",
+        code       : item._
+      });
+    });
+  } else if (customerInfo.o_c_sectorcodes?.o_c_sectorcode)
+    s_codes.push({
+      ...where,
+      relation_id: id,
+      type       : "CUSTOMER",
+      code       : customerInfo.o_c_sectorcodes.o_c_sectorcode
+    });
   let customer = {
     id                             : uuidv4(),
     o_c_customercode               : customerInfo?.o_c_customercode,
@@ -122,6 +144,8 @@ export default async (customerInfo) => {
     o_noofshareholders             : customerInfo?.o_noofshareholders,
     c_job                          : customerInfo?.c_job,
   };
+  customer.o_c_sectorcodes = s_codes;
+  // console.log("============CCC============", customer);
 
   return customer;
 };
