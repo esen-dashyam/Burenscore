@@ -4,6 +4,7 @@ import Joi from "joi";
 import { db } from "@goodtechsoft/sequelize-postgres";
 import { fall } from "../../../../utils";
 import APPENDIX_D from "../../../../constants/APPENDIX_D";
+import { v4 as uuidv4 } from "uuid";
 const checkDuplicate = (array, key) => {
   let duplicate = false;
   if (array.length > 2){
@@ -14,7 +15,6 @@ const checkDuplicate = (array, key) => {
   }
   return duplicate;
 };
-
 const customerSchemaObject = Joi.object({
   o_c_relationcustomer_firstName      : Joi.string().max(50).required(),
   o_c_relationcustomer_lastName       : Joi.string().required(),
@@ -55,6 +55,7 @@ const orgSchemaArray = Joi.array().items(Joi.object({
 export default async ({ data, where, type, session }) => {
   if (!data) return null;
   let shareholder = [];
+  let s_codes = [];
   // console.log(data);
   if (type === "CUSTOMER"){
     // console.log("data_IS_ARRAY", Array.isArray(data));
@@ -74,11 +75,6 @@ export default async ({ data, where, type, session }) => {
       }
       let falls = data.map(item => {
         return async () => {
-          // let relno = await db.find(db.OCRelationcustomer, {
-          //   ...where,
-          //   o_c_relationcustomer_relno: item.o_c_relationcustomer_relno
-          // }, session);
-          // if (relno) throw new ValidationError(ERROR_DETAILS.ME4055);
           shareholder.push({
             ...where,
             o_c_relationcustomer_firstName      : item?.o_c_relationcustomer_firstName,
@@ -98,14 +94,8 @@ export default async ({ data, where, type, session }) => {
       }
       catch (err) {
         console.log("================================", err);
-
         throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]], APPENDIX_D);
       }
-      // let relno = await db.find(db.OCRelationcustomer, {
-      //   ...where,
-      //   o_c_relationcustomer_relno: data.o_c_relationcustomer_relno
-      // }, session);
-      // if (relno) throw new ValidationError(ERROR_DETAILS.ME4055);
       shareholder.push({
         ...where,
         o_c_relationcustomer_firstName      : data?.o_c_relationcustomer_firstName,
@@ -119,7 +109,37 @@ export default async ({ data, where, type, session }) => {
     }
   }
   if (type === "ORG"){
-    // console.log("data_IS_ARRAY", Array.isArray(data));
+    let id = uuidv4();
+    console.log("=============aaa========", data);
+    if (Array.isArray(data.o_c_relationorg_sectorcodes?.o_c_relationorg_sectorcode)){
+      data.o_c_relationorg_sectorcodes.o_c_relationorg_sectorcode.forEach(item => {
+        s_codes.push({
+          ...where,
+          relation_id: id,
+          type       : "RELATION_ORG",
+          code       : item._
+        });
+      });
+    }
+    else if (data.o_c_relationorg_sectorcodes?.o_c_relationorg_sectorcode)
+      s_codes.push({
+        ...where,
+        relation_id: id,
+        type       : "RELATION_ORG",
+        code       : data.o_c_relationorg_sectorcodes?.o_c_relationorg_sectorcode._
+      });
+    else if (data.forEach(item => {
+      Array.isArray(item?.o_c_relationorg_sectorcodes?.o_c_relationorg_sectorcode.forEach(item =>{
+        s_codes.push({
+          ...where,
+          relation_id: id,
+          type       : "RELATION_ORG",
+          code       : item._
+        });
+      }));
+    }));
+    console.log("============aaa===============", s_codes);
+
     if (Array.isArray(data)){
       try {
         await orgSchemaArray.validate(data);
@@ -141,6 +161,7 @@ export default async ({ data, where, type, session }) => {
             o_c_relationorg_relno: item.o_c_relationorg_relno
           }, session);
           if (relno) throw new ValidationError(ERROR_DETAILS.ME4055);
+
           shareholder.push({
             ...where,
             o_c_relationorg_orgname        : item?.o_c_relationorg_orgname,
@@ -180,6 +201,6 @@ export default async ({ data, where, type, session }) => {
       });
     }
   }
-
+  shareholder.o_c_relationorg_sectorcodes = s_codes;
   return shareholder;
 };

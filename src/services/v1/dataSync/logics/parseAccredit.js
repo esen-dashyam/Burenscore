@@ -4,6 +4,7 @@ import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERRORS, ERROR_DETAILS, VALUE_CODES, ERROR_CODES } from "../../../../constants";
 import Joi from "joi";
 import APPENDIX_E from "../../../../constants/APPENDIX_E";
+import APPENDIX_A from "../../../../constants/APPENDIX_A";
 
 const schema = Joi.object({
   o_c_accredit_advamount  : Joi.number().max(999999999999999).precision(2).required(),
@@ -12,6 +13,7 @@ const schema = Joi.object({
   o_c_accredit_expdate       : Joi.string().regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
   o_c_accredit_currencycode  : Joi.string().valid(Object.keys(VALUE_CODES).map(item => VALUE_CODES[item])).required(),
   o_c_accredit_type          : Joi.string().valid(Object.keys(APPENDIX_E)).required(),
+  o_c_accredit_sectorcode    : Joi.string().valid(Object.keys(APPENDIX_A)).required(),
   o_c_accredit_interestinperc: Joi.number().max(999999).precision(2).required(),
   o_c_accredit_commissionperc: Joi.number().max(999999999999).precision(2).required(),
   o_c_accredit_fee           : Joi.number().max(999999999999).precision(2).required(),
@@ -77,6 +79,7 @@ export default async ({ data, where }) => {
     o_c_accredit_expdate       : data?.o_c_accredit_expdate,
     o_c_accredit_currencycode  : data?.o_c_accredit_currencycode,
     o_c_accredit_type          : data?.o_c_accredit_type,
+    o_c_accredit_sectorcode    : data?.o_c_accredit_sectorcode,
     o_c_accredit_interestinperc: data?.o_c_accredit_interestinperc,
     o_c_accredit_commissionperc: data?.o_c_accredit_commissionperc,
     o_c_accredit_fee           : data?.o_c_accredit_fee,

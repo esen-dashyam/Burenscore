@@ -883,8 +883,8 @@ export default {
     "number.base" : "ME3373",
   },
   o_c_relationorg_relno: {
-    "any.required": "ME4057",
-    "any.empty"   : "ME4057",
+    "any.required": "ME4056",
+    "any.empty"   : "ME4056",
   },
   // SHAREHOLDER -----------------------------------------------------------------
   o_shareholder_firstname: {
@@ -908,7 +908,6 @@ export default {
   },
   o_shareholder_orgname: {
     "array.required": "ME3022",
-    "any.required"  : "aaaaaaaaa",
     "string.base"   : "ME3022",
     "string.max"    : "ME3023",
   },
@@ -928,6 +927,9 @@ export default {
     "string.base"      : " ",
     "string.max"       : " ",
     "string.regex.base": " ",
+  },
+  o_shareholder_sectorcodes: {
+    "string.base": "ME3041",
   },
   // FINANCIALINFO
   c_b_totalsale: {

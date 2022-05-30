@@ -7,8 +7,6 @@ import APPENDIX_P_FITCH from "../../../../constants/APPENDIX_P_FITCH";
 import APPENDIX_R from "../../../../constants/APPENDIX_R";
 import APPENDIX_C from "../../../../constants/APPENDIX_C";
 import APPENDIX_J from "../../../../constants/APPENDIX_J";
-import object from "joi/lib/types/object";
-
 const schema = Joi.object({
   o_c_customercode   : Joi.string().max(16).required(),
   o_c_loandescription: Joi.string().optional().max(250).allow([null, ""]),
@@ -82,9 +80,6 @@ const schema = Joi.object({
   o_noofshareholders     : Joi.number().integer().optional().allow([null, ""]),
   c_familynumofunemployed: Joi.number().integer().optional().allow([null, ""]),
   c_job                  : Joi.string().max(250).optional().allow([null, ""]),
-  o_c_sectorcodes        : Joi.object({
-    o_c_sectorcode: Joi.string().valid(object.keys(APPENDIX.APPENDIX_A)).required(),
-  }).required(),
 }).options({ allowUnknown: true });
 
 export default async (customerInfo, where) => {
@@ -111,7 +106,7 @@ export default async (customerInfo, where) => {
       ...where,
       relation_id: id,
       type       : "CUSTOMER",
-      code       : customerInfo.o_c_sectorcodes.o_c_sectorcode
+      code       : customerInfo.o_c_sectorcodes.o_c_sectorcode._
     });
   let customer = {
     id                             : uuidv4(),
@@ -145,7 +140,6 @@ export default async (customerInfo, where) => {
     c_job                          : customerInfo?.c_job,
   };
   customer.o_c_sectorcodes = s_codes;
-  // console.log("============CCC============", customer);
 
   return customer;
 };

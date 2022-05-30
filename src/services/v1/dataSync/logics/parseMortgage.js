@@ -2,7 +2,6 @@ import moment from "moment";
 import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERROR_DETAILS, ERROR_CODES, APPENDIX } from "../../../../constants";
 import Joi from "joi";
-import { valid } from "joi/lib/types/lazy";
 const schemaArray = Joi.array().items(Joi.object({
   o_c_mrtno          : Joi.number().precision(2).positive().required(),
   o_c_mrtno_internal : Joi.number().required(),

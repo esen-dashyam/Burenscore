@@ -28,7 +28,7 @@ let model = {
   receivable         : db.OCReceivable,
   onus               : db.OCOnusInformation,
   bond               : db.OBond,
-  s_code             : db.SCode
+  s_code             : db.SCode,
 };
 const insert = async (callback) => {
   try {
@@ -148,8 +148,8 @@ export default logic(null, async (data, session) => {
   let customerInfo = data.o_c_customer_information;
   let shareholderCustomer = customerInfo?.o_shareholdercustomers?.o_shareholdercustomer;
   let shareholderOrg = customerInfo?.o_shareholderorgs?.o_shareholderorg;
-  let relationOrg = customerInfo?.o_c_relationorgs?.o_c_relationorg;
-  let relationCustomer =customerInfo?.o_c_relationcustomers?.o_c_relationcustomer;
+  let relationCustomer = customerInfo?.o_c_relationcustomers?.o_c_relationcustomer;
+  let relationOrg = customerInfo?.o_c_relationorgs.o_c_relationorg;
   let financialInfo = data?.o_c_financial_information;
   let loanInfo = data?.o_c_onus_information?.o_c_loan_information;
   let leasingInfo = data?.o_c_onus_information?.o_c_leasing;
@@ -175,20 +175,20 @@ export default logic(null, async (data, session) => {
   let CUSTOMER = {};
   try {
     CUSTOMER.customerInfo = await parseCustomer(customerInfo, where);
-    CUSTOMER.shareholderCustomer = await parseShareholder({ data: shareholderCustomer, where, type: "CUSTOMER" });
-    CUSTOMER.shareholderOrg = await parseShareholder({ data: shareholderOrg, where, type: "ORG" });
+    // CUSTOMER.shareholderCustomer = await parseShareholder({ data: shareholderCustomer, where, type: "CUSTOMER" });
+    // CUSTOMER.shareholderOrg = await parseShareholder({ data: shareholderOrg, where, type: "ORG" });
     CUSTOMER.relationOrg = await parseRelation({ data: relationOrg, where, type: "ORG", session });
-    CUSTOMER.relationCustomer = await parseRelation({ data: relationCustomer, where, type: "CUSTOMER", session });
-    CUSTOMER.financialInfo = await parseFinancialInfo({ data: financialInfo, where });
-    CUSTOMER.loanInfo = await parseLoan({ data: loanInfo, where });
-    CUSTOMER.leasingInfo = await parseLeasing({ data: leasingInfo, where });
-    CUSTOMER.accreditInfo = await parseAccredit({ data: accreditInfo, where });
-    CUSTOMER.guarenteeInfo = await parseGuarantee({ data: guarenteeinfo, where });
-    CUSTOMER.loanLineInfo = await parseLoanLine({ data: loanLineinfo, where });
-    CUSTOMER.receivableInfo = await parseReceivable({ data: receivableInfo, where });
-    CUSTOMER.onusInfo = await parseOnus({ data: onusInfo, where });
-    CUSTOMER.bondInfo = await parseBond({ data: bond, where });
-    CUSTOMER.mrtInfo = await parseMortgage({ data: mrtInfo, where });
+    // CUSTOMER.relationCustomer = await parseRelation({ data: relationCustomer, where, type: "CUSTOMER", session });
+    // CUSTOMER.financialInfo = await parseFinancialInfo({ data: financialInfo, where });
+    // CUSTOMER.loanInfo = await parseLoan({ data: loanInfo, where });
+    // CUSTOMER.leasingInfo = await parseLeasing({ data: leasingInfo, where });
+    // CUSTOMER.accreditInfo = await parseAccredit({ data: accreditInfo, where });
+    // CUSTOMER.guarenteeInfo = await parseGuarantee({ data: guarenteeinfo, where });
+    // CUSTOMER.loanLineInfo = await parseLoanLine({ data: loanLineinfo, where });
+    // CUSTOMER.receivableInfo = await parseReceivable({ data: receivableInfo, where });
+    // CUSTOMER.onusInfo = await parseOnus({ data: onusInfo, where });
+    // CUSTOMER.bondInfo = await parseBond({ data: bond, where });
+    // CUSTOMER.mrtInfo = await parseMortgage({ data: mrtInfo, where });
   } catch (err) {
     console.log(err);
     return ({
@@ -210,12 +210,21 @@ export default logic(null, async (data, session) => {
     if (CUSTOMER?.shareholderCustomer){
       await insert(() => db.bulkCreate(db.OShareholdercustomer, CUSTOMER?.shareholderCustomer.map(entry => formatter(entry, db.OShareholdercustomer)), session));
     }
+
     if (CUSTOMER?.shareholderOrg){
       await insert(() => db.bulkCreate(db.OShareholderorg, CUSTOMER?.shareholderOrg.map(entry => formatter(entry, db.OShareholderorg)), session));
     }
+    // =============================================================================
+    if (CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes&& CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes.length>0){
+      await insert(()=> db.bulkCreate(db.SCode, CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes, session));}
+    // =====================================================================================
     if (CUSTOMER?.relationOrg){
       await insert(() => db.bulkCreate(db.OCRelationorg, CUSTOMER?.relationOrg.map(entry => formatter(entry, db.OCRelationorg)), session));
     }
+    // ===================================================================================
+    if (CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes&& CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes.length>0){
+      await insert(()=> db.bulkCreate(db.SCode, CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes, session));}
+    // =====================================================================================
     if (CUSTOMER?.relationCustomer){
       await insert(() => db.bulkCreate(db.OCRelationcustomer, CUSTOMER?.relationCustomer.map(entry => formatter(entry, db.OCRelationcustomer)), session));
     }
@@ -240,15 +249,8 @@ export default logic(null, async (data, session) => {
     // / SCode
 
     if (CUSTOMER?.customerInfo?.o_c_sectorcodes && CUSTOMER?.customerInfo?.o_c_sectorcodes.length > 0) {
-      console.log("=====================bbbbbbbb==============================");
-      console.log("===================================================", db.SCode, CUSTOMER?.customerInfo?.o_c_sectorcodes, session);
-      console.log("=======================ccccccccccc============================");
       await insert(() => db.bulkCreate(db.SCode, CUSTOMER?.customerInfo?.o_c_sectorcodes, session));
-
     }
-
-
-
     // Scode
     // LOAN START
     if (CUSTOMER?.loanInfo){
@@ -332,7 +334,7 @@ export default logic(null, async (data, session) => {
         await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.bondInfo?.o_c_bondrelnos, session));
     }
     if (CUSTOMER?.mrtInfo?.length > 0){
-      await insert(() => db.bulkCreate(db.OCMortgage, CUSTOMER?.mrtInfo.map(entry => formatter(entry, db.OCMortgage)), session));
+      await insert(() => db.create(db.OCMortgage, CUSTOMER?.mrtInfo.map(entry => formatter(entry, db.OCMortgage)), session));
     }
     // await Promise.all([insert(() => db.create(db.OBond, { ...CUSTOMER?.bondInfo }, session)),
     //   insert(() => db.bulkCreate(db.Mrtno, CUSTOMER?.bondInfo?.o_c_bondmrtnos, session)),
@@ -352,8 +354,18 @@ export default logic(null, async (data, session) => {
     if (CUSTOMER?.shareholderOrg){
       await bulkUpdate({ type: "shareholderOrg", data: CUSTOMER?.shareholderOrg.map(entry => formatter(entry, db.OShareholderorg)), attribute: "o_shareholderorg_registerno", where, session });
     }
+    // // SCODE
+    if (CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes && CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes.length > 0){
+      await bulkUpdate({ type: "s_code", data: CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes.map(item => ({ ...item, relation_id: customer.id })), attribute: "code", where: { ...where, type: "SHAREHOLDER_ORG", relation_id: customer.id }, session });
+    }
+
+    // // SCODE
     if (CUSTOMER?.relationOrg){
       await bulkUpdate({ type: "relationOrg", data: CUSTOMER?.relationOrg.map(entry => formatter(entry, db.OCRelationorg)), attribute: "o_c_relationorg_registerno", where, session });
+    }
+    console.log("===============================bbb=======================", CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes);
+    if (CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes && CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes.length > 0){
+      await bulkUpdate({ type: "s_code", data: CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes.map(item => ({ ...item, relation_id: customer.id })), attribute: "code", where: { ...where, type: "RELATION_ORG", relation_id: customer.id }, session });
     }
     if (CUSTOMER?.relationCustomer){
       await bulkUpdate({ type: "relationCustomer", data: CUSTOMER?.relationCustomer.map(entry => formatter(entry, db.OCRelationcustomer)), attribute: "o_c_relationcustomer_registerno", where, session });
@@ -382,8 +394,7 @@ export default logic(null, async (data, session) => {
     // / scode start
     if (CUSTOMER?.customerInfo){
       if (CUSTOMER?.customerInfo?.o_c_sectorcodes && CUSTOMER?.customerInfo?.o_c_sectorcodes.length >0)
-        console.log("==========================AAAAAAAAAAAAAAAAa==================", CUSTOMER?.customerInfo?.o_c_sectorcodes);
-      await bulkUpdate({ type: "s_code", data: CUSTOMER?.customerInfo?.o_c_sectorcodes.map(item => ({ ...item, relation_id: customer.id })), attribute: "code", where: { ...where, type: "CUSTOMER", relation_id: customer.id }, session });
+        await bulkUpdate({ type: "s_code", data: CUSTOMER?.customerInfo?.o_c_sectorcodes.map(item => ({ ...item, relation_id: customer.id })), attribute: "code", where: { ...where, type: "CUSTOMER", relation_id: customer.id }, session });
     }
     // / scode end
     if (CUSTOMER?.loanInfo){
