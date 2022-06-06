@@ -42,6 +42,7 @@ const formatter = (value = {}, model) => {
 export default async (register_no, session) => {
   let filters = {};
   let relnos = [];
+  let s_codes = [];
   let PAID_LOANS = [];
   let PAID_BONDS = [];
   let PAID_LEASINGS = [];
@@ -66,9 +67,15 @@ export default async (register_no, session) => {
         o_c_bank_code   : relationOrg.map(item => item.o_c_bank_code),
         o_c_registerno  : relationOrg.map(item => item.o_c_registerno),
       } }, session);
+      s_codes = (await db.findAll(db.SCode, { where: {
+        type          : "RELATION_ORG",
+        o_c_registerno: relationOrg[0].o_c_registerno
+      } }));
       customer = {
         ...formatter(relationOrg[0].dataValues, db.OCRelationorg),
-        o_c_relationorg_orgrelation: APPENDIX.APPENDIX_G[relationOrg[0]?.o_c_relationorg_orgrelation]
+        o_c_relationorg_orgrelation     : APPENDIX.APPENDIX_G[relationOrg[0]?.o_c_relationorg_orgrelation],
+        o_c_relationorg_sectorcode_names: s_codes.map(item => APPENDIX.APPENDIX_A[item.code]).join(),
+        o_c_relationorg_sectorcodes     : s_codes.map(item => item.code)
       };
     } else {
       throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
@@ -85,7 +92,7 @@ export default async (register_no, session) => {
       } }, session);
       customer = {
         ...formatter(relationCustomers[0].dataValues, db.OCRelationcustomer),
-        o_c_relationcustomer_citizenrelation: APPENDIX.APPENDIX_D[relationCustomers[0]?.o_c_relationcustomer_citizenrelation]
+        o_c_relationcustomer_citizenrelation: APPENDIX.APPENDIX_D[relationCustomers[0]?.o_c_relationcustomer_citizenrelation],
       };
     } else {
       throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
@@ -98,6 +105,7 @@ export default async (register_no, session) => {
     }],
     o_c_registerno: relnos.map(item => item.o_c_registerno)
   } })).map(item => formatter(item.dataValues, db.Customer));
+  console.log("==================", relnos.map(item => item.o_c_customercode));
   let transactions = (await db.findAll(db.Transaction, { where: {
     [Op.or]: [{
       o_c_customercode: relnos.map(item => item.o_c_customercode),
