@@ -175,20 +175,20 @@ export default logic(null, async (data, session) => {
   let CUSTOMER = {};
   try {
     CUSTOMER.customerInfo = await parseCustomer(customerInfo, where);
-    CUSTOMER.shareholderCustomer = await parseShareholder({ data: shareholderCustomer, where, type: "CUSTOMER" });
-    CUSTOMER.shareholderOrg = await parseShareholder({ data: shareholderOrg, where, type: "ORG" });
+    // CUSTOMER.shareholderCustomer = await parseShareholder({ data: shareholderCustomer, where, type: "CUSTOMER" });
+    // CUSTOMER.shareholderOrg = await parseShareholder({ data: shareholderOrg, where, type: "ORG" });
     CUSTOMER.relationOrg = await parseRelation({ data: relationOrg, where, type: "ORG", session });
-    CUSTOMER.relationCustomer = await parseRelation({ data: relationCustomer, where, type: "CUSTOMER", session });
-    CUSTOMER.financialInfo = await parseFinancialInfo({ data: financialInfo, where });
-    CUSTOMER.loanInfo = await parseLoan({ data: loanInfo, where });
-    CUSTOMER.leasingInfo = await parseLeasing({ data: leasingInfo, where });
-    CUSTOMER.accreditInfo = await parseAccredit({ data: accreditInfo, where });
-    CUSTOMER.guarenteeInfo = await parseGuarantee({ data: guarenteeinfo, where });
-    CUSTOMER.loanLineInfo = await parseLoanLine({ data: loanLineinfo, where });
-    CUSTOMER.receivableInfo = await parseReceivable({ data: receivableInfo, where });
-    CUSTOMER.onusInfo = await parseOnus({ data: onusInfo, where });
-    CUSTOMER.bondInfo = await parseBond({ data: bond, where });
-    CUSTOMER.mrtInfo = await parseMortgage({ data: mrtInfo, where });
+    // CUSTOMER.relationCustomer = await parseRelation({ data: relationCustomer, where, type: "CUSTOMER", session });
+    // CUSTOMER.financialInfo = await parseFinancialInfo({ data: financialInfo, where });
+    // CUSTOMER.loanInfo = await parseLoan({ data: loanInfo, where });
+    // CUSTOMER.leasingInfo = await parseLeasing({ data: leasingInfo, where });
+    // CUSTOMER.accreditInfo = await parseAccredit({ data: accreditInfo, where });
+    // CUSTOMER.guarenteeInfo = await parseGuarantee({ data: guarenteeinfo, where });
+    // CUSTOMER.loanLineInfo = await parseLoanLine({ data: loanLineinfo, where });
+    // CUSTOMER.receivableInfo = await parseReceivable({ data: receivableInfo, where });
+    // CUSTOMER.onusInfo = await parseOnus({ data: onusInfo, where });
+    // CUSTOMER.bondInfo = await parseBond({ data: bond, where });
+    // CUSTOMER.mrtInfo = await parseMortgage({ data: mrtInfo, where });
   } catch (err) {
     console.log(err);
     return ({
@@ -208,7 +208,6 @@ export default logic(null, async (data, session) => {
       ...CUSTOMER?.customerInfo
     }, session);
     if (CUSTOMER?.shareholderCustomer){
-      console.log("=========aaaa============", db.OShareholdercustomer, CUSTOMER?.shareholderCustomer);
       await insert(() => db.bulkCreate(db.OShareholdercustomer, CUSTOMER?.shareholderCustomer.map(entry => formatter(entry, db.OShareholdercustomer)), session));
     }
 

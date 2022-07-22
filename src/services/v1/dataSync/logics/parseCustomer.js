@@ -101,13 +101,13 @@ export default async (customerInfo, where) => {
         code       : item._
       });
     });
-  } else if (customerInfo.o_c_sectorcodes?.o_c_sectorcode);
-  s_codes.push({
-    ...where,
-    relation_id: id,
-    type       : "CUSTOMER",
-    code       : customerInfo.o_c_sectorcodes.o_c_sectorcode._
-  });
+  } else if (customerInfo.o_c_sectorcodes?.o_c_sectorcode)
+    s_codes.push({
+      ...where,
+      relation_id: id,
+      type       : "CUSTOMER",
+      code       : customerInfo.o_c_sectorcodes.o_c_sectorcode._
+    });
   let customer = {
     id                             : uuidv4(),
     o_c_customercode               : customerInfo?.o_c_customercode,

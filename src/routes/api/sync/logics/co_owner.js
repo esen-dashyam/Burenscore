@@ -44,6 +44,7 @@ const formatter = (value = {}, model) => {
           [key]        : value[key],
           o_c_bank_name: APPENDIX[FORMATTABLE_VARIABLES.o_c_bank_name][value[key]] || value[key]
         };
+
       }
       return {
         ...acc,
@@ -82,7 +83,7 @@ export default async (register_no, session) => {
       } }, session);
       customer = {
         ...formatter(relationOrg[0].dataValues, db.OCRelationorg),
-        o_c_relationorg_orgrelation: APPENDIX.APPENDIX_G[relationOrg[0]?.o_c_relationorg_orgrelation],
+        o_c_relationorg_orgrelation: APPENDIX.APPENDIX_G[relationOrg[0]?.o_c_relationorg_orgrelation]
       };
     } else {
       throw new NotfoundError(ERRORS.CUSTOMER_NOTFOUND);
