@@ -2,7 +2,6 @@ import { ValidationError } from "@goodtechsoft/micro-service/lib/errors";
 import { ERROR_DETAILS, ERROR_CODES } from "../../../../constants";
 import Joi from "joi";
 import { v4 as uuidv4 } from "uuid";
-import APPENDIX_A from "../../../../constants/APPENDIX_A";
 const customerSchemaObject = Joi.object({
   o_shareholder_firstname    : Joi.string().max(50).required(),
   o_shareholder_lastname     : Joi.string().max(1).min(0).required(),
@@ -30,7 +29,6 @@ const orgSchemaArray = Joi.array().items(Joi.object({
 export default async ({ data, where, type }) => {
   if (!data) return null;
   let shareholder = [];
-  let s_codes = [];
   if (type === "CUSTOMER")
   {
     if (Array.isArray(data)){
@@ -69,35 +67,6 @@ export default async ({ data, where, type }) => {
     }
   }
   if (type === "ORG"){
-    let id = uuidv4();
-    if (Array.isArray(data.o_shareholder_sectorcodes?.o_shareholder_sectorcode)){
-      data.o_shareholder_sectorcodes.o_shareholder_sectorcode.forEach(item => {
-        s_codes.push({
-          ...where,
-          relation_id: id,
-          type       : "SHAREHOLDER_ORG",
-          code       : item._
-        });
-      });
-    }
-    else if (data.o_shareholder_sectorcodes?.o_shareholder_sectorcode)
-      s_codes.push({
-        ...where,
-        relation_id: id,
-        type       : "SHAREHOLDER_ORG",
-        code       : data.o_shareholder_sectorcodes?.o_shareholder_sectorcode._
-      });
-    else if (data.forEach(item => {
-      Array.isArray(item?.o_shareholder_sectorcodes?.o_shareholder_sectorcode.forEach(item =>{
-        s_codes.push({
-          ...where,
-          relation_id: id,
-          type       : "SHAREHOLDER_ORG",
-          code       : item._
-        });
-      }));
-    }));
-    // console.log("====================aaaaa===================", s_codes);
     if (Array.isArray(data)){
       try {
         await orgSchemaArray.validate(data);
@@ -134,6 +103,5 @@ export default async ({ data, where, type }) => {
       });
     }
   }
-  shareholder.o_shareholder_sectorcodes = s_codes;
   return shareholder;
 };

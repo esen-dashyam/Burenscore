@@ -10,7 +10,6 @@ const schema = Joi.object({
   o_c_loanline_expdate: Joi.string()
     .regex(/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/).required(),
   o_c_loanline_currencycode: Joi.string().valid(Object.keys(VALUE_CODES).map(item => VALUE_CODES[item])).required(),
-  o_c_loanline_sectorcode  : Joi.string().valid(Object.keys(APPENDIX.APPENDIX_A)).required(),
   o_c_loanline_loaninterest: Joi.number().required(),
   o_c_loanline_timestoloan : Joi.number().integer(9999).required(),
   o_c_loanline_extdate     : Joi.string()
@@ -41,7 +40,6 @@ export default async ({ data, where }) => {
 	  o_c_loanline_starteddate   : data?.o_c_loanline_starteddate,
 	  o_c_loanline_expdate       : data?.o_c_loanline_expdate,
 	  o_c_loanline_currencycode  : data?.o_c_loanline_currencycode,
-	  o_c_loanline_sectorcode    : data?.o_c_loanline_sectorcode,
 	  o_c_loanline_loaninterest  : data?.o_c_loanline_loaninterest,
 	  o_c_loanline_timestoloan   : data?.o_c_loanline_timestoloan,
 	  o_c_loanline_extdate       : data?.o_c_loanline_extdate,

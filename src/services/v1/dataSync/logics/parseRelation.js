@@ -55,7 +55,6 @@ const orgSchemaArray = Joi.array().items(Joi.object({
 export default async ({ data, where, type, session }) => {
   if (!data) return null;
   let shareholder = [];
-  let s_codes = [];
   // console.log(data);
   if (type === "CUSTOMER"){
     // console.log("data_IS_ARRAY", Array.isArray(data));
@@ -109,37 +108,6 @@ export default async ({ data, where, type, session }) => {
     }
   }
   if (type === "ORG"){
-    let id = uuidv4();
-    console.log("=============aaa========", data);
-    if (Array.isArray(data.o_c_relationorg_sectorcodes?.o_c_relationorg_sectorcode)){
-      data.o_c_relationorg_sectorcodes.o_c_relationorg_sectorcode.forEach(item => {
-        s_codes.push({
-          ...where,
-          relation_id: id,
-          type       : "RELATION_ORG",
-          code       : item._
-        });
-      });
-    }
-    else if (data.o_c_relationorg_sectorcodes?.o_c_relationorg_sectorcode)
-      s_codes.push({
-        ...where,
-        relation_id: id,
-        type       : "RELATION_ORG",
-        code       : data.o_c_relationorg_sectorcodes?.o_c_relationorg_sectorcode._
-      });
-    else if (data.forEach(item => {
-      Array.isArray(item?.o_c_relationorg_sectorcodes?.o_c_relationorg_sectorcode.forEach(item =>{
-        s_codes.push({
-          ...where,
-          relation_id: id,
-          type       : "RELATION_ORG",
-          code       : item._
-        });
-      }));
-    }));
-    console.log("============aaa===============", s_codes);
-
     if (Array.isArray(data)){
       try {
         await orgSchemaArray.validate(data);
@@ -201,6 +169,5 @@ export default async ({ data, where, type, session }) => {
       });
     }
   }
-  shareholder.o_c_relationorg_sectorcodes = s_codes;
   return shareholder;
 };

@@ -47,10 +47,6 @@ module.exports = (sequelize, DataTypes) => {
       type     : DataTypes.STRING(45),
       allowNull: true,
     },
-    o_c_loanline_sectorcode: {
-      type     : DataTypes.STRING(45),
-      allowNull: true,
-    },
     o_c_loanline_loaninterest: {
       type     : DataTypes.DECIMAL(12, 2),
       allowNull: true,

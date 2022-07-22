@@ -215,15 +215,15 @@ export default logic(null, async (data, session) => {
       await insert(() => db.bulkCreate(db.OShareholderorg, CUSTOMER?.shareholderOrg.map(entry => formatter(entry, db.OShareholderorg)), session));
     }
     // =============================================================================
-    if (CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes&& CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes.length>0){
-      await insert(()=> db.bulkCreate(db.SCode, CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes, session));}
+    // if (CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes&& CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes.length>0){
+    //   await insert(()=> db.bulkCreate(db.SCode, CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes, session));}
     // =====================================================================================
     if (CUSTOMER?.relationOrg){
       await insert(() => db.bulkCreate(db.OCRelationorg, CUSTOMER?.relationOrg.map(entry => formatter(entry, db.OCRelationorg)), session));
     }
     // ===================================================================================
-    if (CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes&& CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes.length>0){
-      await insert(()=> db.bulkCreate(db.SCode, CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes, session));}
+    // if (CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes&& CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes.length>0){
+    //   await insert(()=> db.bulkCreate(db.SCode, CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes, session));}
     // =====================================================================================
     if (CUSTOMER?.relationCustomer){
       await insert(() => db.bulkCreate(db.OCRelationcustomer, CUSTOMER?.relationCustomer.map(entry => formatter(entry, db.OCRelationcustomer)), session));
@@ -248,9 +248,9 @@ export default logic(null, async (data, session) => {
     }
     // / SCode
 
-    if (CUSTOMER?.customerInfo?.o_c_sectorcodes && CUSTOMER?.customerInfo?.o_c_sectorcodes.length > 0) {
-      await insert(() => db.bulkCreate(db.SCode, CUSTOMER?.customerInfo?.o_c_sectorcodes, session));
-    }
+    // if (CUSTOMER?.customerInfo?.o_c_sectorcodes && CUSTOMER?.customerInfo?.o_c_sectorcodes.length > 0) {
+    //   await insert(() => db.bulkCreate(db.SCode, CUSTOMER?.customerInfo?.o_c_sectorcodes, session));
+    // }
     // Scode
     // LOAN START
     if (CUSTOMER?.loanInfo){
@@ -296,8 +296,8 @@ export default logic(null, async (data, session) => {
       if (CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos && CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos.length > 0)
         await insert(() => db.bulkCreate(db.Relno, CUSTOMER?.guarenteeInfo?.o_c_guaranteerelnos, session));
 
-      if (CUSTOMER?.guarenteeInfo?.o_c_guarantee_sectorcode && CUSTOMER?.guarenteeInfo?.o_c_guarantee_sectorcode.length > 0)
-        await insert(() => db.bulkCreate(db.SCode, CUSTOMER?.guarenteeInfo?.o_c_guarantee_sectorcode, session));
+      // if (CUSTOMER?.guarenteeInfo?.o_c_guarantee_sectorcode && CUSTOMER?.guarenteeInfo?.o_c_guarantee_sectorcode.length > 0)
+      //   await insert(() => db.bulkCreate(db.SCode, CUSTOMER?.guarenteeInfo?.o_c_guarantee_sectorcode, session));
     }
     // GUARENTEE END
     if (CUSTOMER?.loanLineInfo){
@@ -355,18 +355,18 @@ export default logic(null, async (data, session) => {
       await bulkUpdate({ type: "shareholderOrg", data: CUSTOMER?.shareholderOrg.map(entry => formatter(entry, db.OShareholderorg)), attribute: "o_shareholderorg_registerno", where, session });
     }
     // // SCODE
-    if (CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes && CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes.length > 0){
-      await bulkUpdate({ type: "s_code", data: CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes.map(item => ({ ...item, relation_id: customer.id })), attribute: "code", where: { ...where, type: "SHAREHOLDER_ORG", relation_id: customer.id }, session });
-    }
+    // if (CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes && CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes.length > 0){
+    //   await bulkUpdate({ type: "s_code", data: CUSTOMER?.shareholderOrg?.o_shareholder_sectorcodes.map(item => ({ ...item, relation_id: customer.id })), attribute: "code", where: { ...where, type: "SHAREHOLDER_ORG", relation_id: customer.id }, session });
+    // }
 
     // // SCODE
     if (CUSTOMER?.relationOrg){
       await bulkUpdate({ type: "relationOrg", data: CUSTOMER?.relationOrg.map(entry => formatter(entry, db.OCRelationorg)), attribute: "o_c_relationorg_registerno", where, session });
     }
-    console.log("===============================bbb=======================", CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes);
-    if (CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes && CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes.length > 0){
-      await bulkUpdate({ type: "s_code", data: CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes.map(item => ({ ...item, relation_id: customer.id })), attribute: "code", where: { ...where, type: "RELATION_ORG", relation_id: customer.id }, session });
-    }
+    // console.log("===============================bbb=======================", CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes);
+    // if (CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes && CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes.length > 0){
+    //   await bulkUpdate({ type: "s_code", data: CUSTOMER?.relationOrg?.o_c_relationorg_sectorcodes.map(item => ({ ...item, relation_id: customer.id })), attribute: "code", where: { ...where, type: "RELATION_ORG", relation_id: customer.id }, session });
+    // }
     if (CUSTOMER?.relationCustomer){
       await bulkUpdate({ type: "relationCustomer", data: CUSTOMER?.relationCustomer.map(entry => formatter(entry, db.OCRelationcustomer)), attribute: "o_c_relationcustomer_registerno", where, session });
     }
@@ -393,8 +393,8 @@ export default logic(null, async (data, session) => {
 
     // / scode start
     if (CUSTOMER?.customerInfo){
-      if (CUSTOMER?.customerInfo?.o_c_sectorcodes && CUSTOMER?.customerInfo?.o_c_sectorcodes.length >0)
-        await bulkUpdate({ type: "s_code", data: CUSTOMER?.customerInfo?.o_c_sectorcodes.map(item => ({ ...item, relation_id: customer.id })), attribute: "code", where: { ...where, type: "CUSTOMER", relation_id: customer.id }, session });
+      // if (CUSTOMER?.customerInfo?.o_c_sectorcodes && CUSTOMER?.customerInfo?.o_c_sectorcodes.length >0)
+      //   await bulkUpdate({ type: "s_code", data: CUSTOMER?.customerInfo?.o_c_sectorcodes.map(item => ({ ...item, relation_id: customer.id })), attribute: "code", where: { ...where, type: "CUSTOMER", relation_id: customer.id }, session });
     }
     // / scode end
     if (CUSTOMER?.loanInfo){

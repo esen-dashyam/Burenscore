@@ -90,24 +90,6 @@ export default async (customerInfo, where) => {
     console.log("=========", err);
     throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
   }
-  let id = uuidv4();
-  let s_codes = [];
-  if (Array.isArray(customerInfo.o_c_sectorcodes?.o_c_sectorcode)){
-    customerInfo.o_c_sectorcodes.o_c_sectorcode.forEach(item => {
-      s_codes.push({
-        ...where,
-        relation_id: id,
-        type       : "CUSTOMER",
-        code       : item._
-      });
-    });
-  } else if (customerInfo.o_c_sectorcodes?.o_c_sectorcode)
-    s_codes.push({
-      ...where,
-      relation_id: id,
-      type       : "CUSTOMER",
-      code       : customerInfo.o_c_sectorcodes.o_c_sectorcode._
-    });
   let customer = {
     id                             : uuidv4(),
     o_c_customercode               : customerInfo?.o_c_customercode,
@@ -139,7 +121,6 @@ export default async (customerInfo, where) => {
     o_noofshareholders             : customerInfo?.o_noofshareholders,
     c_job                          : customerInfo?.c_job,
   };
-  customer.o_c_sectorcodes = s_codes;
 
   return customer;
 };
