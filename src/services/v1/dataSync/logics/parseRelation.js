@@ -5,7 +5,6 @@ import { db } from "@goodtechsoft/sequelize-postgres";
 import { fall } from "../../../../utils";
 import APPENDIX_D from "../../../../constants/APPENDIX_D";
 import { v4 as uuidv4 } from "uuid";
-import APPENDIX_A from "../../../../constants/APPENDIX_A";
 const checkDuplicate = (array, key) => {
   let duplicate = false;
   if (array.length > 2){
@@ -14,7 +13,6 @@ const checkDuplicate = (array, key) => {
         duplicate = true;
     });
   }
-  console.log("=========111===========", duplicate);
   return duplicate;
 };
 const customerSchemaObject = Joi.object({
@@ -43,7 +41,6 @@ const orgSchemaObject = Joi.object({
   o_c_relationorg_orgrelation    : Joi.string().required(),
   o_c_relationorg_isfinancialonus: Joi.number().required(),
   o_c_relationorg_relno          : Joi.string().required(),
-  o_c_relationorg_sectorcode     : Joi.string().valid(Object.keys(APPENDIX_A)).allow([null, ""]),
 }).options({ allowUnknown: true });
 const orgSchemaArray = Joi.array().items(Joi.object({
   o_c_relationorg_orgname        : Joi.string().max(50).required(),
@@ -53,7 +50,6 @@ const orgSchemaArray = Joi.array().items(Joi.object({
   o_c_relationorg_orgrelation    : Joi.string().required(),
   o_c_relationorg_isfinancialonus: Joi.number().required(),
   o_c_relationorg_relno          : Joi.string().required(),
-  o_c_relationorg_sectorcode     : Joi.string().valid(Object.keys(APPENDIX_A)).allow([null, ""]),
 })).options({ allowUnknown: true });
 
 export default async ({ data, where, type, session }) => {
@@ -114,6 +110,7 @@ export default async ({ data, where, type, session }) => {
   }
   if (type === "ORG"){
     let id = uuidv4();
+    console.log("=============aaa========", data);
     if (Array.isArray(data.o_c_relationorg_sectorcodes?.o_c_relationorg_sectorcode)){
       data.o_c_relationorg_sectorcodes.o_c_relationorg_sectorcode.forEach(item => {
         s_codes.push({
@@ -141,6 +138,8 @@ export default async ({ data, where, type, session }) => {
         });
       }));
     }));
+    console.log("============aaa===============", s_codes);
+
     if (Array.isArray(data)){
       try {
         await orgSchemaArray.validate(data);
@@ -171,7 +170,7 @@ export default async ({ data, where, type, session }) => {
             o_c_relationorg_stateregisterno: item?.o_c_relationorg_stateregisterno,
             o_c_relationorg_orgrelation    : item?.o_c_relationorg_orgrelation,
             o_c_relationorg_isfinancialonus: item?.o_c_relationorg_isfinancialonus,
-            o_c_relationorg_relno          : item?.o_c_relationorg_relno,
+            o_c_relationorg_relno          : item?.o_c_relationorg_relno
           });
         };
       });
@@ -182,8 +181,14 @@ export default async ({ data, where, type, session }) => {
       }
       catch (err) {
         console.log(err);
+        // console.log("================================", err);
         throw new ValidationError(ERROR_CODES[err.details[0].context.key][err.details[0].type], ERROR_DETAILS[ERROR_CODES[err.details[0].context.key][err.details[0].type]]);
       }
+      // let relno = await db.find(db.OCRelationorg, {
+      //   ...where,
+      //   o_c_relationorg_relno: data.o_c_relationorg_relno
+      // }, session);
+      // if (relno) throw new ValidationError(ERROR_DETAILS.ME4055);
       shareholder.push({
         ...where,
         o_c_relationorg_orgname        : data?.o_c_relationorg_orgname,
@@ -192,8 +197,7 @@ export default async ({ data, where, type, session }) => {
         o_c_relationorg_stateregisterno: data?.o_c_relationorg_stateregisterno,
         o_c_relationorg_orgrelation    : data?.o_c_relationorg_orgrelation,
         o_c_relationorg_isfinancialonus: data?.o_c_relationorg_isfinancialonus,
-        o_c_relationorg_relno          : data?.o_c_relationorg_relno,
-        o_c_relationorg_sectorcode     : data?.o_c_relationorg_sectorcode
+        o_c_relationorg_relno          : data?.o_c_relationorg_relno
       });
     }
   }
