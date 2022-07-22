@@ -21,7 +21,7 @@ export default configure(({ PORT, DBHOST, DBPORT, DBNAME, DBUSER, DBPASS }) => (
   development: {
     PORT   : process.env.PORT,
     DBNAME : "bs_zms",
-    DBHOST : "34.80.208.26",
+    DBHOST : "172.16.101.32",
     DBUSER : "postgres",
     DBPASS : "p7GkK25Pl0gsNOzJ",
     DBPORT : 5432,

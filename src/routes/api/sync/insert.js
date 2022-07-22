@@ -38,7 +38,12 @@ export default method.post("/sync/insert", schema, async (req, res, session) => 
   await asyncPooled(1, array, async (data) => {
     let falls = data.map(item =>{
       return async () => {
-        let result = await dataSync.main(item, session);
+        let result;
+        try {
+          result = await dataSync.main(item, session);
+        } catch (err) {
+          console.log(err);
+        }
         if (result?.error) {
           errors.push({
             register_no: result.error?.customer,
