@@ -4,7 +4,7 @@ import { ERROR_DETAILS, ERROR_CODES, APPENDIX } from "../../../../constants";
 import Joi from "joi";
 const schemaArray = Joi.array().items(Joi.object({
   o_c_mrtno          : Joi.string().max(3).required(),
-  o_c_mrtno_internal : Joi.string.regex(/^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/).max(30).required(),
+  o_c_mrtno_internal : Joi.string().regex(/^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/).max(30).required(),
   o_c_mrtcode        : Joi.number().valid(Object.keys(APPENDIX.APPENDIX_MORTGAGE)).required(),
   o_c_mrtdescription : Joi.string().max(150).required(),
   o_c_is_real_estate : Joi.number().max(1).min(0).required(),
